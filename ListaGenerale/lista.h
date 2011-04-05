@@ -59,7 +59,7 @@ int compare(void *PrimoElemento, void *SecondoElemento);
  * non viene modificata
  * 
  */ 
-NODO *ListInsert(char *Value, NODO *Current, int *ReturnStatus);
+NODO *ListInsert(char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(void *, void *) );
 
 /**
  * Rimuove un nodo dalla lista

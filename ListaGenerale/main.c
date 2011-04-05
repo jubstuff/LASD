@@ -12,7 +12,32 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "listaChar.h"
+#include "lista.h"
+
+
+int NumCmp( const void *FirstArg, const void *SecondArg )
+{
+	int ReturnValue;
+	int First = *(int *)FirstArg;
+	int Second = *(int *)SecondArg;
+
+	if ( First < Second )
+	{
+		ReturnValue = -1;
+	}
+	else if ( First == Second )
+	{
+		ReturnValue = 0;
+	}
+	else
+	{
+		ReturnValue = 1;
+	}
+
+	return ReturnValue;
+
+}
+
 
 int main(void)
 {
@@ -37,7 +62,7 @@ int main(void)
 				printf("?>");
 				LeggiStringa(TempBuffer, LENMAX, stdin);
 				
-				Head = ListInsert(TempBuffer, Head, &ReturnStatus);
+				Head = ListInsert(TempBuffer, Head, &ReturnStatus, strcasecmp);
 				
 				//Se il nodo è già presente nella lista, notifica
 				if( ReturnStatus == W_DUPLICATE )
@@ -149,7 +174,7 @@ int main(void)
 				{
 					//Elimina la lista attuale
 					Head = ListDeallocate(Head);
-					Head = CaricaListaDaFile(TempBuffer, LENMAX, &ReturnStatus);
+					/*Head = CaricaListaDaFile(TempBuffer, LENMAX, &ReturnStatus);
 					
 					//Se ci sono stati errori al caricamento
 					if( ReturnStatus > 0 )
@@ -164,7 +189,7 @@ int main(void)
 					{
 						printf("\nLista caricata correttamente dal file %s\n\n",
 							TempBuffer);
-					}
+					}*/
 				}
 				break;
 			case '9': //Stampare la lista a video

@@ -34,14 +34,14 @@
  *
  * @return Il puntatore alla testa della lista eventualmente modificato
  */ 
-NODO *ListInsert (char *Value, NODO *Current, int *ReturnStatus)
+NODO *ListInsert ( char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(void *, void *) ) 
 {
 	NODO *NewNode; /**< puntatore al nuovo nodo creato */
 	
 	*ReturnStatus = 0;
 	
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
-	if( Current == NULL || ( strcasecmp(Current->Stringa, Value) > 0 ) )
+	if( Current == NULL || ( (*Comp)(Current->Stringa, Value) > 0 ) )
 	{
 		/*alloca e inizializza il nuovo nodo*/
 		NewNode = (NODO *) malloc(sizeof(NODO));
@@ -60,14 +60,14 @@ NODO *ListInsert (char *Value, NODO *Current, int *ReturnStatus)
 		}
 	}   
 	/* se il valore è uguale a quello in ingresso esci */
-	else if( strcasecmp(Current->Stringa, Value) == 0 )
+	else if( (*Comp)(Current->Stringa, Value) == 0 )
 	{
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else
 	{
 		/* vai avanti nella ricerca */
-		Current->Next = ListInsert(Value, Current->Next, ReturnStatus);
+		Current->Next = ListInsert(Value, Current->Next, ReturnStatus, Comp);
 	}
 	return Current;
 }
@@ -223,6 +223,7 @@ void ScriviSuFileDiTesto( char *NomeFile, NODO *Head, int *ReturnStatus )
  *
  * @return La testa della lista creata dalla lettura del file
  */
+#ifdef ASDRUBALE
 NODO *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus )
 {
 	NODO *TempHead;    /**< Testa della lista temporanea */
@@ -269,7 +270,7 @@ NODO *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus )
 	
 	return TempHead;
 }
-
+#endif
 /*==============================================================================
  * Funzioni di utilità
  *============================================================================*/
