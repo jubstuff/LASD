@@ -1,10 +1,10 @@
 /**
- * lista.hc
+ * lista.c
  * 
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
  * @date 05/04/11
- * @package ListaStringhe
+ * @package ListaGenerale
  *
  * Implementazioni delle funzioni per la gestione di una lista.
  * 
