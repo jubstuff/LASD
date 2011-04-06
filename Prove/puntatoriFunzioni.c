@@ -10,9 +10,9 @@ void function1( int );
 void function2( int );
 void function3( int );
 
-void MiaFunzione( void *A, void *B, int (*Comp)(void *, void *) )
+void MiaFunzione( int a, void (*f[])(int)  )
 {
-	printf("%s|%s: %d\n", A, B, (*Comp)((void *)A,(void *)B));
+	(*f[a])( a );
 }
 
 int main( int argc, char **argv )
@@ -27,7 +27,7 @@ int main( int argc, char **argv )
 
 	while( choice >= 0 && choice < 3 )
 	{
-		(*f[choice])( choice );
+		MiaFunzione(choice, f);
 		printf("\nImmettere un numero tra 0 e 2, 3 per terminare\n");
 		scanf("%d", &choice);
 	}
