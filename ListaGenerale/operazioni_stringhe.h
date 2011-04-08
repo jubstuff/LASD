@@ -18,7 +18,7 @@
  /*==============================================================================
  * Definizione di funzioni per la lista di stringhe
  *============================================================================*/
-void *InizializzaNodoStringa( char * );
+char *InizializzaNodoStringa( char * );
 void StampaNodoStringa( char * );
 void DeallocaStringa( char * );
 #endif

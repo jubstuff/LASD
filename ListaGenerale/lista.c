@@ -308,7 +308,7 @@ void LeggiStringa( char *Buf, int LenMax, FILE *InputStream)
 	}
 	*Buf = '\0';
 }
-
+#ifdef ASDRUBALE
 /**
  * Visualizza un menu per la scelta delle operazioni da effettuare
  *
@@ -344,5 +344,7 @@ char Menu()
 void Pause()
 {
 	puts("\n\nBattere un tasto per continuare...");
-//	_getch();
+	_getch();
 }
+#endif
+
