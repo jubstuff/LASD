@@ -15,16 +15,33 @@
 /*==============================================================================
  * Funzioni per la gestione della lista
  *============================================================================*/
+
 NODO *ListCreateNewNode(void *Value, OPERATIONS *Op)
 {
 	NODO * NewNode;
-	/*alloca e inizializza il nuovo nodo*/
+
+	//Alloca spazio per il nuovo nodo
 	NewNode = (NODO *) malloc(sizeof(NODO));
 	if ( NewNode != NULL )
 	{
 		//Associa il valore passato dall'utente al campo del nodo
 		NewNode->Info = Op->Initialize(Value);
 		NewNode->Next = NULL;
+	}
+	return NewNode;
+}
+
+NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op )
+{
+	NODO *NewNode;
+
+	/*alloca e inizializza il nuovo nodo*/
+	NewNode = ListCreateNewNode( Value, Op );
+	if ( NewNode != NULL )
+	{
+		//Posiziona il nuovo nodo prima del nodo corrente
+		NewNode->Next = Current;
+		Current = NewNode;
 	}
 	return NewNode;
 }
@@ -50,34 +67,22 @@ NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATI
 {
 	NODO *NewNode; /**< puntatore al nuovo nodo creato */
 	
-	*ReturnStatus = 0;
+	*ReturnStatus = 0; 
 	
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
 	if( Current == NULL || ( Op->Compare( (void *)Current->Info, (void *)Value ) > 0 ) )
 	{
-		/*alloca e inizializza il nuovo nodo*/
-		NewNode = (NODO *) malloc(sizeof(NODO));
-		if ( NewNode != NULL )
-		{
-			NewNode->Info = Op->Initialize(Value);
-			NewNode->Next = Current;
-			/* il valore di current può essere sovrascritto perché salvato in
-			 * NewNode->next */
-			Current = NewNode;
-		}
-		else
-		{
-			*ReturnStatus = E_MALLOC;
-		}
+		Current = ListInsertAfter( Value, Current, Op );
 	}   
-	/* se il valore è uguale a quello in ingresso esci */
+	/* se il valore del nodo corrente è uguale a quello in ingresso, non
+	 * fare nulla, ma notifica la condizione tramite ReturnStatus */
 	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else
 	{
-		/* vai avanti nella ricerca */
+		// vai avanti nella ricerca, aggiornando il campo Next del nodo corrente 
 		Current->Next = ListOrderedInsert(Value, Current->Next, ReturnStatus, Op);
 	}
 	return Current;

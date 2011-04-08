@@ -10,11 +10,12 @@
  * un singolo campo di tipo char*
  * 
  */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #ifndef _OPERAZIONI_STRINGHE_H_
 #define _OPERAZIONI_STRINGHE_H_
-
-#include "lista.h" //Per definizione di NODO
-#include <string.h>
  /*==============================================================================
  * Definizione di funzioni per la lista di stringhe
  *============================================================================*/

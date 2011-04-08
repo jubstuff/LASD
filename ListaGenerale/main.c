@@ -13,10 +13,12 @@
 #include <stdlib.h>
 #include "lista.h"
 #include "operazioni_stringhe.h"
+#include "operazioni_numeri.h"
 
 int main(void)
 {
 	OPERATIONS ListaStringheOp;
+	OPERATIONS ListaIntOp;
 	NODO *Head = NULL;
 	int ReturnStatus;
 	
@@ -36,6 +38,11 @@ int main(void)
 	
 	printf("\nDopo della cancellazione\n");
  	ListPrint(Head, &ListaStringheOp);
+
+	ListaIntOp.Compare = (int (*)(void *, void *))NumCmp;
+	ListaIntOp.Initialize = ( void *(*)( void * ) )InizializzaNodoInt;
+	ListaIntOp.Print = ( void (*)(void *) )StampaNodoInt;
+	ListaIntOp.Destroy = ( void (*)(void *) )DeallocaInt;
 //	Pause();
     return 0;
 }

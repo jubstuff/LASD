@@ -59,6 +59,9 @@ typedef struct operations_tag
  * dall'utente
  */
 NODO *ListCreateNewNode(void *Value, OPERATIONS *Op);
+
+
+NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op );
 /**
  * Inserisce un nodo all'interno della lista
  *
