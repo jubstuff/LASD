@@ -25,17 +25,17 @@ int main(void)
 	ListaStringheOp.Print = ( void (*)(void *) )StampaNodoStringa;
 	ListaStringheOp.Destroy = ( void (*)(void *) )DeallocaStringa;
 	
-	Head = ListInsert("Pippo", Head, &ReturnStatus, &ListaStringheOp);
-	Head = ListInsert("Giustino", Head, &ReturnStatus, &ListaStringheOp);
-	Head = ListInsert("Valeria", Head, &ReturnStatus, &ListaStringheOp);
-	Head = ListInsert("Andrea", Head, &ReturnStatus, &ListaStringheOp);
+//	Head = ListInsert("Pippo", Head, &ReturnStatus, &ListaStringheOp);
+ //   Head = ListInsert("Giustino", Head, &ReturnStatus, &ListaStringheOp);
+  //  Head = ListInsert("Valeria", Head, &ReturnStatus, &ListaStringheOp);
+   // Head = ListInsert("Andrea", Head, &ReturnStatus, &ListaStringheOp);
 	
 	printf("Prima della cancellazione\n");
 	ListPrint(Head, &ListaStringheOp);
 	Head = ListRemove( (char *)"Giustino", Head, &ReturnStatus, &ListaStringheOp);
 	
-	printf("\n‡Dopo della cancellazione\n");
+	printf("\nDopo della cancellazione\n");
  	ListPrint(Head, &ListaStringheOp);
-	Pause();
+//	Pause();
     return 0;
 }

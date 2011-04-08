@@ -15,7 +15,19 @@
 /*==============================================================================
  * Funzioni per la gestione della lista
  *============================================================================*/
-
+NODO *ListCreateNewNode(void *Value, OPERATIONS *Op)
+{
+	NODO * NewNode;
+	/*alloca e inizializza il nuovo nodo*/
+	NewNode = (NODO *) malloc(sizeof(NODO));
+	if ( NewNode != NULL )
+	{
+		//Associa il valore passato dall'utente al campo del nodo
+		NewNode->Info = Op->Initialize(Value);
+		NewNode->Next = NULL;
+	}
+	return NewNode;
+}
 /**
  * Inserisce un nodo all'interno della lista
  *
@@ -34,7 +46,7 @@
  *
  * @return Il puntatore alla testa della lista eventualmente modificato
  */ 
-NODO *ListInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op ) 
+NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op ) 
 {
 	NODO *NewNode; /**< puntatore al nuovo nodo creato */
 	
@@ -66,7 +78,7 @@ NODO *ListInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op
 	else
 	{
 		/* vai avanti nella ricerca */
-		Current->Next = ListInsert(Value, Current->Next, ReturnStatus, Op);
+		Current->Next = ListOrderedInsert(Value, Current->Next, ReturnStatus, Op);
 	}
 	return Current;
 }
@@ -332,5 +344,5 @@ char Menu()
 void Pause()
 {
 	puts("\n\nBattere un tasto per continuare...");
-	_getch();
+//	_getch();
 }

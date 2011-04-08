@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
+//#include <conio.h>
 
 #define LENMAX      100 //Lunghezza massima input
 #define E_MALLOC    1   //Errore nella chiamata a malloc
@@ -55,6 +55,11 @@ typedef struct operations_tag
  *============================================================================*/
 
 /**
+ * Alloca memoria per un nuovo nodo e lo inizializza con il valore passato
+ * dall'utente
+ */
+NODO *ListCreateNewNode(void *Value, OPERATIONS *Op);
+/**
  * Inserisce un nodo all'interno della lista
  *
  * Questa funzione utilizza un approccio ricorsivo per inserire un nodo
@@ -64,7 +69,7 @@ typedef struct operations_tag
  * non viene modificata
  * 
  */ 
-NODO *ListInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op );
+NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op );
 
 /**
  * Rimuove un nodo dalla lista
