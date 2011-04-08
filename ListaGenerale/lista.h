@@ -38,13 +38,18 @@
 
 typedef struct node {
 	struct node *Next; /**< Puntatore al nodo successivo */
-	char *Stringa;     /**< Campo stringa del nodo */
+	void *Info;        /**< Campo del nodo */
 } NODO;
 
-/*==============================================================================
- * Definizione di puntatori a funzioni
- *============================================================================*/
-int compare(void *PrimoElemento, void *SecondoElemento);
+typedef struct operations_tag
+{
+	int (*Compare)(void *, void *);
+	void *(*Initialize)( void * );
+	void (*Print)(void *);
+	void (*Destroy)(void *);
+} OPERATIONS;
+
+
 /*==============================================================================
  * Funzioni per la gestione della lista
  *============================================================================*/
@@ -59,7 +64,7 @@ int compare(void *PrimoElemento, void *SecondoElemento);
  * non viene modificata
  * 
  */ 
-NODO *ListInsert(char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(void *, void *) );
+NODO *ListInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op );
 
 /**
  * Rimuove un nodo dalla lista
@@ -71,7 +76,7 @@ NODO *ListInsert(char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(void 
  * non viene modificata
  * 
  */
-NODO *ListRemove(char *Value, NODO *Current, int *ReturnStatus);
+NODO *ListRemove(void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op);
 
 /**
  * Dealloca tutti i nodi della lista
@@ -83,7 +88,7 @@ NODO * ListDeallocate(NODO *Current);
  * Stampa i campi della lista, in ordine
  *
  */
-void ListPrint(NODO *Current);
+void ListPrint( NODO *Current, OPERATIONS *Op );
 
 /*==============================================================================
  * Funzioni di File I/O per la lista

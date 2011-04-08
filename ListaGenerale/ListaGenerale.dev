@@ -1,7 +1,7 @@
 [Project]
 FileName=ListaGenerale.dev
 Name=ListaGenerale
-UnitCount=3
+UnitCount=5
 Type=1
 Ver=1
 ObjFiles=
@@ -52,7 +52,7 @@ BuildCmd=
 [Unit3]
 FileName=main.c
 CompileCpp=0
-Folder=ListaGenerale
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -76,4 +76,24 @@ OriginalFilename=
 ProductName=
 ProductVersion=
 AutoIncBuildNr=0
+
+[Unit4]
+FileName=operazioni_stringhe.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit5]
+FileName=operazioni_stringhe.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 

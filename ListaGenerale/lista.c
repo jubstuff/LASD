@@ -25,7 +25,7 @@
  * NOTE Se un nodo con campo pari a <Value> è già esistente, la lista
  * non viene modificata
  * 
- * @param Value        Stringa da inserire nel nodo.
+ * @param Value        Valore da inserire nel nodo.
  * @param Current      Testa della lista in cui inserire il nodo.
  * @param ReturnStatus Esito dell'operazione. Può assumere valore:
  *	                   - 0, in caso di inserimento corretto
@@ -34,21 +34,20 @@
  *
  * @return Il puntatore alla testa della lista eventualmente modificato
  */ 
-NODO *ListInsert ( char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(void *, void *) ) 
+NODO *ListInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op ) 
 {
 	NODO *NewNode; /**< puntatore al nuovo nodo creato */
 	
 	*ReturnStatus = 0;
 	
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
-	if( Current == NULL || ( (*Comp)(Current->Stringa, Value) > 0 ) )
+	if( Current == NULL || ( Op->Compare( (void *)Current->Info, (void *)Value ) > 0 ) )
 	{
 		/*alloca e inizializza il nuovo nodo*/
 		NewNode = (NODO *) malloc(sizeof(NODO));
 		if ( NewNode != NULL )
 		{
-			NewNode->Stringa = (char *) malloc( (strlen(Value) + 1) * sizeof(char) );
-			strcpy(NewNode->Stringa, Value);
+			NewNode->Info = Op->Initialize(Value);
 			NewNode->Next = Current;
 			/* il valore di current può essere sovrascritto perché salvato in
 			 * NewNode->next */
@@ -60,14 +59,14 @@ NODO *ListInsert ( char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(voi
 		}
 	}   
 	/* se il valore è uguale a quello in ingresso esci */
-	else if( (*Comp)(Current->Stringa, Value) == 0 )
+	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else
 	{
 		/* vai avanti nella ricerca */
-		Current->Next = ListInsert(Value, Current->Next, ReturnStatus, Comp);
+		Current->Next = ListInsert(Value, Current->Next, ReturnStatus, Op);
 	}
 	return Current;
 }
@@ -81,14 +80,14 @@ NODO *ListInsert ( char *Value, NODO *Current, int *ReturnStatus, int(*Comp)(voi
  * NOTE Se un nodo con campo pari a <Value> non esiste, la lista
  * non viene modificata
  * 
- * @param Value   Stringa associata al nodo da rimuovere.
+ * @param Value   Valore associata al nodo da rimuovere.
  * @param Current Testa della lista da cui rimuovere il nodo.
  * @param ReturnStatus Esito dell'operazione. Può assumere valore:
  *                     - I_FOUND, in caso di nodo trovato e rimosso
  *
  * @return Il puntatore alla testa della lista eventualmente modificato
  */
-NODO *ListRemove(char *Value, NODO *Current, int *ReturnStatus) 
+NODO *ListRemove(void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op) 
 {
     NODO *Temp; /**< Nodo di appoggio per cancellazione */
     
@@ -96,24 +95,26 @@ NODO *ListRemove(char *Value, NODO *Current, int *ReturnStatus)
 	if( Current != NULL )
     {
         /* se il nodo corrente è quello cercato, cancellalo */
-		if( strcmp(Current->Stringa, Value) == 0 )
+		if( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )
 		{
 			Temp = Current->Next;
-			//Libera memoria per stringa e per il nodo
-			free( Current->Stringa );
-			free( Current );
+			//Dealloca il campo chiave del nodo
+			Op->Destroy( Current->Info );
+			
+			//Libera memoria per il nodo
+   			free( Current );
 			Current = Temp;
 			*ReturnStatus = I_FOUND; //Nodo trovato e rimosso
 		}
 		/* altrimenti prosegui la ricerca */
 		else
 		{
-			Current->Next = ListRemove( Value, Current->Next, ReturnStatus );
+			Current->Next = ListRemove( Value, Current->Next, ReturnStatus, Op );
 		}
 	} 
 	return Current;
 }
-
+#ifdef ASDRUBALE
 /**
  * Dealloca tutti i nodi della lista
  *
@@ -128,29 +129,29 @@ NODO * ListDeallocate(NODO *Current)
 		/* scorre la lista fino all'ultimo ed effettua la cancellazione
 		 * in ordine inversa */
 		Current->Next = ListDeallocate(Current->Next);
-		free( Current->Stringa );
+		free( Current->Info );
 		free( Current );
 		Current = NULL;
 	}
 	return Current;
 }
-
+#endif
 /**
- * Stampa i campi della lista, in ordine lessicografico.
+ * Stampa i campi della lista, in ordine
  *
  * @param Current Testa della lista da stampare a video.
  */
-void ListPrint(NODO *Current)
+void ListPrint( NODO *Current, OPERATIONS *Op )
 {
     /* stampa la lista, se non vuota */
 	if( Current != NULL )
 	{
-		printf("%s\n", Current->Stringa);
-		ListPrint(Current->Next);
+		Op->Print(Current->Info);
+		ListPrint(Current->Next, Op);
 	}
 }
 
-
+#ifdef ASDRUBALE
 /*==============================================================================
  * Funzioni di File I/O per la lista
  *============================================================================*/
@@ -191,7 +192,7 @@ void ScriviSuFileDiTesto( char *NomeFile, NODO *Head, int *ReturnStatus )
 	{
 		//Finché ci sono nodi, scrivi la stringa sul file
 		while(Head != NULL) {
-			fprintf(Fp, "%s\n", Head->Stringa);
+			fprintf(Fp, "%s\n", Head->Info);
 			Head = Head->Next;
 		}
 	}
@@ -223,7 +224,7 @@ void ScriviSuFileDiTesto( char *NomeFile, NODO *Head, int *ReturnStatus )
  *
  * @return La testa della lista creata dalla lettura del file
  */
-#ifdef ASDRUBALE
+
 NODO *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus )
 {
 	NODO *TempHead;    /**< Testa della lista temporanea */
