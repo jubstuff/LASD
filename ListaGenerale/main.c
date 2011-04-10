@@ -39,10 +39,10 @@ int main(void)
 	printf("\nDopo della cancellazione\n");
  	ListPrint(Head, &ListaStringheOp);
 
-	ListaIntOp.Compare = (int (*)(void *, void *))NumCmp;
-	ListaIntOp.Initialize = ( void *(*)( void * ) )InizializzaNodoInt;
-	ListaIntOp.Print = ( void (*)(void *) )StampaNodoInt;
-	ListaIntOp.Destroy = ( void (*)(void *) )DeallocaInt;
+	//ListaIntOp.Compare = (int (*)(void *, void *))NumCmp;
+	//ListaIntOp.Initialize = ( void *(*)( void * ) )InizializzaNodoInt;
+	//ListaIntOp.Print = ( void (*)(void *) )StampaNodoInt;
+	//ListaIntOp.Destroy = ( void (*)(void *) )DeallocaInt;
 //	Pause();
     return 0;
 }

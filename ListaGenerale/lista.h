@@ -60,7 +60,9 @@ typedef struct operations_tag
  */
 NODO *ListCreateNewNode(void *Value, OPERATIONS *Op);
 
-
+/**
+ * Crea un nuovo nodo e lo inserisce dopo Current
+ **/
 NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op );
 /**
  * Inserisce un nodo all'interno della lista
@@ -74,6 +76,10 @@ NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op );
  */ 
 NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op );
 
+/**
+ * Libera la memoria del nodo e del suo campo info
+ **/
+NODO *ListFreeNode( NODO *Current, OPERATIONS *Op );
 /**
  * Rimuove un nodo dalla lista
  *

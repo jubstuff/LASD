@@ -88,6 +88,18 @@ NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATI
 	return Current;
 }
 
+NODO *ListFreeNode( NODO *Current, OPERATIONS *Op ) 
+{
+    NODO *Temp; /**< Nodo di appoggio per cancellazione */
+
+	Temp = Current->Next;
+	//Dealloca il campo chiave del nodo
+	Op->Destroy( Current->Info );
+
+	//Libera memoria per il nodo
+	free( Current );
+	return Temp;
+}
 /**
  * Rimuove un nodo dalla lista
  *
