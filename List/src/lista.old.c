@@ -16,6 +16,11 @@
  * Funzioni per la gestione della lista
  *============================================================================*/
 
+int ListIsEmpty(LIST *L)
+{
+	return L->Head == NULL;
+}
+
 NODO *ListCreateNewNode(void *Value, OPERATIONS *Op)
 {
 	NODO * NewNode;
@@ -31,7 +36,7 @@ NODO *ListCreateNewNode(void *Value, OPERATIONS *Op)
 	return NewNode;
 }
 
-NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op )
+NODO *ListInsertBefore( void *Value, NODO *Current, OPERATIONS *Op )
 {
 	NODO *NewNode;
 
@@ -63,7 +68,7 @@ NODO *ListInsertAfter( void *Value, NODO *Current, OPERATIONS *Op )
  *
  * @return Il puntatore alla testa della lista eventualmente modificato
  */ 
-NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op ) 
+NODO *ListRecursiveOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op ) 
 {
 	//NODO *NewNode; /**< puntatore al nuovo nodo creato */
 	
@@ -72,7 +77,7 @@ NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATI
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
 	if( Current == NULL || ( Op->Compare( (void *)Current->Info, (void *)Value ) > 0 ) )
 	{
-		Current = ListInsertAfter( Value, Current, Op );
+		Current = ListInsertBefore( Value, Current, Op );
 	}   
 	/* se il valore del nodo corrente è uguale a quello in ingresso, non
 	 * fare nulla, ma notifica la condizione tramite ReturnStatus */
@@ -86,6 +91,13 @@ NODO *ListOrderedInsert ( void *Value, NODO *Current, int *ReturnStatus, OPERATI
 		Current->Next = ListOrderedInsert(Value, Current->Next, ReturnStatus, Op);
 	}
 	return Current;
+}
+
+void ListOrderedInsert( void *Value, LIST *L, OPERATIONS *Op)
+{
+	int ReturnStatus = 0;
+	L->Head = ListRecursiveOrderedInsert(Value, L->Head, &ReturnStatus, Op);
+	L->NumElements++;
 }
 
 NODO *ListFreeNode( NODO *Current, OPERATIONS *Op ) 
@@ -143,7 +155,6 @@ NODO *ListRemove(void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op)
 	} 
 	return Current;
 }
-#ifdef ASDRUBALE
 /**
  * Dealloca tutti i nodi della lista
  *
@@ -151,20 +162,20 @@ NODO *ListRemove(void *Value, NODO *Current, int *ReturnStatus, OPERATIONS *Op)
  *
  * @return Il puntatore alla testa eventualmente modificato.
  */
-NODO * ListDeallocate(NODO *Current)
+NODO * ListDeallocate(NODO *Current, OPERATIONS *Op)
 {
     if( Current != NULL )
 	{
 		/* scorre la lista fino all'ultimo ed effettua la cancellazione
 		 * in ordine inversa */
-		Current->Next = ListDeallocate(Current->Next);
-		free( Current->Info );
-		free( Current );
+		Current->Next = ListDeallocate(Current->Next, Op);
+		/*free( Current->Info );
+		free( Current );*/
+		Current = ListRemove(Current->Info, Current, NULL, Op);
 		Current = NULL;
 	}
 	return Current;
 }
-#endif
 /**
  * Stampa i campi della lista, in ordine
  *
