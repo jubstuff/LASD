@@ -12,6 +12,7 @@ extern void TestInsertOneNodeInFrontOfList(CuTest*);
 extern void TestInsertIsDoneInOrder(CuTest*);
 extern void TestInsertDuplicateDoesNotInsertNewNode(CuTest*);
 extern void TestInsertNotDoneWhenMallocFails(CuTest*);
+extern void TestDeleteRemovesNodeWithGivenValue(CuTest*);
 
 
 void RunAllTests(void) 
@@ -25,6 +26,7 @@ void RunAllTests(void)
     SUITE_ADD_TEST(suite, TestInsertIsDoneInOrder);
     SUITE_ADD_TEST(suite, TestInsertDuplicateDoesNotInsertNewNode);
     SUITE_ADD_TEST(suite, TestInsertNotDoneWhenMallocFails);
+    SUITE_ADD_TEST(suite, TestDeleteRemovesNodeWithGivenValue);
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

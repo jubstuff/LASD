@@ -67,13 +67,14 @@ void TestInsertDuplicateDoesNotInsertNewNode( CuTest *tc )
 	CuAssertStrEquals( tc, "Giustino", L.Head->Info);
 }
 
-#define malloc(x) my_malloc((x))
-void TestInsertNotDoneWhenMallocFails( CuTest *tc )
+void TestDeleteRemovesNodeWithGivenValue( CuTest *tc )
 {
 	int Status;
 	MOCK_LIST_OBJECT_INIT
 	List_Init(&L, &Op);
    	Status = List_Insert("Giustino", &L);
-	CuAssertIntEquals( tc, E_MALLOC, Status);
+    Status = List_Delete("Giustino", &L);
+	CuAssertTrue( tc, List_IsEmpty(&L) != 1 );
+	CuAssertIntEquals( tc, I_REMOVED, Status);
 }
 /* END TESTS */
