@@ -4,8 +4,7 @@
 #include "CuTest.h"
 #include "../src/lista.h"
 /* HELPER FUNCTIONS */
-#define MOCK_LIST_OBJECT_INIT LIST L; OPERATIONS Op; Op.Compare = (COMPARATOR)strcasecmp; Op.InitNode = (INITIALIZER)InizializzaNodoStringa;
-#define ASDRUBALE 20
+#define MOCK_LIST_OBJECT_INIT LIST L; OPERATIONS Op; Op.Compare = (COMPARATOR)strcasecmp; Op.InitNode = (INITIALIZER)InizializzaNodoStringa; Op.Print = (PRINTER)StampaNodoStringa;
 char *InizializzaNodoStringa( char *Value )
 {
 	char *str= (char *) malloc( (strlen(Value) + 1) * sizeof(char) );
@@ -29,7 +28,6 @@ void TestInitializedListIsEmpty( CuTest *tc )
 {
 	MOCK_LIST_OBJECT_INIT
     List_Init(&L, &Op);
-	printf("%d\n", ASDRUBALE);
 	CuAssertTrue( tc, List_IsEmpty(&L) );
 }
 
@@ -88,4 +86,14 @@ void TestDeleteReturnNegativeValueWhenNodeNotFound( CuTest *tc )
 	CuAssertTrue( tc, List_IsEmpty(&L) != 1 );
 	CuAssertIntEquals( tc, -1, Status);
 }
+
+void TestPrintList( CuTest *tc )
+{
+	int Status;
+	MOCK_LIST_OBJECT_INIT
+	List_Init(&L, &Op);
+   	Status = List_Insert("Giustino", &L);
+	List_Print( &L );
+}
+
 /* END TESTS */

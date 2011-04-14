@@ -171,7 +171,7 @@ NODO * ListDeallocate(NODO *Current, OPERATIONS *Op)
 		Current->Next = ListDeallocate(Current->Next, Op);
 		/*free( Current->Info );
 		free( Current );*/
-		Current = ListRemove(Current->Info, Current, NULL, Op);
+		//Current = ListRemove(Current->Info, Current, NULL, Op);
 		Current = NULL;
 	}
 	return Current;

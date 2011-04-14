@@ -31,6 +31,8 @@ typedef int (*COMPARATOR)(const void *Arg1, const void *Arg2);
 typedef void *(*INITIALIZER)( void *Value );
 
 typedef void (*DELETER)(void *Value);
+
+typedef void (*PRINTER)(void *Value);
 /*=============================================================================*
  * Definizioni strutture
  =============================================================================*/
@@ -44,6 +46,7 @@ typedef struct operations {
 	COMPARATOR Compare;
 	INITIALIZER InitNode;
 	DELETER DeleteNode;
+	PRINTER Print;
 } OPERATIONS;
 
 typedef struct list_tag
@@ -88,8 +91,33 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 
 NODE *ListCreateNewNode(void *Value, OPERATIONS *Op);
 
-
+/**
+ * Cancella un nodo con campo pari a <Value> dalla Lista <L>
+ * */
 int List_Delete( void *Value, LIST *L );
-
+/**
+ * Utilizza un approccio ricorsivo per cancellare il nodo con campo
+ * pari a <Value> dalla lista con testa <Current>
+ * */
 NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op) ;
+/**
+ * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,
+ * estremi compresi
+ * */
+NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS *Op );
+
+/**
+ * Dealloca tutti i nodi della lista
+ *
+ */
+NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op);
+
+/**
+ * Stampa a video tutti i nodi della lista L
+ * */
+int List_Print( LIST *L );
+/**
+ * Stampa a video tutti i nodi della lista con testa Current
+ * */
+void List_RecursivePrint( NODE *Current, OPERATIONS *Op );
 #endif /* _LISTA_H_ */

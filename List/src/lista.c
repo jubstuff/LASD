@@ -27,7 +27,7 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 	*ReturnStatus = 0; 
 	
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
-	if( Current == NULL || ( Op->Compare( (void *)Current->Info, (void *)Value ) > 0 ) )
+	if( Current == NULL || ( Op->Compare( Current->Info, Value ) > 0 ) )
 	{
 		/*alloca e inizializza il nuovo nodo*/
 		NewNode = ListCreateNewNode( Value, Op );
@@ -91,7 +91,7 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 	if( Current != NULL )
     {
         /* se il nodo corrente è quello cercato, cancellalo */
-		if( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )
+		if( Op->Compare( Current->Info, Value ) == 0 )
 		{
 			Temp = Current->Next;
 			//Dealloca il campo chiave del nodo
@@ -111,19 +111,57 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 	return Current;
 }
 
-
-NODE * ListDeallocate( NODE *Current, OPERATIONS *Op )
+NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS *Op )
 {
-    if( Current != NULL )
+	NODE *Temp;
+
+    //Se la lista non è vuota oppure il limite inferiore è maggiore del limite superiore
+	//non fare nulla
+	if( (Current != NULL) || (Op->Compare(Inf, Sup) > 0)  )
 	{
-		/* scorre la lista fino all'ultimo ed effettua la cancellazione
-		 * in ordine inverso */
-		Current->Next = ListDeallocate(Current->Next, Op);
-		/*free( Current->Info );
-		free( Current );*/
-		Current = ListRemove(Current->Info, Current, NULL, Op);
-		Current = NULL;
+		if( Op->Compare(Current->Info, Sup) <= 0 )
+		{
+			Current->Next = List_RecursiveDeleteRange( Current->Next, Inf, Sup, Op );
+			if( Op->Compare(Current->Info, Inf) >= 0 )
+			{
+				Temp = Current->Next;
+				Op->DeleteNode(Current->Info);
+				free(Current);
+				Current = Temp;
+			}
+		}
 	}
 	return Current;
 }
 
+
+NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
+{
+    if( Current != NULL )
+	{
+		/* scorre la lista fino all'ultimo ed effettua la cancellazione
+		 * in ordine inversa */
+		Current->Next = List_RecursiveDestroy(Current->Next, Op);
+		Op->DeleteNode(Current->Info);
+		free(Current);
+		Current = NULL;
+	}
+	return Current;
+}
+/**
+ * STAMPA
+ * */
+int List_Print( LIST *L )
+{
+	List_RecursivePrint( L->Head, L->Op );
+	return 0;
+}
+void List_RecursivePrint( NODE *Current, OPERATIONS *Op )
+{
+    /* stampa la lista, se non vuota */
+	if( Current != NULL )
+	{
+		Op->Print(Current->Info);
+		List_RecursivePrint(Current->Next, Op);
+	}
+}

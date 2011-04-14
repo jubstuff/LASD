@@ -13,6 +13,7 @@ extern void TestInsertIsDoneInOrder(CuTest*);
 extern void TestInsertDuplicateDoesNotInsertNewNode(CuTest*);
 extern void TestDeleteRemovesNodeWithGivenValue(CuTest*);
 extern void TestDeleteReturnNegativeValueWhenNodeNotFound(CuTest*);
+extern void TestPrintList(CuTest*);
 
 
 void RunAllTests(void) 
@@ -27,6 +28,7 @@ void RunAllTests(void)
     SUITE_ADD_TEST(suite, TestInsertDuplicateDoesNotInsertNewNode);
     SUITE_ADD_TEST(suite, TestDeleteRemovesNodeWithGivenValue);
     SUITE_ADD_TEST(suite, TestDeleteReturnNegativeValueWhenNodeNotFound);
+    SUITE_ADD_TEST(suite, TestPrintList);
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
