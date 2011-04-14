@@ -74,7 +74,18 @@ void TestDeleteRemovesNodeWithGivenValue( CuTest *tc )
 	List_Init(&L, &Op);
    	Status = List_Insert("Giustino", &L);
     Status = List_Delete("Giustino", &L);
+	CuAssertTrue( tc, List_IsEmpty(&L) == 1 );
+	CuAssertIntEquals( tc, 0, Status);
+}
+
+void TestDeleteReturnNegativeValueWhenNodeNotFound( CuTest *tc )
+{
+	int Status;
+	MOCK_LIST_OBJECT_INIT
+	List_Init(&L, &Op);
+   	Status = List_Insert("Giustino", &L);
+    Status = List_Delete("Giustin", &L);
 	CuAssertTrue( tc, List_IsEmpty(&L) != 1 );
-	CuAssertIntEquals( tc, I_REMOVED, Status);
+	CuAssertIntEquals( tc, -1, Status);
 }
 /* END TESTS */

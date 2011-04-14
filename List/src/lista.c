@@ -111,3 +111,19 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 	return Current;
 }
 
+
+NODE * ListDeallocate( NODE *Current, OPERATIONS *Op )
+{
+    if( Current != NULL )
+	{
+		/* scorre la lista fino all'ultimo ed effettua la cancellazione
+		 * in ordine inverso */
+		Current->Next = ListDeallocate(Current->Next, Op);
+		/*free( Current->Info );
+		free( Current );*/
+		Current = ListRemove(Current->Info, Current, NULL, Op);
+		Current = NULL;
+	}
+	return Current;
+}
+
