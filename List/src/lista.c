@@ -38,7 +38,9 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 			Current = NewNode;
 		}
 		else 
-		{
+		{   
+			//Esiste già un nodo con pari campo nella lista
+            Op->DuplicateNode();
 			*ReturnStatus = E_MALLOC;
 		}
 	}   
