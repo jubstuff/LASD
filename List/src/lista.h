@@ -61,7 +61,7 @@ typedef void (*DELETER)(void *Value);
  *
  * @param Value Riferimento al valore da stampare
  * */
-typedef void (*PRINTER)(void *Value);
+typedef void (*PRINTER)(const void *Value);
 
 /**
  * Una funzione che gestisce l'inserimento di nodi duplicati della lista
@@ -194,4 +194,5 @@ int List_Print( LIST *L );
  * Stampa a video tutti i nodi della lista con testa Current
  * */
 void List_RecursivePrint( NODE *Current, OPERATIONS *Op );
+
 #endif /* _LISTA_H_ */

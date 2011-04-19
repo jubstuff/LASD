@@ -17,8 +17,10 @@
 #ifndef _OPERAZIONI_NUMERI_H_ 
 #define _OPERAZIONI_NUMERI_H_
 
-int *InizializzaNodoInt( int * );
-void StampaNodoInt( int * );
-void DeallocaInt( int * );
-int NumCmp( const void *, const void *);
+void *InizializzaNodoInt( void *Value );
+void StampaNodoInt( const void *Value );
+void DeallocaInt( void *Value );
+int NumCmp( const void *FirstArg, const void *SecondArg );
+void Duplicato( void *Value );
+
 #endif

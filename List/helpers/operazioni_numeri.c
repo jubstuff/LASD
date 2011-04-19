@@ -1,18 +1,19 @@
 #include "operazioni_numeri.h"
 
-int *InizializzaNodoInt( int *Value )
+void *InizializzaNodoInt( void *Value )
 {
 	int *Num = (int *) malloc( sizeof(int) );
-	*Num = *Value;
-	return Num;
+	printf("Inizializzo il numero....\n");
+	*Num = *( (int *)Value );
+	return (void *)Num;
 }
 
-void StampaNodoInt( int *Value )
+void StampaNodoInt( const void *Value )
 {
-	printf("%d\n", *Value);
+	printf("%d\n", *( (int *)Value) );
 }
 
-void DeallocaInt( int *Value )
+void DeallocaInt( void *Value )
 {
 	free(Value);
 }
@@ -21,8 +22,8 @@ void DeallocaInt( int *Value )
 int NumCmp( const void *FirstArg, const void *SecondArg )
 {
 	int ReturnValue;
-	int First = *(int *)FirstArg;
-	int Second = *(int *)SecondArg;
+	int First = *( (int *)FirstArg );
+	int Second = *( (int *)SecondArg );
 
 	if ( First < Second )
 	{
@@ -39,4 +40,11 @@ int NumCmp( const void *FirstArg, const void *SecondArg )
 
 	return ReturnValue;
 
+}
+
+void Duplicato( void *Value )
+{
+	int Num = *( (int *)Value );
+	printf("Stai cercando di inserire un nodo duplicato\n");
+	printf("Il valore che stavi cercando di inserire è %d\n", Num);
 }
