@@ -15,11 +15,11 @@ int main(void)
 	Head = NULL;
 	ReturnStatus = 0;
 
-   	Op.Compare = ;
-   	Op.InitNode = ;
-	Op.DeleteNode = ;
-   	Op.Print = ;
-    Op.ManageDuplicate = ; 
+   	Op.Compare = ConfrontaNodoCitta;
+   	Op.InitNode = InizializzaNodoCitta;
+	Op.DeleteNode = NULL;
+   	Op.Print = NULL;
+    Op.ManageDuplicate = NULL; 
                                         
 	return 0;
 }

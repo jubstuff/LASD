@@ -1,39 +1,31 @@
+#include <stdlib.h>
+#include "../src/lista.h"
 #include "gestione_citta.h"
 #include <string.h>
 
+/*============================================================================*
+ * OPERAZIONI LISTA ESTERNA - ORDINATA PER CITTA'
+ *===========================================================================*/
 
 int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 {
 	//TODO Questi devono essere nodi?
 	//No, devono essere un nodo e una persona, perché non
 	//devo modificare la libreria
-	return ConfrontaCitta( Nodo1->Info, Persona );
+	NODE *Nodo = (NODE *)Nodo1;
+	return ConfrontaCitta( Nodo->Info, Persona );
 }
 
 int ConfrontaCitta( const void *Pers1, const void *Pers2 )
 {
-	PERSONA P1 = *( (PERSONA *)Pers1 );
-	PERSONA P2 = *( (PERSONA *)Pers2 );
+	PERSONA *P1 =  (PERSONA *)Pers1;
+	PERSONA *P2 =  (PERSONA *)Pers2;
 
 	return strcasecmp( P1->Citta, P2->Citta );
 }
 
-int ConfrontaPersona( const void *Pers1, const void *Pers2 )
-{
-	int ReturnStatus;
-	PERSONA P1 = *( (PERSONA *)Pers1 );
-	PERSONA P2 = *( (PERSONA *)Pers2 );
 
-	ReturnStatus = strcasecmp( P1->Cognome, P2->Cognome );
-	if( ReturnStatus == 0 )
-	{
-		ReturnStatus = strcasecmp( P1->Nome, P2->Nome );
-	}
-
-	return ReturnStatus;
-}
-
-void *InizializzaPersona( void *Value )
+void *InizializzaNodoCitta( void *Value )
 {
 	//A questa funzione viene passato l'indirizzo della struct Persona
 	NODE *InnerHead;
@@ -52,6 +44,23 @@ void *InizializzaPersona( void *Value )
 	return (void *)InnerHead;
 }
 
+/*============================================================================*
+ * OPERAZIONI LISTA INTERNA - ORDINATA PER PERSONA
+ *===========================================================================*/
+int ConfrontaPersona( const void *Pers1, const void *Pers2 )
+{
+	int ReturnStatus;
+	PERSONA *P1 =  (PERSONA *)Pers1;
+	PERSONA *P2 =  (PERSONA *)Pers2;
+
+	ReturnStatus = strcasecmp( P1->Cognome, P2->Cognome );
+	if( ReturnStatus == 0 )
+	{
+		ReturnStatus = strcasecmp( P1->Nome, P2->Nome );
+	}
+
+	return ReturnStatus;
+}
 OPERATIONS *InizializzaOperazioniListaPersone( void )
 {
 	OPERATIONS *InnerOp;
@@ -78,6 +87,6 @@ void CancellaPersona( void *Value )
 {
 }	
 
-void StampaPersona( void *Value )
+void StampaPersona( const void *Value )
 {
 }
