@@ -19,6 +19,6 @@ typedef struct persona_t
  *
  * @return -1, 0, 1 se Pers1->Citta [>,==,<] Pers2->Citta rispettivamente
  * */
-int ConfrontaCitta( void *Pers1, void *Pers2 );
-
-int ConfrontaPersona( void *Pers1, void *Pers2 );
+int ConfrontaCitta( const void *Pers1, const void *Pers2 );
+                                              const 
+int ConfrontaPersona( const void *Pers1, const void *Pers2 );

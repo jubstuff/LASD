@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "lista.h"
-#include "../helpers/operazioni_numeri.h"
+#include "../helpers/gestione_citta.h"
 
 
 int main(void)
@@ -15,15 +15,11 @@ int main(void)
 	Head = NULL;
 	ReturnStatus = 0;
 
-   	Op.Compare = NumCmp;
-   	Op.InitNode = InizializzaNodoInt;
-	Op.DeleteNode = DeallocaInt;
-   	Op.Print = StampaNodoInt;
-    Op.ManageDuplicate = Duplicato; 
+   	Op.Compare = ;
+   	Op.InitNode = ;
+	Op.DeleteNode = ;
+   	Op.Print = ;
+    Op.ManageDuplicate = ; 
                                         
-	Num = 1;
-    Head = List_RecursiveOrderedInsert(&Num, Head, &ReturnStatus, &Op);
-    Head = List_RecursiveOrderedInsert(&Num, Head, &ReturnStatus, &Op);
-	List_RecursivePrint( Head, &Op );
 	return 0;
 }
