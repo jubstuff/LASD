@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "../src/lista.h"
 #include "gestione_citta.h"
@@ -44,6 +45,22 @@ void *InizializzaNodoCitta( void *Value )
 	return (void *)InnerHead;
 }
 
+void DuplicatoCitta( void *Value, NODE *Current )
+{
+	//A questa funzione viene passato l'indirizzo della struct Persona e
+	//un riferimento al nodo in cui è stato trovato il duplicato
+	OPERATIONS *InnerOp;
+	int ReturnStatus;
+
+	ReturnStatus = 0;
+
+	InnerOp = InizializzaOperazioniListaPersone();
+    printf("Inserisco il duplicato\n");
+	Current->Info = List_RecursiveOrderedInsert(Value, Current->Info, &ReturnStatus, InnerOp); //TODO check error
+
+	free(InnerOp);
+
+}
 /*============================================================================*
  * OPERAZIONI LISTA INTERNA - ORDINATA PER PERSONA
  *===========================================================================*/
@@ -61,6 +78,7 @@ int ConfrontaPersona( const void *Pers1, const void *Pers2 )
 
 	return ReturnStatus;
 }
+
 OPERATIONS *InizializzaOperazioniListaPersone( void )
 {
 	OPERATIONS *InnerOp;
@@ -68,7 +86,7 @@ OPERATIONS *InizializzaOperazioniListaPersone( void )
 	InnerOp = (OPERATIONS *)malloc( sizeof(OPERATIONS) ); //TODO check errors
 
 	InnerOp->InitNode = SalvaPersona;
-	InnerOp->Compare = ConfrontaCitta;
+	InnerOp->Compare = ConfrontaPersona;
 	InnerOp->DeleteNode = CancellaPersona;
 	InnerOp->Print = StampaPersona;
 	//InnerOp->ManageDuplicate =  //TODO aggiungere funzione per duplicati

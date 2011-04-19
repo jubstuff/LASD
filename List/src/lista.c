@@ -47,7 +47,7 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
 		//Esiste già un nodo con pari campo nella lista
-		Op->ManageDuplicate( Current->Info );
+		Op->ManageDuplicate( Value, Current );
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else

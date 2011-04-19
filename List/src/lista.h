@@ -23,6 +23,11 @@
 #define W_DUPLICATE 2   //Warning nell'inserimento di un nodo duplicato
 #define I_REMOVED   3   //Notifica che il nodo è stato rimosso correttamente
 
+typedef struct node {
+	struct node *Next; /**< Puntatore al nodo successivo */
+	void *Info;        /**< Campo del nodo */
+} NODE;
+
 /*=============================================================================*
  * Definizioni tipi puntatori a funzione
  =============================================================================*/
@@ -67,16 +72,12 @@ typedef void (*PRINTER)(const void *Value);
  * Una funzione che gestisce l'inserimento di nodi duplicati della lista
  *
  * */
-typedef void (*DUPLICATE)( void *Current );
+typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 
 /*=============================================================================*
  * Definizioni strutture
  =============================================================================*/
 
-typedef struct node {
-	struct node *Next; /**< Puntatore al nodo successivo */
-	void *Info;        /**< Campo del nodo */
-} NODE;
 
 typedef struct operations {
 	COMPARATOR Compare;

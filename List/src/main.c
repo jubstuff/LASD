@@ -13,11 +13,11 @@ int main(void)
 	PERSONA P2;
     char nome1[] = "Giustino";
 	char cognome1[] = "Borzacchiello";
-	char citta1[] = "Napoli";
+	char citta1[] = "Amalfi";
 
 	char nome2[] = "Valeria";
 	char cognome2[] = "Marolda";
-	char citta2[] = "Pozzuoli";
+	char citta2[] = "Amalfi";
 
 	Head = NULL;
 	ReturnStatus = 0;
@@ -34,11 +34,12 @@ int main(void)
    	Op.InitNode = InizializzaNodoCitta;
 	Op.DeleteNode = NULL;
    	Op.Print = NULL;
-    Op.ManageDuplicate = NULL; 
+    Op.ManageDuplicate = DuplicatoCitta; 
 
 	Head = List_RecursiveOrderedInsert( &P1, Head, &ReturnStatus, &Op );
 	Head = List_RecursiveOrderedInsert( &P2, Head, &ReturnStatus, &Op );
     printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Info))->Info)->Nome ) );                                    
-    printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Next->Info))->Info)->Nome ) );                                    
+    printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Info))->Next->Info)->Nome ) );                                    
+    //printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Next->Info))->Info)->Nome ) ); // Caso inserimento senza duplicato                                   
 	return 0;
 }

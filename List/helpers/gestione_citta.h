@@ -31,6 +31,8 @@ int ConfrontaPersona( const void *Pers1, const void *Pers2 );
 
 void *InizializzaNodoCitta( void *Value );
 
+void DuplicatoCitta( void *Value, NODE *Current );
+
 OPERATIONS *InizializzaOperazioniListaPersone( void );
 
 void *SalvaPersona( void *Value );
