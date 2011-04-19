@@ -67,7 +67,7 @@ typedef void (*PRINTER)(void *Value);
  * Una funzione che gestisce l'inserimento di nodi duplicati della lista
  *
  * */
-typedef void (*DUPLICATE)(void);
+typedef void (*DUPLICATE)( void *Current );
 
 /*=============================================================================*
  * Definizioni strutture
@@ -83,7 +83,7 @@ typedef struct operations {
 	INITIALIZER InitNode;
 	DELETER DeleteNode;
 	PRINTER Print;
-	DUPLICATE DuplicateNode;
+	DUPLICATE ManageDuplicate;
 } OPERATIONS;
 
 typedef struct list_tag

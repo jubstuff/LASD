@@ -7,13 +7,14 @@
 int *InizializzaNodoInt( int *Value )
 {
 	int *Num = (int *) malloc( sizeof(int) );
+	printf("Inizializzo il numero....\n");
 	*Num = *Value;
 	return Num;
 }
 
-void StampaNodoInt( int *Value )
+void StampaNodoInt( void *Value )
 {
-	printf("%d\n", *Value);
+	printf("%d\n", *((int *)Value));
 }
 
 void DeallocaInt( int *Value )
@@ -25,8 +26,8 @@ void DeallocaInt( int *Value )
 int NumCmp( const void *FirstArg, const void *SecondArg )
 {
 	int ReturnValue;
-	int First = *(int *)FirstArg;
-	int Second = *(int *)SecondArg;
+	int First = *((int *)FirstArg);
+	int Second = *((int *)SecondArg);
 
 	if ( First < Second )
 	{
@@ -45,22 +46,33 @@ int NumCmp( const void *FirstArg, const void *SecondArg )
 
 }
 
-void Duplicato(void)
+void Duplicato( void *Value )
 {
+
+	int *Num = (int *) Value;
 	printf("Stai cercando di inserire un nodo duplicato\n");
+	printf("Il valore che stavi cercando di inserire è %d\n", *Num);
 }
 
 int main(void)
 {
 	NODE *Head;
    	OPERATIONS Op;
-	int Status; 
-	int Num, Num2;
+	int ReturnStatus;
+	int Num;
+
+	Head = NULL;
+	ReturnStatus = 0;
+
    	Op.Compare = (COMPARATOR)NumCmp;
    	Op.InitNode = (INITIALIZER)InizializzaNodoInt;
 	Op.DeleteNode = (DELETER)DeallocaInt;
    	Op.Print = (PRINTER)StampaNodoInt;
-    Op.DuplicateNode = (DUPLICATE)Duplicato; 
-
+    Op.ManageDuplicate = (DUPLICATE)Duplicato; 
+                                        
+	Num = 1;
+    Head = List_RecursiveOrderedInsert(&Num, Head, &ReturnStatus, &Op);
+    Head = List_RecursiveOrderedInsert(&Num, Head, &ReturnStatus, &Op);
+	List_RecursivePrint( Head, &Op );
 	return 0;
 }

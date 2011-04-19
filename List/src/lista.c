@@ -39,8 +39,6 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 		}
 		else 
 		{   
-			//Esiste già un nodo con pari campo nella lista
-            Op->DuplicateNode();
 			*ReturnStatus = E_MALLOC;
 		}
 	}   
@@ -48,6 +46,8 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 	 * fare nulla, ma notifica la condizione tramite ReturnStatus */
 	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
+		//Esiste già un nodo con pari campo nella lista
+		Op->ManageDuplicate( Current->Info );
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else
