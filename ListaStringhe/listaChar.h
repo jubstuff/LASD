@@ -124,7 +124,7 @@ NODO *CaricaListaDaFile( char *NomeFile, int LenMax, int *ReturnStatus );
  *  - La stringa viene restituita senza '\n' finale.
  *
  */
-void LeggiStringa( char *Buf, int LenMax, FILE *InputStream);
+void LeggiStringa( char *Buf, int LenMax);
 
 /**
  * Visualizza un menu per la scelta delle operazioni da effettuare

@@ -284,7 +284,7 @@ NODO *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus )
  * @param Buf    Stringa digitata dall'utente.
  * @param LenMax Lunghezza massima consentita alla stringa in input.
  */
-void LeggiStringa( char *Buf, int LenMax, FILE *InputStream)
+void LeggiStringa( char *Buf, int LenMax)
 {
 	fgets(Buf, LenMax, stdin);
 	fflush(stdin);
