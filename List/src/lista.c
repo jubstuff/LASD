@@ -1,25 +1,7 @@
 #include <stdlib.h>
 #include "lista.h"
 
-void List_Init(LIST *L, OPERATIONS *Op)
-{
-	L->Head = NULL;
-	L->Op = Op;
-}
 
-int List_IsEmpty(LIST *L)
-{
-	return L->Head == NULL;
-}	
-
-int List_Insert( void *Value, LIST *L )
-{
-	int Status;
-
-	L->Head = List_RecursiveOrderedInsert( Value, L->Head, &Status, L->Op );
-
-	return Status;
-}
 
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op ) 
 {
@@ -75,15 +57,6 @@ NODE *ListCreateNewNode(void *Value, OPERATIONS *Op)
 }
 
 
-int List_Delete( void *Value, LIST *L )
-{
-	int Status;
-
-	L->Head = List_RecursiveDelete( Value, L->Head, &Status, L->Op );
-    //Rende coerente la funzione con il resto della libreria restituendo
-	//0 in caso di successo, -1 altrimenti
-	return (Status == I_REMOVED ? 0 : -1);
-}
 
 NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op) 
 {
@@ -153,11 +126,6 @@ NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
 /**
  * STAMPA
  * */
-int List_Print( LIST *L )
-{
-	List_RecursivePrint( L->Head, L->Op );
-	return 0;
-}
 void List_RecursivePrint( NODE *Current, OPERATIONS *Op )
 {
     /* stampa la lista, se non vuota */

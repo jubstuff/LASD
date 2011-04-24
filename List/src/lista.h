@@ -46,7 +46,7 @@ typedef struct node {
 typedef int (*COMPARATOR)(const void *Arg1, const void *Arg2); 
 
 /**
- * Una funzione che 
+ * Una funzione che inizializza il campo del nodo
  *
  * @param Value Riferimento al valore da copiare nel campo del nodo
  *
@@ -87,43 +87,11 @@ typedef struct operations {
 	DUPLICATE ManageDuplicate;
 } OPERATIONS;
 
-typedef struct list_tag
-{
-	NODE *Head; /**< Testa della lista */
-	OPERATIONS *Op; /**< Operazioni dipendenti dal tipo di dato associato alla lista */
-} LIST;
 
 /*==============================================================================
  * Funzioni per la gestione della lista
  *============================================================================*/
 
-/**
- * Inizializza la lista
- *
- * @param L Lista da inizializzare, deve puntare ad un'area di memoria allocata
- * @param Op Operazioni sul tipo di dato che verrà memorizzato nella lista
- *
- * @return 0 se l'operazione è andata a buon fine, -1 altrimenti.
- *
- * */
-void List_Init(LIST *L, OPERATIONS *Op);
-
-/**
- * Ispeziona la lista, controllando se è vuota
- *
- * @param L Lista da controllare
- * 
- * @return 1 se la lista è vuota, 0 altrimenti
- *
- * */
-int List_IsEmpty(LIST *L);
-
-/**
- * Inserisce un nodo nella lista
- *
- * Inserisce un nodo con campo pari a <Value> nella lista <L>
- * */
-int List_Insert( void *Value, LIST *L );
 
 /**
  * Inserisce un nodo all'interno della lista
@@ -158,15 +126,6 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
  * */ 
 NODE *ListCreateNewNode(void *Value, OPERATIONS *Op);
 
-/**
- * Cancella un nodo con campo pari a <Value> dalla Lista <L>
- *
- * @param Value Valore da inserire nel nodo
- * @param L Lista da cui rimuovere il nodo
- *
- * @return 0 in caso di successo, < 0 altrimenti
- * */
-int List_Delete( void *Value, LIST *L );
 
 /**
  * Utilizza un approccio ricorsivo per cancellare il nodo con campo
@@ -186,10 +145,6 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
  */
 NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op);
 
-/**
- * Stampa a video tutti i nodi della lista L
- * */
-int List_Print( LIST *L );
 
 /**
  * Stampa a video tutti i nodi della lista con testa Current
