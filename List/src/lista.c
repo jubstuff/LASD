@@ -189,9 +189,19 @@ NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
 	}
 	return Current;
 }
+
 /**
- * STAMPA
- * */
+ * Stampa i campi della lista, in ordine
+ *
+ * Questa funzione utilizza un approccio ricorsivo per scorrere la lista e
+ * stampare a video tutti i campi dei nodi, in ordine.
+ * La procedura per stampare i nodi è memorizzata in <Op>.
+ *
+ * @param Current Testa della lista da stampare a video.
+ * @param Op      Riferimento al record contenente le operazioni di manipolazione
+ *                dei nodi.
+ *
+ */
 void List_RecursivePrint( NODE *Current, OPERATIONS *Op )
 {
     /* stampa la lista, se non vuota */
