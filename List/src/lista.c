@@ -176,12 +176,21 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
 }
 
 
+/**
+ * Dealloca tutti i nodi della lista
+ *
+ * @param Current Testa della lista da deallocare.
+ * @param Op      Riferimento al record contenente le operazioni di manipolazione
+ *                dei nodi.
+ *
+ * @return Il puntatore alla testa eventualmente modificato.
+ */
 NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
 {
     if( Current != NULL )
 	{
 		/* scorre la lista fino all'ultimo ed effettua la cancellazione
-		 * in ordine inversa */
+		 * in ordine inverso */
 		Current->Next = List_RecursiveDestroy(Current->Next, Op);
 		Op->DeleteNode(Current->Info);
 		free(Current);
