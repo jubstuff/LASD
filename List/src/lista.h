@@ -54,15 +54,15 @@ typedef int (*COMPARATOR)(const void *Arg1, const void *Arg2);
  * */
 typedef void *(*INITIALIZER)( void *Value );
 
-/**
- * Una funzione che dealloca il valore memorizzato in un nodo
+/**                                
+ * Una funzione che dealloca il valore memorizzato nel campo di un nodo
  *
  * @param Value Riferimento al valore da deallocare
  * */
 typedef void (*DELETER)(void *Value);
 
 /**
- * Una funzione che stampa a video il valore memorizzato in un nodo
+ * Una funzione che stampa a video il valore memorizzato nel campo di un nodo
  *
  * @param Value Riferimento al valore da stampare
  * */
@@ -80,11 +80,11 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 
 
 typedef struct operations {
-	COMPARATOR Compare;
-	INITIALIZER InitNode;
-	DELETER DeleteNode;
-	PRINTER Print;
-	DUPLICATE ManageDuplicate;
+	COMPARATOR Compare;       /**< Confronta due nodi */
+	INITIALIZER InitNode;    /**< Inizializza un nodo */
+	DELETER DeleteNode;      /**< Elimina un nodo */
+	PRINTER Print;           /**< Stampa un nodo */
+	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
 } OPERATIONS;
 
 
@@ -142,6 +142,9 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
 /**
  * Dealloca tutti i nodi della lista
  *
+ * @param Current Testa della lista da deallocare.
+ *
+ * @return Il puntatore alla testa eventualmente modificato.
  */
 NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op);
 

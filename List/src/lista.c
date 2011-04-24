@@ -3,6 +3,26 @@
 
 
 
+/**
+ * Inserisce un nodo all'interno della lista
+ *
+ * Questa funzione utilizza un approccio ricorsivo per inserire un nodo
+ * con campo <Value> all'interno della lista <Current>.
+ * 
+ * NOTE Se un nodo con campo pari a <Value> è già esistente, la lista
+ * non viene modificata
+ * 
+ * @param Value        Valore da inserire nel nodo.
+ * @param Current      Testa della lista in cui inserire il nodo.
+ * @param ReturnStatus Esito dell'operazione. Può assumere valore:
+ *	                   - 0, in caso di inserimento corretto
+ *                     - E_MALLOC, in caso di errore nella creazione del nodo
+ *                     - W_DUPLICATE, in caso di valore già presente in lista
+ * @param Op           Riferimento al record contenente le operazioni di manipolazione
+ *                     dei nodi.
+ *
+ * @return Il puntatore alla testa della lista, eventualmente modificato
+ */ 
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op ) 
 {
 	NODE *NewNode;
@@ -41,6 +61,16 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 }
 
 
+/**
+ * Alloca un nuovo nodo, con relativo campo
+ *
+ * @param Value Valore da inserire nel nodo
+ * @param Op    Riferimento al record contenente le operazioni di manipolazione
+ *              dei nodi.
+ *
+ * @return Il riferimento al nuovo nodo creato, oppure NULL in caso di fallimento
+ *         nell'allocazione
+ * */ 
 NODE *ListCreateNewNode(void *Value, OPERATIONS *Op)
 {
 	NODE * NewNode;
@@ -58,6 +88,24 @@ NODE *ListCreateNewNode(void *Value, OPERATIONS *Op)
 
 
 
+/**
+ * Rimuove un nodo dalla lista
+ *
+ * Questa funzione utilizza un approccio ricorsivo per rimuovere un nodo
+ * con campo <Value> dalla lista <Current>.
+ * 
+ * NOTE Se un nodo con campo pari a <Value> non esiste, la lista
+ * non viene modificata
+ * 
+ * @param Value        Valore associata al nodo da rimuovere.
+ * @param Current      Testa della lista da cui rimuovere il nodo.
+ * @param ReturnStatus Esito dell'operazione. Può assumere valore:
+ *                     - I_REMOVED, in caso di nodo trovato e rimosso
+ * @param Op           Riferimento al record contenente le operazioni di manipolazione
+ *                     dei nodi.
+ *
+ * @return Il puntatore alla testa della lista, eventualmente modificato
+ */
 NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op) 
 {
     NODE *Temp; /**< Nodo di appoggio per cancellazione */
@@ -86,6 +134,22 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 	return Current;
 }
 
+/**
+ * Cancella i nodi compresi in un intervallo
+ *
+ * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,
+ * estremi compresi.
+ * Si assume Inf < Sup (secondo la relazione di ordinamento applicabile). In caso
+ * contrario, la funzione non modifica la lista.
+ *
+ * @param Current Testa della lista da cui rimuovere i nodi.
+ * @param Inf     Estremo inferiore dell'intervallo.
+ * @param Sup     Estremo superiore dell'intervallo.
+ * @param Op      Riferimento al record contenente le operazioni di manipolazione
+ *                dei nodi.
+ *
+ * @return Il puntatore alla testa della lista, eventualmente modificato
+ * */
 NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS *Op )
 {
 	NODE *Temp;
@@ -94,9 +158,11 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
 	//non fare nulla
 	if( (Current != NULL) || (Op->Compare(Inf, Sup) > 0)  )
 	{
+		//Scorri la lista fino al nodo che supera il limite superiore
 		if( Op->Compare(Current->Info, Sup) <= 0 )
 		{
 			Current->Next = List_RecursiveDeleteRange( Current->Next, Inf, Sup, Op );
+			//Cancella i nodi finché sono maggiori del limite inferiore
 			if( Op->Compare(Current->Info, Inf) >= 0 )
 			{
 				Temp = Current->Next;
