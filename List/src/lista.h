@@ -99,30 +99,12 @@ typedef struct operations {
  * Questa funzione utilizza un approccio ricorsivo per inserire un nodo
  * con campo <Value> all'interno della lista <Current>.
  * 
- * NOTE Se un nodo con campo pari a <Value> è già esistente, la lista
- * non viene modificata
- * 
- * @param Value        Valore da inserire nel nodo.
- * @param Current      Testa della lista in cui inserire il nodo.
- * @param ReturnStatus Esito dell'operazione. Può assumere valore:
- *	                   - 0, in caso di inserimento corretto
- *                     - E_MALLOC, in caso di errore nella creazione del nodo
- *                     - W_DUPLICATE, in caso di valore già presente in lista
- * @param Op           Riferimento al record contenente le operazioni di manipolazione
- *                     dei nodi.
- *
- * @return Il puntatore alla testa della lista eventualmente modificato
  */ 
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op );
 
 /**
  * Alloca un nuovo nodo, con relativo campo
  *
- * @param Value Valore da inserire nel nodo
- * @param Op    Riferimento al record contenente le operazioni di manipolazione
- *              dei nodi.
- *
- * @return Il riferimento al nuovo nodo creato.
  * */ 
 NODE *ListCreateNewNode(void *Value, OPERATIONS *Op);
 
@@ -142,9 +124,6 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
 /**
  * Dealloca tutti i nodi della lista
  *
- * @param Current Testa della lista da deallocare.
- *
- * @return Il puntatore alla testa eventualmente modificato.
  */
 NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op);
 
