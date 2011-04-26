@@ -28,5 +28,6 @@ void DuplicatoInt ( void *Value, NODE *Nodo );
 int LeggiIntero(int *Value);
 char Menu();
 void Pause();
+NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op);
 
 #endif

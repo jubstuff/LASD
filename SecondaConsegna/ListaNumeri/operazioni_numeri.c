@@ -133,4 +133,34 @@ void Pause()
 	fgetc(stdin);
 }
 
+NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
+{
+	int Value;
+	int Success;
+	int ReturnStatus;
 
+	printf("\nInserire il numero intero.\n");
+	printf("?>");
+	Success = LeggiIntero(&Value);
+	if( Success )
+	{
+		Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, Op);
+		//Verifica se c'è stato un errore 
+		if( ReturnStatus > 0 )
+		{
+			printf("\nC'e' stato un errore nell'inserimento\n\n");
+		}
+		//Ok, valore inserito
+		else
+		{
+			printf("\nValore inserito\n\n");
+		}
+	}
+	//valore immesso dall'utente non valido
+	else 
+	{
+		printf("\n\nValore non valido\n\n");
+	}
+
+	return Head;
+}
