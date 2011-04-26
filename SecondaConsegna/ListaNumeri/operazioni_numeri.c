@@ -135,9 +135,9 @@ void Pause()
 
 NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 {
-	int Value;
-	int Success;
-	int ReturnStatus;
+	int  Value;        /**< Variabile temporanea per la lettura da stdin */
+	int  Success;      /**< Flag per valori di ritorno delle funzioni */
+	int  ReturnStatus; /**< Stato delle funzioni che agiscono sulla lista */
 
 	printf("\nInserire il numero intero.\n");
 	printf("?>");
@@ -203,6 +203,50 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 	else
 	{
 		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+
+	return Head;
+}
+
+NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op )
+{
+	//dealloca la lista solo se non vuota
+	if( Head != NULL )
+	{
+		printf("\n\nCancellazione Lista...\n\n");
+		Head = List_RecursiveDestroy( Head, Op );
+	}
+	else
+	{
+		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+	return Head;
+}
+
+NODE *GestisciInserimentoNumeriCasuali( NODE *Head, OPERATIONS *Op )
+{
+	int  Value;        /**< Variabile temporanea per la lettura da stdin */
+	int  Success;      /**< Flag per valori di ritorno delle funzioni */
+	int  ReturnStatus; /**< Stato delle funzioni che agiscono sulla lista */
+    int  RandomNum;    /**< Variabile temporanea per memorizzare numeri random*/
+	int  i;            /**< Indice per cicli */
+
+	printf("\nQuanti numeri casuali inserire?\n");
+	printf("?>");
+
+	Success = LeggiIntero(&Value);
+	if( Success )
+	{	
+		for( i=0; i < Value; i++)
+		{
+			RandomNum = rand() % 101;
+			Head = List_RecursiveOrderedInsert( &RandomNum, Head, &ReturnStatus, Op);
+		}
+		printf("\n\nNumeri inseriti correttamente.\n\n");
+	}
+	else 
+	{
+		printf("\n\nValore non valido\n\n");
 	}
 
 	return Head;

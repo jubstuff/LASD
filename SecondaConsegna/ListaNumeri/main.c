@@ -21,13 +21,7 @@ int main(void) {
 	NODE *Head;        /**< Testa della lista */
 	OPERATIONS Op;      /**< Elenco delle operazioni che operano sui nodi */
 	int  MenuChoice;   /**< Operazione scelta nel menu */
-	int  Value;        /**< Variabile temporanea per la lettura da stdin */
-	int  Success;      /**< Flag per valori di ritorno delle funzioni */
-	int  i;            /**< Indice per cicli */
-	int  ReturnStatus; /**< Stato delle funzioni che agiscono sulla lista */
-	int  RandomNum;    /**< Numero casuale temporaneo */
 	
-	Success = 0;
 	//inizializza la lista
 	Head = NULL;
 	//Inizializzo la struct con le operazioni
@@ -50,73 +44,12 @@ int main(void) {
 				break;
 			case '2': //eliminazione di un nodo
 				Head = GestisciCancellazioneNodo( Head, &Op );
-				/*//effettua l'eliminazione solo se la lista è non vuota
-				if ( Head != NULL )
-				{
-					printf("\nInserire il numero\n");
-					printf("?>");
-					
-					Success = LeggiIntero(&Value);
-					
-					if( Success )
-					{
-						Head = List_RecursiveDelete(&Value, Head, &ReturnStatus, &Op);
-						//Trovato un nodo con il valore dato
-						if ( ReturnStatus == I_REMOVED)
-						{
-							printf("\nNumero Eliminato\n\n");
-						}
-						//Nodo con valore dato non trovato
-						else
-						{
-							printf("\nNumero non trovato\n\n");
-						}
-					}
-					//Il valore immesso dall'utente non è valido
-					else 
-					{
-						printf("\n\nValore non valido\n\n");
-					}
-				}
-				//lista vuota
-				else
-				{
-					printf("\n\nLa lista e' gia' vuota.\n\n");
-				}*/
 				break;
 			case '3': //eliminazione lista
-				
-				//dealloca la lista solo se non vuota
-				if( Head != NULL )
-				{
-					printf("\n\nCancellazione Lista...\n\n");
-					Head = List_RecursiveDestroy( Head, &Op );
-				}
-				else
-				{
-					printf("\n\nLa lista e' gia' vuota.\n\n");
-				}
-				
+				Head = GestisciDistruzioneLista( Head, &Op );
 				break;
 			case '4': //inserimento numeri casuali
-			
-				printf("\nQuanti numeri casuali inserire?\n");
-				printf("?>");
-				
-				Success = LeggiIntero(&Value);
-				if( Success )
-				{	
-					for( i=0; i < Value; i++)
-					{
-						RandomNum = rand() % 101;
-						Head = List_RecursiveOrderedInsert( &RandomNum, Head, &ReturnStatus, &Op);
-					}
-					printf("\n\nNumeri inseriti correttamente.\n\n");
-				}
-				else 
-				{
-					printf("\n\nValore non valido\n\n");
-				}
+			    Head = GestisciInserimentoNumeriCasuali( Head, &Op );
 				break;
 			case '9': //stampare la lista a video
 			
