@@ -8,16 +8,15 @@
  * OPERAZIONI LISTA ESTERNA - ORDINATA PER CITTA'
  *===========================================================================*/
 /**
- * Confronta la città memorizzata nel primo elemento della lista puntata da 
- * <Nodo1> con la città memorizzata in <Persona>
- * Confronta in ordine lessicografico le città memorizzate in 
- * due struct PERSONA
+ * Confronta in ordine lessicografico la città memorizzata nel primo elemento
+ * della lista puntata da <Nodo1> con la città memorizzata in <Persona>
+ *
+ * Il primo parametro è il campo info del nodo della lista esterna, mentre
+ * il secondo parametro è la struct PERSONA che si vuole inserire nella 
+ * lista interna.
  * */
 int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 {
-	//TODO Questi devono essere nodi?
-	//No, devono essere un nodo e una persona, perché non
-	//devo modificare la libreria
 	NODE *Nodo = (NODE *)Nodo1;
 	PERSONA *P1 =  (PERSONA *)(Nodo->Info);
 	PERSONA *P2 =  (PERSONA *)Persona;
@@ -26,6 +25,17 @@ int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 }
 
 
+/**
+ * Funzione che crea un nodo della lista interna.
+ *
+ * Questa funzione inserisce un nodo con campo pari alla PERSONA passata in
+ * ingresso nella lista interna, la cui testa è il campo info del nodo della 
+ * lista esterna.
+ *
+ * Per fare questo, crea un nuovo nodo, a cui associa la PERSONA e poi 
+ * restituisce un riferimento a questo nodo, che andrà memorizzato nel campo
+ * info della lista esterna.
+ * */
 void *InizializzaNodoCitta( void *Value )
 {
 	//A questa funzione viene passato l'indirizzo della struct Persona
@@ -58,6 +68,20 @@ void DuplicatoCitta( void *Value, NODE *Current )
     printf("Inserisco il duplicato\n");
 	Current->Info = List_RecursiveOrderedInsert(Value, Current->Info, &ReturnStatus, InnerOp); //TODO check error
 
+	free(InnerOp);
+
+}
+
+void StampaListaCitta( const void *Value )
+{
+	/* che deve fare questa funzione? Gli viene passato
+	 * un nodo come valore, quindi deve richiamare la funzione 
+	 * stampa della lista interna, semplicemente
+	 * */
+	OPERATIONS *InnerOp;
+	InnerOp = InizializzaOperazioniListaPersone();
+
+	List_RecursivePrint( (NODE *)Value, InnerOp );
 	free(InnerOp);
 
 }
@@ -107,4 +131,6 @@ void CancellaPersona( void *Value )
 
 void StampaPersona( const void *Value )
 {
+	PERSONA *P = (PERSONA *)Value;
+	printf("%s %s - %s\n", P->Nome, P->Cognome, P->Citta);
 }

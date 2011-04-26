@@ -32,6 +32,9 @@ void *InizializzaNodoCitta( void *Value );
 
 void DuplicatoCitta( void *Value, NODE *Current );
 
+void StampaListaCitta( const void *Value );
+
+
 OPERATIONS *InizializzaOperazioniListaPersone( void );
 
 void *SalvaPersona( void *Value );

@@ -4,6 +4,9 @@
 #include "lista.h"
 #include "../helpers/gestione_citta.h"
 
+#define INSERIMENTO 0
+
+
 int main(void)
 {
 	NODE *Head;
@@ -11,13 +14,18 @@ int main(void)
 	int ReturnStatus;
     PERSONA P1;
 	PERSONA P2;
+	PERSONA P3;
     char nome1[] = "Giustino";
 	char cognome1[] = "Borzacchiello";
 	char citta1[] = "Amalfi";
 
 	char nome2[] = "Valeria";
 	char cognome2[] = "Marolda";
-	char citta2[] = "Amalfi";
+	char citta2[] = "Pozzuoli";
+
+	char nome3[] = "Viviana";
+	char cognome3[] = "Marolda";
+	char citta3[] = "Pozzuoli";
 
 	Head = NULL;
 	ReturnStatus = 0;
@@ -30,16 +38,21 @@ int main(void)
 	P2.Cognome = cognome2;
 	P2.Citta = citta2;
 
+	P3.Nome = nome3;
+	P3.Cognome = cognome3;
+	P3.Citta = citta3;
+
    	Op.Compare = ConfrontaNodoCitta;
    	Op.InitNode = InizializzaNodoCitta;
 	Op.DeleteNode = NULL;
-   	Op.Print = NULL;
+   	Op.Print = StampaListaCitta;
     Op.ManageDuplicate = DuplicatoCitta; 
 
-	Head = List_RecursiveOrderedInsert( &P1, Head, &ReturnStatus, &Op );
+#ifdef INSERIMENTO
+   	Head = List_RecursiveOrderedInsert( &P1, Head, &ReturnStatus, &Op );
 	Head = List_RecursiveOrderedInsert( &P2, Head, &ReturnStatus, &Op );
-    printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Info))->Info)->Nome ) );                                    
-    printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Info))->Next->Info)->Nome ) );                                    
-    //printf("%s", (char *)( ((PERSONA *) ((NODE *)(Head->Next->Info))->Info)->Nome ) ); // Caso inserimento senza duplicato                                   
+	Head = List_RecursiveOrderedInsert( &P3, Head, &ReturnStatus, &Op );
+	List_RecursivePrint( Head, &Op );
+#endif
 	return 0;
 }
