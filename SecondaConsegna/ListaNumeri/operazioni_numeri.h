@@ -29,5 +29,6 @@ int LeggiIntero(int *Value);
 char Menu();
 void Pause();
 NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op);
+NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
 
 #endif

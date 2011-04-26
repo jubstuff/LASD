@@ -164,3 +164,46 @@ NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 
 	return Head;
 }
+
+NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
+{
+	int  Value;        /**< Variabile temporanea per la lettura da stdin */
+	int  Success;      /**< Flag per valori di ritorno delle funzioni */
+	int  ReturnStatus; /**< Stato delle funzioni che agiscono sulla lista */
+
+	//effettua l'eliminazione solo se la lista è non vuota
+	if ( Head != NULL )
+	{
+		printf("\nInserire il numero da eliminare\n");
+		printf("?>");
+
+		Success = LeggiIntero(&Value);
+
+		if( Success )
+		{
+			Head = List_RecursiveDelete(&Value, Head, &ReturnStatus, Op);
+			//Trovato un nodo con il valore dato
+			if ( ReturnStatus == I_REMOVED)
+			{
+				printf("\nNumero Eliminato\n\n");
+			}
+			//Nodo con valore dato non trovato
+			else
+			{
+				printf("\nNumero non trovato\n\n");
+			}
+		}
+		//Il valore immesso dall'utente non è valido
+		else 
+		{
+			printf("\n\nValore non valido\n\n");
+		}
+	}
+	//lista vuota
+	else
+	{
+		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+
+	return Head;
+}

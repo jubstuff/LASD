@@ -49,8 +49,8 @@ int main(void) {
 			    Head = GestisciInserimentoNumero( Head, &Op );
 				break;
 			case '2': //eliminazione di un nodo
-				
-				//effettua l'eliminazione solo se la lista è non vuota
+				Head = GestisciCancellazioneNodo( Head, &Op );
+				/*//effettua l'eliminazione solo se la lista è non vuota
 				if ( Head != NULL )
 				{
 					printf("\nInserire il numero\n");
@@ -82,7 +82,7 @@ int main(void) {
 				else
 				{
 					printf("\n\nLa lista e' gia' vuota.\n\n");
-				}
+				}*/
 				break;
 			case '3': //eliminazione lista
 				
