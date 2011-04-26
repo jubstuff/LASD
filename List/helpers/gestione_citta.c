@@ -88,6 +88,11 @@ void StampaListaCitta( const void *Value )
 	free(InnerOp);
 
 }
+
+void EliminaNodoCitta( const void *Value )
+{
+	List_RecursiveDelete( NODE *Value, ); 
+}
 /*============================================================================*
  * OPERAZIONI LISTA INTERNA - ORDINATA PER PERSONA
  *===========================================================================*/
