@@ -1,4 +1,7 @@
 #include "operazioni_numeri.h"
+#include <stdlib.h>
+#include <errno.h>
+
 
 void *InizializzaNodoInt( void *Value )
 {
@@ -42,7 +45,7 @@ int NumCmp( const void *FirstArg, const void *SecondArg )
 
 }
 
-void Duplicato( void *Value )
+void DuplicatoInt( void *Value, NODE *Nodo )
 {
 	int Num = *( (int *)Value );
 	printf("Stai cercando di inserire un nodo duplicato\n");
@@ -77,7 +80,6 @@ int LeggiIntero(int *Value)
 	
 	Success = 1;
 	errno = 0;
-	
 	fgets(TempBuffer, sizeof(TempBuffer), stdin);
 	
 	/* strtol expects nptr to point to a string of the following form:
@@ -102,7 +104,8 @@ int LeggiIntero(int *Value)
  */
 char Menu()
 {
-	char Choice; /**< Voce del menu scelta */
+    char TempBuffer[10];
+
 	printf("=================================================\n");
 	puts("Lista di interi - Menu");
 	printf("=================================================\n");
@@ -114,10 +117,10 @@ char Menu()
 	puts("0 - Esci");
 	puts("Operazione da effettuare? ");
 	printf("?>");
-	fflush(stdin);
-	Choice = _getch();
+
+	fgets(TempBuffer, sizeof(TempBuffer), stdin);
 	
-	return Choice;
+	return TempBuffer[0];
 }
 
 /**
@@ -127,7 +130,7 @@ char Menu()
 void Pause()
 {
 	puts("\n\nPremere un tasto per continuare...");
-	_getch();
+	fgetc(stdin);
 }
 
 

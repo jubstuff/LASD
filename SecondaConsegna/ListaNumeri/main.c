@@ -11,22 +11,31 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.h"
+#include "../../List/src/lista.h"
+#include "operazioni_numeri.h"
 #include <string.h>
 #include <time.h>
 
 
 int main(void) {
 	NODE *Head;        /**< Testa della lista */
+	OPERATIONS Op;      /**< Elenco delle operazioni che operano sui nodi */
 	int  MenuChoice;   /**< Operazione scelta nel menu */
 	int  Value;        /**< Variabile temporanea per la lettura da stdin */
 	int  Success;      /**< Flag per valori di ritorno delle funzioni */
 	int  i;            /**< Indice per cicli */
 	int  ReturnStatus; /**< Stato delle funzioni che agiscono sulla lista */
+	int  RandomNum;    /**< Numero casuale temporaneo */
 	
 	Success = 0;
 	//inizializza la lista
 	Head = NULL;
+	//Inizializzo la struct con le operazioni
+   	Op.Compare = NumCmp;
+   	Op.InitNode = InizializzaNodoInt;
+	Op.DeleteNode = DeallocaInt;
+   	Op.Print = StampaNodoInt;
+    Op.ManageDuplicate = DuplicatoInt; 
 	//Inizializza il seme per la generazione di numeri casuali
 	srand( time(NULL) );
 	
@@ -40,18 +49,12 @@ int main(void) {
 			
 				printf("\nInserire il numero intero.\n");
 				printf("?>");
-				
 				Success = LeggiIntero(&Value);
 				if( Success )
 				{
-					Head = ListInsert(Value, Head, &ReturnStatus);
-					//Se il nodo è già presente nella lista, notifica
-					if( ReturnStatus == W_DUPLICATE )
-					{
-						printf("\nValore gia' presente\n");
-					}
-					//Verifica se c'è stato un altro tipo di errore 
-					else if( ReturnStatus > 0 )
+					Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, &Op);
+					//Verifica se c'è stato un errore 
+					if( ReturnStatus > 0 )
 					{
 						printf("\nC'e' stato un errore nell'inserimento\n\n");
 					}
@@ -79,9 +82,9 @@ int main(void) {
 					
 					if( Success )
 					{
-						Head = ListRemove(Value, Head, &ReturnStatus);
+						Head = List_RecursiveDelete(&Value, Head, &ReturnStatus, &Op);
 						//Trovato un nodo con il valore dato
-						if ( ReturnStatus == I_FOUND )
+						if ( ReturnStatus == I_REMOVED)
 						{
 							printf("\nNumero Eliminato\n\n");
 						}
@@ -109,7 +112,7 @@ int main(void) {
 				if( Head != NULL )
 				{
 					printf("\n\nCancellazione Lista...\n\n");
-					Head = ListDeallocate(Head);
+					Head = List_RecursiveDestroy( Head, &Op );
 				}
 				else
 				{
@@ -127,7 +130,8 @@ int main(void) {
 				{	
 					for( i=0; i < Value; i++)
 					{
-						Head = ListInsert( rand(), Head, &ReturnStatus);
+						RandomNum = rand() % 101;
+						Head = List_RecursiveOrderedInsert( &RandomNum, Head, &ReturnStatus, &Op);
 					}
 					printf("\n\nNumeri inseriti correttamente.\n\n");
 				}
@@ -141,7 +145,7 @@ int main(void) {
 				if( Head != NULL )
 				{
 					printf("\n\n=================================================\n\n");
-					ListPrint(Head);
+					List_RecursivePrint( Head, &Op );
 					printf("\n\n=================================================\n\n");
 				}
 				else
@@ -151,6 +155,8 @@ int main(void) {
 				
 				break;
 			case '0': //uscita
+				//Elimino la lista all'uscita
+				Head = List_RecursiveDestroy( Head, &Op );
 				break;
 
 			default: //scelta non valida
@@ -160,7 +166,6 @@ int main(void) {
 		}
 	} while( MenuChoice != '0' );
 	
-	Pause();
 	return 0;
 }
 

@@ -13,14 +13,20 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "../../List/src/lista.h"
 
 #ifndef _OPERAZIONI_NUMERI_H_ 
 #define _OPERAZIONI_NUMERI_H_
+
+#define E_RANGE 1
 
 void *InizializzaNodoInt( void *Value );
 void StampaNodoInt( const void *Value );
 void DeallocaInt( void *Value );
 int NumCmp( const void *FirstArg, const void *SecondArg );
-void Duplicato( void *Value );
+void DuplicatoInt ( void *Value, NODE *Nodo );
+int LeggiIntero(int *Value);
+char Menu();
+void Pause();
 
 #endif
