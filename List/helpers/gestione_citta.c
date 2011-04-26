@@ -7,20 +7,20 @@
 /*============================================================================*
  * OPERAZIONI LISTA ESTERNA - ORDINATA PER CITTA'
  *===========================================================================*/
-
+/**
+ * Confronta la città memorizzata nel primo elemento della lista puntata da 
+ * <Nodo1> con la città memorizzata in <Persona>
+ * Confronta in ordine lessicografico le città memorizzate in 
+ * due struct PERSONA
+ * */
 int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 {
 	//TODO Questi devono essere nodi?
 	//No, devono essere un nodo e una persona, perché non
 	//devo modificare la libreria
 	NODE *Nodo = (NODE *)Nodo1;
-	return ConfrontaCitta( Nodo->Info, Persona );
-}
-
-int ConfrontaCitta( const void *Pers1, const void *Pers2 )
-{
-	PERSONA *P1 =  (PERSONA *)Pers1;
-	PERSONA *P2 =  (PERSONA *)Pers2;
+	PERSONA *P1 =  (PERSONA *)(Nodo->Info);
+	PERSONA *P2 =  (PERSONA *)Persona;
 
 	return strcasecmp( P1->Citta, P2->Citta );
 }

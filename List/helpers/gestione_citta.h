@@ -18,14 +18,13 @@ typedef struct persona_t
 	char *Citta;
 } PERSONA; 
 
-int ConfrontaNodoCitta( const void *Nodo1, const void *Persona );
 /**
  * Confronta la citta di residenza di due persone,
  * confrontandole in ordine lessicografico
  *
  * @return -1, 0, 1 se Pers1->Citta [>,==,<] Pers2->Citta rispettivamente
  * */
-int ConfrontaCitta( const void *Pers1, const void *Pers2 );
+int ConfrontaNodoCitta( const void *Nodo1, const void *Persona );
 
 int ConfrontaPersona( const void *Pers1, const void *Pers2 );
 
