@@ -251,3 +251,17 @@ NODE *GestisciInserimentoNumeriCasuali( NODE *Head, OPERATIONS *Op )
 
 	return Head;
 }
+
+void GestisciStampaNumeri( NODE *Head, OPERATIONS *Op )
+{
+	if( Head != NULL )
+	{
+		printf("\n\n=================================================\n\n");
+		List_RecursivePrint( Head, Op );
+		printf("\n\n=================================================\n\n");
+	}
+	else
+	{
+		printf("\n\nLa lista e' vuota.\n\n");
+	}
+}

@@ -52,21 +52,10 @@ int main(void) {
 			    Head = GestisciInserimentoNumeriCasuali( Head, &Op );
 				break;
 			case '9': //stampare la lista a video
-			
-				if( Head != NULL )
-				{
-					printf("\n\n=================================================\n\n");
-					List_RecursivePrint( Head, &Op );
-					printf("\n\n=================================================\n\n");
-				}
-				else
-				{
-					printf("\n\nLa lista e' vuota.\n\n");
-				}
-				
+			    GestisciStampaNumeri( Head, &Op );
 				break;
 			case '0': //uscita
-				//Elimino la lista all'uscita
+				//Mi assicuro che la lista sia deallocata prima di uscire
 				Head = List_RecursiveDestroy( Head, &Op );
 				break;
 
