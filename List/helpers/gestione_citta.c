@@ -71,7 +71,10 @@ void DuplicatoCitta( void *Value, NODE *Current )
 	free(InnerOp);
 
 }
-
+/**
+ * Scorre la lista esterna, richiamando la funzione di stampa della libreria sul
+ * campo info (che è la testa della lista interna relativa a quella città)
+ * */
 void StampaListaCitta( const void *Value )
 {
 	/* che deve fare questa funzione? Gli viene passato

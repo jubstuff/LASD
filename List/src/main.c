@@ -4,9 +4,6 @@
 #include "lista.h"
 #include "../helpers/gestione_citta.h"
 
-#define INSERIMENTO 0
-
-
 int main(void)
 {
 	NODE *Head;
@@ -44,15 +41,13 @@ int main(void)
 
    	Op.Compare = ConfrontaNodoCitta;
    	Op.InitNode = InizializzaNodoCitta;
-	Op.DeleteNode = NULL;
+	Op.DeleteNode = EliminaNodoCitta;
    	Op.Print = StampaListaCitta;
     Op.ManageDuplicate = DuplicatoCitta; 
 
-#ifdef INSERIMENTO
    	Head = List_RecursiveOrderedInsert( &P1, Head, &ReturnStatus, &Op );
 	Head = List_RecursiveOrderedInsert( &P2, Head, &ReturnStatus, &Op );
 	Head = List_RecursiveOrderedInsert( &P3, Head, &ReturnStatus, &Op );
 	List_RecursivePrint( Head, &Op );
-#endif
 	return 0;
 }

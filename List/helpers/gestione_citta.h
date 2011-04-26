@@ -34,6 +34,7 @@ void DuplicatoCitta( void *Value, NODE *Current );
 
 void StampaListaCitta( const void *Value );
 
+void EliminaNodoCitta( const void *Value );
 
 OPERATIONS *InizializzaOperazioniListaPersone( void );
 
