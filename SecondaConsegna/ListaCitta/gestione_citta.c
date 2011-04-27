@@ -120,7 +120,7 @@ OPERATIONS *InizializzaOperazioniListaPersone( void )
 	InnerOp->Compare = ConfrontaPersona;
 	InnerOp->DeleteNode = CancellaPersona;
 	InnerOp->Print = StampaPersona;
-	//InnerOp->ManageDuplicate =  //TODO aggiungere funzione per duplicati
+	InnerOp->ManageDuplicate = DuplicatoPersona; //TODO aggiungere funzione per duplicati
 
 	return InnerOp;
 }
@@ -145,12 +145,23 @@ void *SalvaPersona( void *Value )
 
 void CancellaPersona( void *Value )
 {
+   PERSONA *PersTemp = (PERSONA *)Value;
+   free( PersTemp->Nome );
+   free( PersTemp->Cognome );
+   free( PersTemp->Citta );
+   free( PersTemp );
 }	
 
 void StampaPersona( const void *Value )
 {
 	PERSONA *P = (PERSONA *)Value;
 	printf("%s %s - %s\n", P->Nome, P->Cognome, P->Citta);
+}
+
+
+void DuplicatoPersona( void *Value, NODE *CurrentNode )
+{
+	printf("Persona già presente\n"); 
 }
 /*==============================================================================
  * Funzioni di utilità
@@ -190,11 +201,9 @@ char Menu()
 	printf("=================================================\n");
 	puts("Lista di Stringhe - Menu");
 	printf("=================================================\n");
-	puts("1 - Inserisci una stringa nella lista.");
-	puts("2 - Eliminare una stringa dalla lista.");
-	puts("3 - Eliminare tutti i nodi dalla lista.");
-	puts("4 - Salva la lista su file.");
-	puts("5 - Caricare la lista da file.");
+	puts("1 - Inserisci una persona nella lista.");
+	puts("2 - Eliminare una persona dalla lista.");
+	puts("3 - Eliminare tutte le persone dalla lista.");
 	puts("9 - Stampa la lista a video.");
 	puts("0 - Esci");
 	puts("Operazione da effettuare: ");

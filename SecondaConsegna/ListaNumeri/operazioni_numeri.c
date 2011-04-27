@@ -2,7 +2,14 @@
 #include <stdlib.h>
 #include <errno.h>
 
-
+/**
+ * Alloca un nuovo intero e lo inizializza
+ *
+ * @param Value Riferimento al valore con cui inizializzare il numero
+ *
+ * @return Riferimento all'intero allocato
+ *
+ * */
 void *InizializzaNodoInt( void *Value )
 {
 	int *Num = (int *) malloc( sizeof(int) );
@@ -10,19 +17,35 @@ void *InizializzaNodoInt( void *Value )
 	*Num = *( (int *)Value );
 	return (void *)Num;
 }
-
+/**
+ * Stampa a video un intero
+ * 
+ * @param Value Riferimento al numero da visualizzare
+ *
+ * */
 void StampaNodoInt( const void *Value )
 {
 	printf("%d\n", *( (int *)Value) );
 }
-
+/**
+ * Dealloca un intero
+ *
+ * @param Value Riferimento all'intero da deallocare
+ *
+ * */
 void DeallocaInt( void *Value )
 {
 	free(Value);
 }
-
-
-int NumCmp( const void *FirstArg, const void *SecondArg )
+/**
+ * Confronta due interi
+ *
+ * @param Num1 Riferimento al primo numero da confrontare
+ * @param Num2 Riferimento al secondo numero da confrontare
+ *
+ * @return -1, 0, 1 se Num1 [>,==,<] Num2 rispettivamente
+ * */
+int NumCmp( const void *Num1, const void *Num2 )
 {
 	int ReturnValue;
 	int First = *( (int *)FirstArg );
@@ -44,7 +67,12 @@ int NumCmp( const void *FirstArg, const void *SecondArg )
 	return ReturnValue;
 
 }
-
+/**
+ * Informa l'utente che ha cercato di inserire un numero già presente
+ * 
+ * @param Value Riferimento al valore passato in ingresso
+ * @param Nodo  Riferimento al nodo in cui è presente il duplicato
+ * */
 void DuplicatoInt( void *Value, NODE *Nodo )
 {
 	int Num = *( (int *)Value );
@@ -59,7 +87,7 @@ void DuplicatoInt( void *Value, NODE *Nodo )
 /**
  * Legge un intero da standard input, salvandolo nel parametro <Value>.
  * Il formato riconosciuto dalla stringa in ingresso è il seguente:
- * [spazi] [{+ | }] [0 [{ x | X }]] [numeri]
+ * [spazi] [{+ | -}] [0 [{ x | X }]] [numeri]
  *
  * In caso di input non conforme al modello, verrà tentato un parsing fino al 
  * primo carattere non numerico, ovvero:
@@ -83,7 +111,7 @@ int LeggiIntero(int *Value)
 	fgets(TempBuffer, sizeof(TempBuffer), stdin);
 	
 	/* strtol expects nptr to point to a string of the following form:
-	 * [whitespace] [{+ | }] [0 [{ x | X }]] [digits]
+	 * [whitespace] [{+ | -}] [0 [{ x | X }]] [digits]
 	 * http://msdn.microsoft.com/en-us/library/w4z2wdyc%28v=vs.71%29.aspx 
 	 */
 	*Value = strtol(TempBuffer, &EndPtr, 10);
@@ -134,8 +162,15 @@ void Pause()
 	fgetc(stdin);
 }
 
-/** 
- * FUNZIONI DI GESTIONE NEL MENU
+/*==============================================================================
+ * Funzioni relative alle voci del menu
+ *============================================================================*/
+
+/**
+ * Gestisce l'inserimento di un elemento nella lista
+ *
+ * Chiede all'utente di immettere un numero, effettuandone l'inserimento nella
+ * lista e notificando l'esito dell'operazione
  * */
 NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 {
@@ -146,10 +181,13 @@ NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 	printf("\nInserire il numero intero.\n");
 	printf("?>");
 	Success = LeggiIntero(&Value);
+
 	if( Success )
 	{
+		//Effettua l'inserimento
 		Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, Op);
-		//Verifica se c'è stato un errore 
+
+		//Verifica se c'è stato un errore nell'inserimento
 		if( ReturnStatus > 0 )
 		{
 			printf("\nC'e' stato un errore nell'inserimento\n\n");
@@ -160,7 +198,7 @@ NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 			printf("\nValore inserito\n\n");
 		}
 	}
-	//valore immesso dall'utente non valido
+	//valore immesso dall'utente non valido: non è un intero
 	else 
 	{
 		printf("\n\nValore non valido\n\n");
@@ -169,6 +207,12 @@ NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 	return Head;
 }
 
+/**
+ * Gestisce la cancellazione di un elemento dalla lista
+ *
+ * Chiede all'utente di immettere un numero, effettuandone la cancellazione dalla
+ * lista e notificando l'esito dell'operazione
+ * */
 NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 {
 	int  Value;        /**< Variabile temporanea per la lettura da stdin */
@@ -180,12 +224,13 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 	{
 		printf("\nInserire il numero da eliminare\n");
 		printf("?>");
-
 		Success = LeggiIntero(&Value);
 
 		if( Success )
 		{
+			//Effettua la cancellazione
 			Head = List_RecursiveDelete(&Value, Head, &ReturnStatus, Op);
+
 			//Trovato un nodo con il valore dato
 			if ( ReturnStatus == I_REMOVED)
 			{
@@ -197,14 +242,13 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 				printf("\nNumero non trovato\n\n");
 			}
 		}
-		//Il valore immesso dall'utente non è valido
+		//Il valore immesso dall'utente non è valido: non è un intero
 		else 
 		{
 			printf("\n\nValore non valido\n\n");
 		}
 	}
-	//lista vuota
-	else
+	else //lista vuota
 	{
 		printf("\n\nLa lista e' gia' vuota.\n\n");
 	}
@@ -212,6 +256,11 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 	return Head;
 }
 
+/**
+ * Gestisce la cancellazione della lista
+ *
+ * Dealloca tutti i nodi della lista, notificando l'esito dell'operazione
+ * */
 NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op )
 {
 	//dealloca la lista solo se non vuota
@@ -224,9 +273,21 @@ NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op )
 	{
 		printf("\n\nLa lista e' gia' vuota.\n\n");
 	}
+
 	return Head;
 }
 
+/**
+ * Gestisce l'inserimento di numeri casuali all'interno della lista
+ *
+ * Chiede all'utente di immettere la quantità di numeri casuali da
+ * inserire nella lista e li inserisce.
+ * I numeri sono compresi tra 0 e MAX_RAND_NUM
+ * NOTA
+ * Se un numero è già presente in lista, non verrà inserito. Quindi
+ * il quantitativo di numeri effettivamente inserito potrebbe essere
+ * minore 
+ * */
 NODE *GestisciInserimentoNumeriCasuali( NODE *Head, OPERATIONS *Op )
 {
 	int  Value;        /**< Variabile temporanea per la lettura da stdin */
@@ -237,25 +298,29 @@ NODE *GestisciInserimentoNumeriCasuali( NODE *Head, OPERATIONS *Op )
 
 	printf("\nQuanti numeri casuali inserire?\n");
 	printf("?>");
-
 	Success = LeggiIntero(&Value);
+
 	if( Success )
 	{	
 		for( i=0; i < Value; i++)
 		{
-			RandomNum = rand() % 101;
+			//Genera un numero compreso tra 0 e MAX_RAND_NUM-1
+			RandomNum = rand() % MAX_RAND_NUM; 
 			Head = List_RecursiveOrderedInsert( &RandomNum, Head, &ReturnStatus, Op);
 		}
 		printf("\n\nNumeri inseriti correttamente.\n\n");
 	}
-	else 
+	else //Il valore immesso non è un intero
 	{
 		printf("\n\nValore non valido\n\n");
 	}
 
 	return Head;
 }
-
+/**
+ * Gestisce la stampa della lista, notificando l'utente dell'esito dell'operazione
+ *
+ * */
 void GestisciStampaNumeri( NODE *Head, OPERATIONS *Op )
 {
 	if( Head != NULL )
@@ -269,12 +334,18 @@ void GestisciStampaNumeri( NODE *Head, OPERATIONS *Op )
 		printf("\n\nLa lista e' vuota.\n\n");
 	}
 }
-
+/**
+ * Gestisce la cancellazione di un intervallo di interi
+ *
+ * Chiede all'utente di immettere i limiti inferiore e superiore dell'intervallo,
+ * eliminando tutti i numeri compresi, e notificando l'esito dell'operazione
+ *
+ * */
 NODE *GestisciCancellazioneIntervallo( NODE *Head, OPERATIONS *Op )
 {
-	int  Inf;        /**< Limite inferiore dell'intervallo da eliminare */
-	int  Sup;        /**< Limite superiore dell'intervallo da eliminare */
-	int  Success;      /**< Flag per valori di ritorno delle funzioni */
+	int  Inf;     /**< Limite inferiore dell'intervallo da eliminare */
+	int  Sup;     /**< Limite superiore dell'intervallo da eliminare */
+	int  Success; /**< Flag per valori di ritorno delle funzioni */
 
 	//effettua l'eliminazione solo se la lista è non vuota
 	if ( Head != NULL )

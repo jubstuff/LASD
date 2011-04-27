@@ -3,8 +3,8 @@
  * 
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
- * @date 04/02/11
- * @package ListaInteri
+ * @date 27/04/11
+ * @package ListaNumeri
  *
  * Main File per la gestione di una lista di interi.
  * 

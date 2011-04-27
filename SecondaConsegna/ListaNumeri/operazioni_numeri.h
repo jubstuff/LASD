@@ -19,11 +19,11 @@
 #define _OPERAZIONI_NUMERI_H_
 
 #define E_RANGE 1
-
+#define MAX_RAND_NUM 101
 void *InizializzaNodoInt( void *Value );
 void StampaNodoInt( const void *Value );
 void DeallocaInt( void *Value );
-int NumCmp( const void *FirstArg, const void *SecondArg );
+int NumCmp( const void *Num1, const void *Num2 );
 void DuplicatoInt ( void *Value, NODE *Nodo );
 int LeggiIntero(int *Value);
 char Menu();

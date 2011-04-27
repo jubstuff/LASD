@@ -49,13 +49,8 @@ int main(void)
 				PersTemp.Citta = CittaTemp;
 				Head = List_RecursiveOrderedInsert( (void *)&PersTemp, Head, &ReturnStatus, &Op);
 
-				//Se il nodo è già presente nella lista, notifica
-				if( ReturnStatus == W_DUPLICATE )
-				{
-					printf("\nValore gia' presente\n");
-				}
-				//Verifica se c'è stato un altro tipo di errore 
-				else if( ReturnStatus > 0 )
+				//Verifica se c'è stato un errore
+				if( ReturnStatus > 0 )
 				{
 					perror("C'e' stato un errore nell'inserimento");
 				}
@@ -82,7 +77,7 @@ int main(void)
 
 				break;
 			case '0': //Uscita
-				Head = List_RecursiveDestroy( Head, &Op );
+				//Head = List_RecursiveDestroy( Head, &Op ); //TODO rimuovere commento dopo aver implementato cancellazione
 				break;
 
 			default: //Operazione scelta non valida

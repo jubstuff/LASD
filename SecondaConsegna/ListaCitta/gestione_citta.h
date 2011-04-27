@@ -45,6 +45,8 @@ void CancellaPersona( void *Value );
 
 void StampaPersona( const void *Value );
 
+void DuplicatoPersona( void *Value, NODE *CurrentNode );
+
 void LeggiStringa( char *Buf, int LenMax);
 char Menu();
 #endif /* _GESTIONE_CITTA_H_ */
