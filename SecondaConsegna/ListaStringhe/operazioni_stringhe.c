@@ -1,10 +1,10 @@
 /**
- * operazioni_stringhe.h
+ * operazioni_stringhe.c
  * 
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
- * @date 07/04/11
- * @package ListaGenerale
+ * @date 27/04/11
+ * @package ListaStringhe
  *
  * Realizza alcune semplici funzioni per gestire una lista con nodi contenenti
  * un singolo campo di tipo char*
@@ -14,39 +14,71 @@
 /*==============================================================================
  * Definizione di funzioni per la lista di stringhe
  *============================================================================*/
+/**
+ * Alloca una nuova stringa e la inizializza con il valore passato in input
+ *
+ * @param Value Stringa da copiare nella nuova stringa
+ *
+ * @return Riferimento alla nuova stringa allocata
+ *
+ * */
 void *InizializzaNodoStringa( void *Value )
 {
 	char *Temp = (char *)Value;
 	char *str= (char *) malloc( (strlen(Temp) + 1) * sizeof(char) );
 	strcpy(str, Temp);
-	return str;
+	return (void *)str;
 }
-
+/**
+ * Visualizza una stringa sullo stdout
+ *
+ * @param Value Stringa da stampare
+ *
+ * */
 void StampaNodoStringa(const void *Value)
 {
 	printf("%s\n", (char *)Value);
 }
-
+/**
+ * Dealloca una stringa
+ *
+ * @param Value Riferimento alla stringa da deallocare
+ *
+ * */
 void DeallocaStringa( void *Value )
 {
 	free( (char *)Value );
 }
-
+/**
+ * Confronta due stringhe, in ordine lessicografico
+ *
+ * NOTA
+ * Viene utilizzata la funzione di libreria strcasecmp, che ordina le 
+ * stringhe secondo un criterio case insensitive
+ *
+ * @param Str1 Riferimento alla prima stringa da confrontare
+ * @param Str2 Riferimento alla seconda stringa da confrontare
+ *
+ * @return -1, 0, 1 se Str1 [>,==,<] Str2 rispettivamente
+ * 
+ * */
 int ConfrontaStringhe( const void *Str1, const void *Str2 )
 {
 	return strcasecmp( (char *)Str1, (char *)Str2 );
 }
+
+void DuplicatoStringa( void *Value, NODE *CurrentNode )
+{
+	printf("La stringa che hai cercato di inserire e' gia' presente\n");
+}
 /**
- * Scrive la lista di stringhe su file.
+ * Scrive una stringa su file.
  *
- * Il file generato è in formato testuale per garantirne la portabilità ed è 
- * formattato in questo modo:
- * 
- * StringaNodo1
- * StringaNodo2
- * StringaNodo3
+ * Questa funzione stampa su file la stringa contenuta nel campo di un 
+ * singolo nodo
  *
- *
+ * @param Value Valore da stampare
+ * TODO Chiedere cosa fare in caso di errore, dato che siamo all'interno di una chiamata ricorsiva
  */
 void ScriviSuFileDiTesto( const void *Value )
 {

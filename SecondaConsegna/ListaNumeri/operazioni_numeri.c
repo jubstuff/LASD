@@ -1,3 +1,14 @@
+/**
+ * operazioni_numeri.c
+ * 
+ * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
+ *
+ * @date 27/04/11
+ * @package ListaNumeri
+ *
+ * Implementazioni delle funzioni per la gestione di una lista di interi
+ * 
+ */
 #include "operazioni_numeri.h"
 #include <stdlib.h>
 #include <errno.h>

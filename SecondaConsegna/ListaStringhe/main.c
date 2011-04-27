@@ -3,7 +3,7 @@
  * 
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
- * @date 04/02/11
+ * @date 27/04/11
  * @package ListaStringhe
  *
  * Main File per la gestione di una lista di stringhe.
@@ -30,7 +30,7 @@ int main(void)
 	Op.InitNode = InizializzaNodoStringa;
 	Op.Print = StampaNodoStringa;
 	Op.DeleteNode = DeallocaStringa;
-//	Op.ManageDuplicate = ; //TODO inserire funzione duplicati
+	Op.ManageDuplicate = DuplicatoStringa; 
 	do 
 	{
 		//Mostra il menu con le scelte possibili
@@ -109,9 +109,12 @@ int main(void)
 				
 				break;
 			case '4': //Salvare la lista su file
+				//Modifico la funzione di stampa utilizzando quella per file
 				Op.Print = ScriviSuFileDiTesto;
+				//Azzero il contenuto del file
 				fopen( NOME_FILE, "w");
 				List_RecursivePrint( Head, &Op );
+				//Imposto la funzione di stampa su stdout
 				Op.Print = StampaNodoStringa;
 				break;
 			case '5': //Caricare la lista da file
