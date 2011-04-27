@@ -33,5 +33,6 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
 NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op );
 NODE *GestisciInserimentoNumeriCasuali( NODE *Head, OPERATIONS *Op );
 void GestisciStampaNumeri( NODE *Head, OPERATIONS *Op );
+NODE *GestisciCancellazioneIntervallo( NODE *Head, OPERATIONS *Op );
 
 #endif

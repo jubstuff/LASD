@@ -19,12 +19,12 @@
 
 int main(void) {
 	NODE *Head;        /**< Testa della lista */
-	OPERATIONS Op;      /**< Elenco delle operazioni che operano sui nodi */
+	OPERATIONS Op;     /**< Elenco delle operazioni che operano sui nodi */
 	int  MenuChoice;   /**< Operazione scelta nel menu */
 	
 	//inizializza la lista
 	Head = NULL;
-	//Inizializzo la struct con le operazioni
+	//Inizializza la struct con le operazioni
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
 	Op.DeleteNode = DeallocaInt;
@@ -51,11 +51,14 @@ int main(void) {
 			case '4': //inserimento numeri casuali
 			    Head = GestisciInserimentoNumeriCasuali( Head, &Op );
 				break;
+			case '5': //eliminazione intervallo
+				Head = GestisciCancellazioneIntervallo( Head, &Op );
+				break;
 			case '9': //stampare la lista a video
 			    GestisciStampaNumeri( Head, &Op );
 				break;
 			case '0': //uscita
-				//Mi assicuro che la lista sia deallocata prima di uscire
+				//Assicura la lista sia deallocata prima di uscire
 				Head = List_RecursiveDestroy( Head, &Op );
 				break;
 

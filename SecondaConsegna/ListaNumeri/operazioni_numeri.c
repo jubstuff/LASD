@@ -113,6 +113,7 @@ char Menu()
 	puts("2 - Eliminare un numero dalla lista.");
 	puts("3 - Eliminare tutti i numeri dalla lista.");
 	puts("4 - Inserire dei numeri casuali.");
+	puts("5 - Cancellare i numeri in un intervallo.");
 	puts("9 - Stampa la lista a video.");
 	puts("0 - Esci");
 	puts("Operazione da effettuare? ");
@@ -133,6 +134,9 @@ void Pause()
 	fgetc(stdin);
 }
 
+/** 
+ * FUNZIONI DI GESTIONE NEL MENU
+ * */
 NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 {
 	int  Value;        /**< Variabile temporanea per la lettura da stdin */
@@ -264,4 +268,40 @@ void GestisciStampaNumeri( NODE *Head, OPERATIONS *Op )
 	{
 		printf("\n\nLa lista e' vuota.\n\n");
 	}
+}
+
+NODE *GestisciCancellazioneIntervallo( NODE *Head, OPERATIONS *Op )
+{
+	int  Inf;        /**< Limite inferiore dell'intervallo da eliminare */
+	int  Sup;        /**< Limite superiore dell'intervallo da eliminare */
+	int  Success;      /**< Flag per valori di ritorno delle funzioni */
+
+	//effettua l'eliminazione solo se la lista è non vuota
+	if ( Head != NULL )
+	{
+		printf("\nInserire il limite inferiore dell'intervallo\n");
+		printf("?>"); 
+		Success = LeggiIntero(&Inf);
+
+		printf("\nInserire il limite superiore dell'intervallo\n");
+		printf("?>"); 
+		Success = LeggiIntero(&Sup);
+
+		if( Success )
+		{
+			Head = List_RecursiveDeleteRange(Head, &Inf, &Sup, Op);
+		}
+		//Il valore immesso dall'utente non è valido
+		else 
+		{
+			printf("\n\nValore non valido\n\n");
+		}
+	}
+	//lista vuota
+	else
+	{
+		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+
+	return Head;
 }
