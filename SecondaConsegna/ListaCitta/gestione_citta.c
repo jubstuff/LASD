@@ -129,7 +129,18 @@ void *SalvaPersona( void *Value )
 {
 	//Questa dovrebbe creare una struct PERSONA, copiare i valori da
 	//<Value> e poi ritornarne l'indirizzo.
-	return Value;
+	PERSONA *PersTemp = (PERSONA *)Value;
+	PERSONA *NewPers = (PERSONA *)malloc( sizeof( PERSONA ) );
+
+	NewPers->Nome = (char *) malloc( (strlen(PersTemp->Nome) + 1) * sizeof(char) ); 
+	NewPers->Cognome = (char *) malloc( (strlen(PersTemp->Cognome) + 1) * sizeof(char) ); 
+	NewPers->Citta = (char *) malloc( (strlen(PersTemp->Citta) + 1) * sizeof(char) ); 
+
+	strcpy( NewPers->Nome, PersTemp->Nome); 
+	strcpy( NewPers->Cognome, PersTemp->Cognome);   
+	strcpy( NewPers->Citta, PersTemp->Citta);
+
+	return NewPers;
 }
 
 void CancellaPersona( void *Value )
