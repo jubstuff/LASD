@@ -1,7 +1,19 @@
+/**
+ * gestione_citta.c
+ * 
+ * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
+ *
+ * @date 27/04/11
+ * @package ListaCitta
+ *
+ * Implementazioni delle funzioni per la gestione di una lista di persone, 
+ * divise per città di residenza
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h>
-#include "gestione_citta.h"
 #include <string.h>
+#include "gestione_citta.h"
 
 /*============================================================================*
  * OPERAZIONI LISTA ESTERNA - ORDINATA PER CITTA'

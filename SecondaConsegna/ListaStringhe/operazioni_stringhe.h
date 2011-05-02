@@ -17,10 +17,12 @@
 #define _OPERAZIONI_STRINGHE_H_
 
 #define LENMAX      100 //Lunghezza massima input
-#define E_FOPEN     2
-#define E_FCLOSE    3
+#define E_FOPEN     2   //Errore apertura file
+#define E_FCLOSE    3   //Errore chiusura file
+
 #define NOME_FILE   "lista_stringhe.txt" /**< Nome del file in cui memorizzare/leggere */
- /*==============================================================================
+
+/*==============================================================================
  * Definizione di funzioni per la lista di stringhe
  *============================================================================*/
 void *InizializzaNodoStringa( void *Value );
@@ -37,21 +39,27 @@ void LeggiStringa( char *Buf, int LenMax);
 
 void DuplicatoStringa( void *Value, NODE *CurrentNode );
 
-
 /*==============================================================================
  * Funzioni relative alle voci del menu
  *============================================================================*/
 NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op );
 
 NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
+
 NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op );
+
 void GestisciStampaStringhe( NODE *Head, OPERATIONS *Op );
+
 NODE *GestisciCaricamentoDaFile( NODE *Head, OPERATIONS *Op );
+
+NODE *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus, OPERATIONS *Op );
+
+/*==============================================================================
+ * Funzioni di utilità
+ *============================================================================*/
 char Menu();
 
 void Pause();
-
-NODE *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus, OPERATIONS *Op );
 
 #endif //_OPERAZIONI_STRINGHE_H_
 

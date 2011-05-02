@@ -1,3 +1,15 @@
+/**
+ * gestione_citta.h
+ * 
+ * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
+ *
+ * @date 27/04/11
+ * @package ListaCitta
+ *
+ * Definizioni costanti e intestazioni delle funzioni per la gestione di una
+ * lista di persone, ordinate per città
+ * 
+ */
 #include "../lib/lista.h"
 
 #ifndef _GESTIONE_CITTA_H_

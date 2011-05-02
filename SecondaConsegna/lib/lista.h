@@ -4,13 +4,14 @@
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
  * @date 05/04/11
- * @package ListaGenerale
+ * @package lib
  *
  * Realizza alcune semplici funzioni per una lista, quali:
  *  - inserimento di un nodo
  *  - cancellazione di un nodo
  *  - stampa della lista
  *  - cancellazione di tutti i nodi della lista
+ *  - cancellazione di nodi compresi in un intervallo
  * 
  * La lista è di tipo a singola concatenazione.
  * 
@@ -23,6 +24,9 @@
 #define W_DUPLICATE 2   //Warning nell'inserimento di un nodo duplicato
 #define I_REMOVED   3   //Notifica che il nodo è stato rimosso correttamente
 
+/*=============================================================================*
+ * Definizioni struttura nodo
+ =============================================================================*/
 typedef struct node {
 	struct node *Next; /**< Puntatore al nodo successivo */
 	void *Info;        /**< Campo del nodo */
@@ -48,7 +52,7 @@ typedef int (*COMPARATOR)(const void *Arg1, const void *Arg2);
 /**
  * Una funzione che inizializza il campo del nodo
  *
- * @param Value Riferimento al valore da copiare nel campo del nodo
+ * @param Value Riferimento al valore da copiare o associare al campo del nodo
  *
  * @return Il riferimento al nuovo valore allocato
  * */
@@ -57,10 +61,12 @@ typedef void *(*INITIALIZER)( void *Value );
 /**                                
  * Una funzione che dealloca il valore memorizzato nel campo di un nodo
  *
+ * NOTA
+ * In linea generale questa funzione è speculare ad INITIALIZER
+ *
  * @param Value Riferimento al valore da deallocare
  * */
 typedef void (*DELETER)(void *InputValue, void *NodeInfo );
-typedef void (*DEALLOCATOR)(void *InputValue, void *NodeInfo);
 /**
  * Una funzione che stampa a video il valore memorizzato nel campo di un nodo
  *
@@ -69,21 +75,32 @@ typedef void (*DEALLOCATOR)(void *InputValue, void *NodeInfo);
 typedef void (*PRINTER)(const void *Value);
 
 /**
- * Una funzione che gestisce l'inserimento di nodi duplicati della lista
+ * Una funzione che gestisce l'occorrenza di nodi duplicati della lista all'atto
+ * dell'inserimento
+ *
+ * @param Value Riferimento al valore passato in input
+ * @param CurrentNode Riferimento al nodo in cui è stato trovato il duplicato
  *
  * */
 typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 
 /*=============================================================================*
- * Definizioni strutture
+ * Definizioni struttura operazioni di gestione dei nodi
  =============================================================================*/
 
-
+/**
+ * Questa struct contiene tutte le operazioni che permettono la gestione del 
+ * particolare tipo di nodo associato ad una lista.
+ *
+ * La libreria si aspetta che queste funzioni seguano le linee guida presentate
+ * nella descrizione di ogni tipo di puntatore a funzione.
+ *
+ * */
 typedef struct operations {
-	COMPARATOR Compare;       /**< Confronta due nodi */
-	INITIALIZER InitNode;    /**< Inizializza un nodo */
-	DELETER DeleteNode;      /**< Elimina un nodo */
-	PRINTER Print;           /**< Stampa un nodo */
+	COMPARATOR Compare;        /**< Confronta due nodi */
+	INITIALIZER InitNode;      /**< Inizializza un nodo */
+	DELETER DeleteNode;        /**< Elimina un nodo */
+	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
 } OPERATIONS;
 

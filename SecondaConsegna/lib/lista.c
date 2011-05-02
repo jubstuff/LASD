@@ -1,16 +1,23 @@
+/**
+ * lista.c
+ * 
+ * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
+ *
+ * @date 05/04/11
+ * @package lib
+ *
+ * Implementazioni delle funzioni per la gestione di una lista a concatenazione
+ * singola
+ *
+ * */
 #include <stdlib.h>
 #include "lista.h"
-
-
 
 /**
  * Inserisce un nodo all'interno della lista
  *
  * Questa funzione utilizza un approccio ricorsivo per inserire un nodo
  * con campo <Value> all'interno della lista <Current>.
- * 
- * NOTE Se un nodo con campo pari a <Value> è già esistente, la lista
- * non viene modificata
  * 
  * @param Value        Valore da inserire nel nodo.
  * @param Current      Testa della lista in cui inserire il nodo.

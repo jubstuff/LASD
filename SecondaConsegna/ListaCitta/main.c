@@ -1,3 +1,14 @@
+/**
+ * main.c
+ * 
+ * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
+ *
+ * @date 27/04/11
+ * @package ListaCitta
+ *
+ * Main File per la gestione di una lista di persone, ordinate per citta.
+ * 
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
