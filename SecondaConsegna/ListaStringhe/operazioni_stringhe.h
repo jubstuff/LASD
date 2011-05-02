@@ -48,6 +48,8 @@ NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op );
 
 NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
 NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op );
+void GestisciStampaStringhe( NODE *Head, OPERATIONS *Op );
+NODE *GestisciCaricamentoDaFile( NODE *Head, OPERATIONS *Op );
 char Menu();
 
 void Pause();

@@ -251,6 +251,54 @@ NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op )
 
 	return Head;
 }
+/**
+ * Gestisce la stampa della lista, notificando l'utente dell'esito dell'operazione
+ *
+ * */
+void GestisciStampaStringhe( NODE *Head, OPERATIONS *Op )
+{
+	if( Head != NULL )
+	{
+		printf("\n\n=================================================\n\n");
+		List_RecursivePrint( Head, Op );
+		printf("\n\n=================================================\n\n");
+	}
+	else
+	{
+		printf("\n\nLa lista e' vuota.\n\n");
+	}
+}
+NODE *GestisciCaricamentoDaFile( NODE *Head, OPERATIONS *Op )
+{
+	int ReturnStatus;        /**< Stato delle funzioni che agiscono sulla lista */
+
+	//visualizza un messaggio di avvertimento: cancellazione lista
+	//attuale
+	if ( Head != NULL )
+	{
+		printf("ATTENZIONE: La lista attuale verra' eliminata!\n");
+	}
+	//Elimina la lista attuale
+	Head = List_RecursiveDestroy( Head, Op );
+	Head = CaricaListaDaFile( NOME_FILE, LENMAX, &ReturnStatus, Op);
+
+	//Se ci sono stati errori al caricamento
+	if( ReturnStatus > 0 )
+	{
+		printf("\n");
+		// visualizza un messaggio dipendente da errno
+		perror("Errore nel caricamento del file");
+		printf("\n");
+	}
+	//OK, lista caricata dal file
+	else
+	{
+		printf("\nLista caricata correttamente dal file %s\n\n",
+				NOME_FILE);
+	}
+
+	return Head;
+}
 /*==============================================================================
  * Funzioni di utilità
  *============================================================================*/

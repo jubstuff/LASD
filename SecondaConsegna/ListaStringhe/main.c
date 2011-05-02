@@ -17,19 +17,19 @@
 
 int main(void)
 {
-	NODE *Head;              /**< Testa della lista */
-	OPERATIONS Op;
-	char MenuChoice;         /**< Operazione scelta nel menu */
-	int ReturnStatus;        /**< Stato delle funzioni che agiscono sulla lista */
+	NODE *Head;      /**< Testa della lista */
+	OPERATIONS Op;   /**< Elenco delle operazioni che operano sui nodi */
+	char MenuChoice; /**< Operazione scelta nel menu */
 
 	//inizializza la lista
 	Head = NULL;
-	
+	//inizializza la struct con le operazioni
 	Op.Compare = ConfrontaStringhe;
 	Op.InitNode = InizializzaNodoStringa;
 	Op.Print = StampaNodoStringa;
 	Op.DeleteNode = DeallocaStringa;
 	Op.ManageDuplicate = DuplicatoStringa; 
+
 	do 
 	{
 		//Mostra il menu con le scelte possibili
@@ -58,46 +58,11 @@ int main(void)
 				Op.Print = StampaNodoStringa;
 				break;
 			case '5': //Caricare la lista da file
-			
-				//visualizza un messaggio di avvertimento: cancellazione lista
-				//attuale
-				if ( Head != NULL )
-				{
-					printf("ATTENZIONE: La lista attuale verra' eliminata!\n");
-				}
-				//Elimina la lista attuale
-				Head = List_RecursiveDestroy( Head, &Op );
-				Head = CaricaListaDaFile( NOME_FILE, LENMAX, &ReturnStatus, &Op);
-
-				//Se ci sono stati errori al caricamento
-				if( ReturnStatus > 0 )
-				{
-					printf("\n");
-					// visualizza un messaggio dipendente da errno
-					perror("Errore nel caricamento del file");
-					printf("\n");
-				}
-				//OK, lista caricata dal file
-				else
-				{
-					printf("\nLista caricata correttamente dal file %s\n\n",
-							NOME_FILE);
-				}
+			    Head = GestisciCaricamentoDaFile( Head, &Op );
 				break;
 			case '9': //Stampare la lista a video
 				
-				//Se la lista è non vuota, stampa i suoi elementi
-				if( Head != NULL )
-				{
-					printf("\n\n=================================================\n\n");
-					List_RecursivePrint( Head, &Op );
-					printf("\n\n=================================================\n\n");
-				}
-				else
-				{
-					printf("\n\nLa lista e' vuota.\n\n");
-				}
-				
+				GestisciStampaStringhe( Head, &Op );
 				break;
 			case '0': //Uscita
 				//dealloco la lista prima dell'uscita
@@ -113,3 +78,4 @@ int main(void)
 	
     return 0;
 }
+
