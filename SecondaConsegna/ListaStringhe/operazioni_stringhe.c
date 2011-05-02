@@ -195,6 +195,41 @@ NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op )
 	}
 	return Head; 
 }
+
+NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
+{
+	char TempBuffer[LENMAX]; /**< Buffer temporaneo per la lettura da stdin */
+	int ReturnStatus;        /**< Stato delle funzioni che agiscono sulla lista */
+
+	//Se la lista non è vuota, cerca il nodo indicato
+	if ( Head != NULL )
+	{
+		printf("\nInserire la stringa da eliminare [massimo %d caratteri]\n", 
+				LENMAX);
+
+		LeggiStringa(TempBuffer, LENMAX);
+
+		Head = List_RecursiveDelete(TempBuffer, Head, &ReturnStatus, Op);
+
+		//Trovato un nodo con il valore dato
+		if ( ReturnStatus == I_REMOVED )
+		{
+			printf("\nStringa eliminata\n\n");
+		}
+		//Nodo con valore dato non trovato
+		else
+		{
+			printf("\nStringa non trovata\n\n");
+		}
+	}
+	//lista vuota
+	else
+	{
+		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+
+	return Head;
+}
 /*==============================================================================
  * Funzioni di utilità
  *============================================================================*/

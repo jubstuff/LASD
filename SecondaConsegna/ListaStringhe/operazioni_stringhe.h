@@ -45,6 +45,8 @@ void DuplicatoStringa( void *Value, NODE *CurrentNode );
  * Funzioni relative alle voci del menu
  *============================================================================*/
 NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op );
+
+NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
 char Menu();
 
 void Pause();

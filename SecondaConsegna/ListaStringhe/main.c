@@ -40,59 +40,9 @@ int main(void)
 		{
 			case '1': //Inserire un nodo nella lista
 			    Head = GestisciInserimentoStringa( Head, &Op );
-				/*printf("\nInserire la stringa [massimo %d caratteri]\n", LENMAX);
-				printf("?>");
-				LeggiStringa(TempBuffer, LENMAX);
-				
-				Head = List_RecursiveOrderedInsert(TempBuffer, Head, &ReturnStatus, &Op);
-				
-				//Se il nodo è già presente nella lista, notifica
-				if( ReturnStatus == W_DUPLICATE )
-				{
-					printf("\nValore gia' presente\n");
-				}
-				//Verifica se c'è stato un altro tipo di errore 
-				else if( ReturnStatus > 0 )
-				{
-					perror("C'e' stato un errore nell'inserimento");
-				}
-				//Ok, valore inserito
-				else
-				{
-					printf("\nValore inserito\n\n");
-				}*/
-				
 				break;
 			case '2': //Eliminare un nodo dalla lista
-			
-				//Se la lista non è vuota, cerca il nodo indicato
-				if ( Head != NULL )
-				{
-					printf("\nInserire la stringa da eliminare [massimo %d caratteri]\n", 
-						LENMAX);
-					
-					LeggiStringa(TempBuffer, LENMAX);
-					
-					Head = List_RecursiveDelete(TempBuffer, Head, &ReturnStatus, &Op);
-					
-					//Trovato un nodo con il valore dato
-					if ( ReturnStatus == I_REMOVED )
-					{
-						printf("\nStringa eliminata\n\n");
-					}
-					//Nodo con valore dato non trovato
-					else
-					{
-						printf("\nStringa non trovata\n\n");
-					}
-				}
-				//lista vuota
-				else
-				{
-					printf("\n\nLa lista e' gia' vuota.\n\n");
-				}
-				
-				
+				Head = GestisciCancellazioneNodo( Head, &Op );
 				break;
 			case '3': //Cancellare tutta la lista
 				
