@@ -230,6 +230,27 @@ NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op )
 
 	return Head;
 }
+
+/**
+ * Gestisce la cancellazione della lista
+ *
+ * Dealloca tutti i nodi della lista, notificando l'esito dell'operazione
+ * */
+NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op )
+{
+	//dealloca la lista solo se non vuota
+	if( Head != NULL )
+	{
+		printf("\n\nCancellazione Lista...\n\n");
+		Head = List_RecursiveDestroy( Head, Op );
+	}
+	else
+	{
+		printf("\n\nLa lista e' gia' vuota.\n\n");
+	}
+
+	return Head;
+}
 /*==============================================================================
  * Funzioni di utilità
  *============================================================================*/

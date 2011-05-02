@@ -20,7 +20,6 @@ int main(void)
 	NODE *Head;              /**< Testa della lista */
 	OPERATIONS Op;
 	char MenuChoice;         /**< Operazione scelta nel menu */
-    char TempBuffer[LENMAX]; /**< Buffer temporaneo per la lettura da stdin */
 	int ReturnStatus;        /**< Stato delle funzioni che agiscono sulla lista */
 
 	//inizializza la lista
@@ -45,18 +44,7 @@ int main(void)
 				Head = GestisciCancellazioneNodo( Head, &Op );
 				break;
 			case '3': //Cancellare tutta la lista
-				
-				// Se la lista è non vuota, cancella tutti i nodi
-				if( Head != NULL )
-				{
-					printf("\n\nCancellazione Lista...\n\n");
-					Head = List_RecursiveDestroy( Head, &Op );
-				}
-				else
-				{
-					printf("\n\nLa lista e' gia' vuota.\n\n");
-				}
-				
+				Head = GestisciDistruzioneLista( Head, &Op );
 				break;
 			case '4': //Salvare la lista su file
 				//Modifico la funzione di stampa utilizzando quella per file

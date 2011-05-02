@@ -47,6 +47,7 @@ void DuplicatoStringa( void *Value, NODE *CurrentNode );
 NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op );
 
 NODE *GestisciCancellazioneNodo( NODE *Head, OPERATIONS *Op );
+NODE *GestisciDistruzioneLista( NODE *Head, OPERATIONS *Op );
 char Menu();
 
 void Pause();
