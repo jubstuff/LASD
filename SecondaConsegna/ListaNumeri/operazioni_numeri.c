@@ -12,6 +12,7 @@
 #include "operazioni_numeri.h"
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
 
 /**
  * Alloca un nuovo intero e lo inizializza

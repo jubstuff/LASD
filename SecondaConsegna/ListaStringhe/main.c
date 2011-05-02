@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../List/src/lista.h"
+#include "../lib/lista.h"
 #include "operazioni_stringhe.h"
 
 int main(void)

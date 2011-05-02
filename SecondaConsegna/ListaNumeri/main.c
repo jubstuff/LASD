@@ -11,16 +11,16 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../List/src/lista.h"
+#include "../lib/lista.h"
 #include "operazioni_numeri.h"
 #include <string.h>
 #include <time.h>
 
 
 int main(void) {
-	NODE *Head;        /**< Testa della lista */
-	OPERATIONS Op;     /**< Elenco delle operazioni che operano sui nodi */
-	int  MenuChoice;   /**< Operazione scelta nel menu */
+	NODE *Head;      /**< Testa della lista */
+	OPERATIONS Op;   /**< Elenco delle operazioni che operano sui nodi */
+	int  MenuChoice; /**< Operazione scelta nel menu */
 	
 	//inizializza la lista
 	Head = NULL;

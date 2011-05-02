@@ -1,4 +1,5 @@
-#include "../../List/src/lista.h"
+#include "../lib/lista.h"
+
 #ifndef _GESTIONE_CITTA_H_
 #define _GESTIONE_CITTA_H_
 

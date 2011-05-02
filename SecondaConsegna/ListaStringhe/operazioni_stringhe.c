@@ -11,6 +11,9 @@
  * 
  */
 #include "operazioni_stringhe.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 /*==============================================================================
  * Definizione di funzioni per la lista di stringhe
  *============================================================================*/

@@ -11,10 +11,7 @@
  * 
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "../../List/src/lista.h"
+#include "../lib/lista.h"
 
 #ifndef _OPERAZIONI_STRINGHE_H_
 #define _OPERAZIONI_STRINGHE_H_

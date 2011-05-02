@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../../List/src/lista.h"
+#include "../lib/lista.h"
 #include "gestione_citta.h"
 
 int main(void)
