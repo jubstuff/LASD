@@ -118,7 +118,7 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 		{
 			Temp = Current->Next;
 			//Dealloca il campo chiave del nodo
-			Op->DeleteNode( Current->Info );
+			Op->DeleteNode( Value, Current->Info );
 			
 			//Libera memoria per il nodo
    			free( Current );
@@ -166,7 +166,7 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
 			if( Op->Compare(Current->Info, Inf) >= 0 )
 			{
 				Temp = Current->Next;
-				Op->DeleteNode(Current->Info);
+				Op->DeleteNode( Current->Info, Current->Info);
 				free(Current);
 				Current = Temp;
 			}
@@ -192,7 +192,7 @@ NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
 		/* scorre la lista fino all'ultimo ed effettua la cancellazione
 		 * in ordine inverso */
 		Current->Next = List_RecursiveDestroy(Current->Next, Op);
-		Op->DeleteNode(Current->Info);
+		Op->DeleteNode( Current->Info, Current->Info);
 		free(Current);
 		Current = NULL;
 	}

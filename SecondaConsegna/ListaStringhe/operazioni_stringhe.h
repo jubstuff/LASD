@@ -30,7 +30,9 @@ void *InizializzaNodoStringa( void *Value );
 
 void StampaNodoStringa(const void *Value);
 
-void DeallocaStringa( void *Value );
+void ScriviSuFileDiTesto( const void *Value );
+
+void DeallocaStringa( void *InputValue, void *NodeInfo );
 
 int ConfrontaStringhe( const void *Str1, const void *Str2 );
 
@@ -38,11 +40,14 @@ void LeggiStringa( char *Buf, int LenMax);
 
 void DuplicatoStringa( void *Value, NODE *CurrentNode );
 
+
+/*==============================================================================
+ * Funzioni relative alle voci del menu
+ *============================================================================*/
+NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op );
 char Menu();
 
 void Pause();
-
-void ScriviSuFileDiTesto( const void *Value );
 
 NODE *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus, OPERATIONS *Op );
 

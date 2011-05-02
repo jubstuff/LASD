@@ -59,8 +59,8 @@ typedef void *(*INITIALIZER)( void *Value );
  *
  * @param Value Riferimento al valore da deallocare
  * */
-typedef void (*DELETER)(void *Value);
-
+typedef void (*DELETER)(void *InputValue, void *NodeInfo );
+typedef void (*DEALLOCATOR)(void *InputValue, void *NodeInfo);
 /**
  * Una funzione che stampa a video il valore memorizzato nel campo di un nodo
  *

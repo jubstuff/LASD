@@ -24,7 +24,7 @@ void *InizializzaNodoInt( void *Value );
 
 void StampaNodoInt( const void *Value );
 
-void DeallocaInt( void *Value );
+void DeallocaInt( void *InputValue, void *NodeInfo );
 
 int NumCmp( const void *Num1, const void *Num2 );
 

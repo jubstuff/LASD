@@ -20,7 +20,7 @@ int main(void)
 
 	Op.Compare = ConfrontaNodoCitta;
 	Op.InitNode = InizializzaNodoCitta;
-	//Op.DeleteNode = EliminaNodoCitta;
+	Op.DeleteNode = EliminaNodoCitta;
 	Op.Print = StampaListaCitta;
 	Op.ManageDuplicate = DuplicatoCitta; 
 	do 
@@ -52,7 +52,7 @@ int main(void)
 				//Verifica se c'è stato un errore
 				if( ReturnStatus > 0 )
 				{
-					perror("C'e' stato un errore nell'inserimento");
+					printf("C'e' stato un errore nell'inserimento");
 				}
 				//Ok, valore inserito
 				else
@@ -60,6 +60,47 @@ int main(void)
 					printf("\nValore inserito\n\n");
 				}
 
+				break;
+			case '2':
+				printf("\nInserire il nome [massimo %d caratteri]\n", LENMAX);
+				printf("?>");
+				LeggiStringa(NomeTemp, LENMAX);
+
+				printf("\nInserire il cognome [massimo %d caratteri]\n", LENMAX);
+				printf("?>");
+				LeggiStringa(CognomeTemp, LENMAX);
+
+				printf("\nInserire la citta' [massimo %d caratteri]\n", LENMAX);
+				printf("?>");
+				LeggiStringa(CittaTemp, LENMAX);
+
+				PersTemp.Nome = NomeTemp;
+				PersTemp.Cognome = CognomeTemp;
+				PersTemp.Citta = CittaTemp;
+
+				Head = List_RecursiveDelete( (void *)&PersTemp, Head, &ReturnStatus, &Op );
+				//Trovato un nodo con il valore dato
+				if ( ReturnStatus == I_REMOVED )
+				{
+					printf("\nPersona eliminata\n\n");
+				}
+				//Nodo con valore dato non trovato
+				else
+				{
+					printf("\nPersona non trovata\n\n");
+				}
+				break;
+			case '3':
+				// Se la lista è non vuota, cancella tutti i nodi
+				if( Head != NULL )
+				{
+					printf("\n\nCancellazione Lista...\n\n");
+					Head = List_RecursiveDestroy( Head, &Op );
+				}
+				else
+				{
+					printf("\n\nLa lista e' gia' vuota.\n\n");
+				}
 				break;
 			case '9': //Stampare la lista a video
 
@@ -77,7 +118,7 @@ int main(void)
 
 				break;
 			case '0': //Uscita
-				//Head = List_RecursiveDestroy( Head, &Op ); //TODO rimuovere commento dopo aver implementato cancellazione
+				Head = List_RecursiveDestroy( Head, &Op ); 
 				break;
 
 			default: //Operazione scelta non valida

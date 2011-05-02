@@ -31,17 +31,17 @@ int ConfrontaPersona( const void *Pers1, const void *Pers2 );
 
 void *InizializzaNodoCitta( void *Value );
 
-void DuplicatoCitta( void *Value, NODE *Current );
+void DuplicatoCitta( void *Persona, NODE *HeadContainer );
 
-void StampaListaCitta( const void *Value );
+void StampaListaCitta( const void *Head );
 
-void EliminaNodoCitta( const void *Value );
+void EliminaNodoCitta(void *Persona, void *NodeInfo);
 
 OPERATIONS *InizializzaOperazioniListaPersone( void );
 
-void *SalvaPersona( void *Value );
+void *InizializzaPersona( void *InputPers );
 
-void CancellaPersona( void *Value );
+void CancellaPersona( void *Value, void *NodeInfo );
 
 void StampaPersona( const void *Value );
 

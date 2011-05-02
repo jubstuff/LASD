@@ -39,8 +39,8 @@ int main(void)
 		switch( MenuChoice )
 		{
 			case '1': //Inserire un nodo nella lista
-			
-				printf("\nInserire la stringa [massimo %d caratteri]\n", LENMAX);
+			    Head = GestisciInserimentoStringa( Head, &Op );
+				/*printf("\nInserire la stringa [massimo %d caratteri]\n", LENMAX);
 				printf("?>");
 				LeggiStringa(TempBuffer, LENMAX);
 				
@@ -60,7 +60,7 @@ int main(void)
 				else
 				{
 					printf("\nValore inserito\n\n");
-				}
+				}*/
 				
 				break;
 			case '2': //Eliminare un nodo dalla lista
@@ -111,10 +111,12 @@ int main(void)
 			case '4': //Salvare la lista su file
 				//Modifico la funzione di stampa utilizzando quella per file
 				Op.Print = ScriviSuFileDiTesto;
-				//Azzero il contenuto del file
+				//Azzero il contenuto del file, aprendolo in scrittura
 				fopen( NOME_FILE, "w");
+
+                //Stampo la lista su file
 				List_RecursivePrint( Head, &Op );
-				//Imposto la funzione di stampa su stdout
+				//Reimposto la funzione di stampa su stdout
 				Op.Print = StampaNodoStringa;
 				break;
 			case '5': //Caricare la lista da file
@@ -141,7 +143,7 @@ int main(void)
 				else
 				{
 					printf("\nLista caricata correttamente dal file %s\n\n",
-							TempBuffer);
+							NOME_FILE);
 				}
 				break;
 			case '9': //Stampare la lista a video
@@ -160,6 +162,7 @@ int main(void)
 				
 				break;
 			case '0': //Uscita
+				//dealloco la lista prima dell'uscita
 				Head = List_RecursiveDestroy( Head, &Op );
 				break;
 

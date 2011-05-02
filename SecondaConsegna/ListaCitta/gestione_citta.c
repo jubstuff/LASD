@@ -13,10 +13,13 @@
  * Il primo parametro è il campo info del nodo della lista esterna, mentre
  * il secondo parametro è la struct PERSONA che si vuole inserire nella 
  * lista interna.
+ *
+ * @return -1, 0, 1 se Nodo1->Info [>,==,<] Persona rispettivamente
  * */
 int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 {
 	NODE *Nodo = (NODE *)Nodo1;
+	//Recupero il campo del primo elemento della lista
 	PERSONA *P1 =  (PERSONA *)(Nodo->Info);
 	PERSONA *P2 =  (PERSONA *)Persona;
 
@@ -25,7 +28,7 @@ int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 
 
 /**
- * Funzione che crea un nodo della lista interna.
+ * Inserisce un nodo nella lista
  *
  * Questa funzione inserisce un nodo con campo pari alla PERSONA passata in
  * ingresso nella lista interna, la cui testa è il campo info del nodo della 
@@ -53,8 +56,16 @@ void *InizializzaNodoCitta( void *Value )
 
 	return (void *)InnerHead;
 }
-
-void DuplicatoCitta( void *Value, NODE *Current )
+/**
+ * Gestisce l'inserimento di una persona nella lista, nel caso esista già
+ * una persona residente nella stessa città.
+ *
+ * @param Persona       Riferimento alla struct PERSONA da inserire nella lista
+ * @param HeadContainer Riferimento al nodo contenente la testa della lista 
+ *                      relativa alla città di residenza della persona in input
+ *
+ * */
+void DuplicatoCitta( void *Persona, NODE *HeadContainer )
 {
 	//A questa funzione viene passato l'indirizzo della struct Persona e
 	//un riferimento al nodo in cui è stato trovato il duplicato
@@ -65,7 +76,8 @@ void DuplicatoCitta( void *Value, NODE *Current )
 
 	InnerOp = InizializzaOperazioniListaPersone();
     printf("Inserisco il duplicato\n");
-	Current->Info = List_RecursiveOrderedInsert(Value, Current->Info, &ReturnStatus, InnerOp); //TODO check error
+	HeadContainer->Info = List_RecursiveOrderedInsert(Persona, HeadContainer->Info,
+		   	&ReturnStatus, InnerOp); //TODO check error
 
 	free(InnerOp);
 
@@ -73,8 +85,10 @@ void DuplicatoCitta( void *Value, NODE *Current )
 /**
  * Scorre la lista esterna, richiamando la funzione di stampa della libreria sul
  * campo info (che è la testa della lista interna relativa a quella città)
+ *
+ * @param Head Testa della lista relativa ad una città
  * */
-void StampaListaCitta( const void *Value )
+void StampaListaCitta( const void *Head )
 {
 	/* che deve fare questa funzione? Gli viene passato
 	 * un nodo come valore, quindi deve richiamare la funzione 
@@ -83,18 +97,43 @@ void StampaListaCitta( const void *Value )
 	OPERATIONS *InnerOp;
 	InnerOp = InizializzaOperazioniListaPersone();
 
-	List_RecursivePrint( (NODE *)Value, InnerOp );
+	List_RecursivePrint( (NODE *)Head, InnerOp );
 	free(InnerOp);
 
 }
-
-/*void EliminaNodoCitta( const void *Value )
+/**
+ * Elimina una persona dalla lista
+ *
+ * Elimina una persona dalla lista relativa ad una data città,
+ * dati in input Nome, Cognome e città di residenza.
+ *
+ * @param Persona  Riferimento alla persona da eliminare
+ * @param NodeInfo Testa della lista relativa alla città di residenza della
+ *                 persona da eliminare
+ *
+ * */
+void EliminaNodoCitta(void *Persona, void *NodeInfo)
 {
-	List_RecursiveDelete( NODE *Value, ); 
-}*/
+	NODE *HeadTemp = (NODE *)NodeInfo;
+    int ReturnStatus; 
+	OPERATIONS *InnerOp;
+
+	InnerOp = InizializzaOperazioniListaPersone();
+
+	HeadTemp = List_RecursiveDelete( Persona, HeadTemp, &ReturnStatus, InnerOp ); 
+	free(InnerOp);
+}
 /*============================================================================*
  * OPERAZIONI LISTA INTERNA - ORDINATA PER PERSONA
  *===========================================================================*/
+/**
+ * Confronta in ordine lessicografico due persone per cognome e poi per nome.
+ *
+ * @param Pers1 Riferimento alla prima struct PERSONA da confrontare
+ * @param Pers2 Riferimento alla seconda struct PERSONA da confrontare
+ *
+ * @return -1, 0, 1 se Pers1 [>,==,<] Pers2 rispettivamente
+ * */
 int ConfrontaPersona( const void *Pers1, const void *Pers2 )
 {
 	int ReturnStatus;
@@ -109,27 +148,46 @@ int ConfrontaPersona( const void *Pers1, const void *Pers2 )
 
 	return ReturnStatus;
 }
-
+/**
+ * Alloca e inizializza una struct OPERATIONS contenente i puntatori a funzioni
+ * per la gestione di una lista di struct PERSONA.
+ *
+ * @return Riferimento alla struct OPERATIONS inizializzata
+ *
+ * NOTA
+ * È compito del programmatore deallocare la struct dopo l'utilizzo
+ *
+ * */
 OPERATIONS *InizializzaOperazioniListaPersone( void )
 {
 	OPERATIONS *InnerOp;
 
-	InnerOp = (OPERATIONS *)malloc( sizeof(OPERATIONS) ); //TODO check errors
-
-	InnerOp->InitNode = SalvaPersona;
-	InnerOp->Compare = ConfrontaPersona;
-	InnerOp->DeleteNode = CancellaPersona;
-	InnerOp->Print = StampaPersona;
-	InnerOp->ManageDuplicate = DuplicatoPersona; //TODO aggiungere funzione per duplicati
+	InnerOp = (OPERATIONS *)malloc( sizeof(OPERATIONS) );
+	if( InnerOp != NULL )
+	{
+		InnerOp->InitNode = InizializzaPersona;
+		InnerOp->Compare = ConfrontaPersona;
+		InnerOp->DeleteNode = CancellaPersona;
+		InnerOp->Print = StampaPersona;
+		InnerOp->ManageDuplicate = DuplicatoPersona; 
+	}
 
 	return InnerOp;
 }
-
-void *SalvaPersona( void *Value )
+/**
+ * Alloca e inizializza una struct PERSONA e tutti i suoi campi, copiandoli 
+ * dalla struct PERSONA passata in input.
+ *
+ * @param InputPers Struct PERSONA da cui copiare i valori della persona da 
+ *                  creare.
+ *
+ * @return Riferimento alla struct PERSONA allocata
+ * */
+void *InizializzaPersona( void *InputPers )
 {
 	//Questa dovrebbe creare una struct PERSONA, copiare i valori da
-	//<Value> e poi ritornarne l'indirizzo.
-	PERSONA *PersTemp = (PERSONA *)Value;
+	//<InputPers> e poi ritornarne l'indirizzo.
+	PERSONA *PersTemp = (PERSONA *)InputPers;
 	PERSONA *NewPers = (PERSONA *)malloc( sizeof( PERSONA ) );
 
 	NewPers->Nome = (char *) malloc( (strlen(PersTemp->Nome) + 1) * sizeof(char) ); 
@@ -142,23 +200,36 @@ void *SalvaPersona( void *Value )
 
 	return NewPers;
 }
-
-void CancellaPersona( void *Value )
+/**
+ * Dealloca una struct PERSONA e tutti i suoi campi
+ *
+ * @param Value Valore da eliminare dalla lista
+ * @param NodeInfo Riferimento al campo da deallocare
+ *
+ * */
+void CancellaPersona( void *Value, void *NodeInfo )
 {
-   PERSONA *PersTemp = (PERSONA *)Value;
+   PERSONA *PersTemp = (PERSONA *)NodeInfo;
    free( PersTemp->Nome );
    free( PersTemp->Cognome );
    free( PersTemp->Citta );
    free( PersTemp );
 }	
-
+/**
+ * Visualizza nome, cognome e città di residenza di una persona sullo stdout
+ *
+ * */
 void StampaPersona( const void *Value )
 {
 	PERSONA *P = (PERSONA *)Value;
 	printf("%s %s - %s\n", P->Nome, P->Cognome, P->Citta);
 }
-
-
+/**
+ * Visualizza un messaggio sullo stdout, notificando che una persona con 
+ * nome e cognome uguale a quella passata in input, è già presente in quella
+ * determinata città 
+ *
+ * */
 void DuplicatoPersona( void *Value, NODE *CurrentNode )
 {
 	printf("Persona già presente\n"); 

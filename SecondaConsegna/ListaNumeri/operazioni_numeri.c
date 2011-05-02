@@ -41,12 +41,13 @@ void StampaNodoInt( const void *Value )
 /**
  * Dealloca un intero
  *
- * @param Value Riferimento all'intero da deallocare
+ * @param InputValue Valore da eliminare passato in ingresso
+ * @param NodeInfo   Riferimento al valore da deallocare
  *
  * */
-void DeallocaInt( void *Value )
+void DeallocaInt( void *InputValue, void *NodeInfo )
 {
-	free(Value);
+	free( NodeInfo );
 }
 /**
  * Confronta due interi
@@ -59,8 +60,8 @@ void DeallocaInt( void *Value )
 int NumCmp( const void *Num1, const void *Num2 )
 {
 	int ReturnValue;
-	int First = *( (int *)FirstArg );
-	int Second = *( (int *)SecondArg );
+	int First = *( (int *)Num1 );
+	int Second = *( (int *)Num2 );
 
 	if ( First < Second )
 	{

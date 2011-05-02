@@ -45,9 +45,9 @@ void StampaNodoStringa(const void *Value)
  * @param Value Riferimento alla stringa da deallocare
  *
  * */
-void DeallocaStringa( void *Value )
+void DeallocaStringa( void *InputValue, void *NodeInfo )
 {
-	free( (char *)Value );
+	free( NodeInfo );
 }
 /**
  * Confronta due stringhe, in ordine lessicografico
@@ -78,32 +78,23 @@ void DuplicatoStringa( void *Value, NODE *CurrentNode )
  * singolo nodo
  *
  * @param Value Valore da stampare
- * TODO Chiedere cosa fare in caso di errore, dato che siamo all'interno di una chiamata ricorsiva
+ * 
  */
 void ScriviSuFileDiTesto( const void *Value )
 {
 	FILE *Fp; /**< Puntatore al file su cui scrivere */
 	
 	//inizializzazione variabili e parametri
-	Fp            = NULL;
-	int ReturnStatus = 0;
+	Fp = NULL;
 	
 	Fp = fopen( NOME_FILE, "a" );
-	if( Fp == NULL )
-	{
-		ReturnStatus = E_FOPEN; //errore apertura file
-	}
-	//File aperto, effettua l'operazione di scrittura
-	else
+	if( Fp != NULL )
 	{
 		//Finché ci sono nodi, scrivi la stringa sul file
 		fprintf( Fp, "%s\n", (char *)Value );
+		fclose(Fp);
 	}
 	
-	if( fclose(Fp) == EOF )
-	{
-		ReturnStatus = E_FCLOSE; //errore chiusura del file
-	}
 }
 /**
  * Legge una serie di stringhe da un file, salvandole in una lista concatenata.
@@ -171,6 +162,38 @@ NODE *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus, OPERATI
 	}
 	
 	return TempHead;
+}
+
+/*==============================================================================
+ * Funzioni relative alle voci del menu
+ *============================================================================*/
+NODE *GestisciInserimentoStringa( NODE *Head, OPERATIONS *Op )
+{
+    char TempBuffer[LENMAX]; /**< Buffer temporaneo per la lettura da stdin */
+	int ReturnStatus;        /**< Stato delle funzioni che agiscono sulla lista */
+
+	printf("\nInserire la stringa [massimo %d caratteri]\n", LENMAX);
+	printf("?>");
+	LeggiStringa(TempBuffer, LENMAX);
+
+	Head = List_RecursiveOrderedInsert(TempBuffer, Head, &ReturnStatus, Op);
+
+	//Se il nodo è già presente nella lista, notifica
+	if( ReturnStatus == W_DUPLICATE )
+	{
+		printf("\nValore gia' presente\n");
+	}
+	//Verifica se c'è stato un altro tipo di errore 
+	else if( ReturnStatus > 0 )
+	{
+		perror("C'e' stato un errore nell'inserimento");
+	}
+	//Ok, valore inserito
+	else
+	{
+		printf("\nValore inserito\n\n");
+	}
+	return Head; 
 }
 /*==============================================================================
  * Funzioni di utilità
