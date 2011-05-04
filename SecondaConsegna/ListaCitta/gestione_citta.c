@@ -35,9 +35,10 @@ int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 	PERSONA *P1 =  (PERSONA *)(Nodo->Info);
 	PERSONA *P2 =  (PERSONA *)Persona;
 
+	//Confronto le città di residenza della PERSONA passata in input con quella
+	//presente nel primo elemento della lista di quella città
 	return strcasecmp( P1->Citta, P2->Citta );
 }
-
 
 /**
  * Inserisce un nodo nella lista
@@ -53,15 +54,16 @@ int ConfrontaNodoCitta( const void *Nodo1, const void *Persona )
 void *InizializzaNodoCitta( void *Value )
 {
 	//A questa funzione viene passato l'indirizzo della struct Persona
-	NODE *InnerHead;
-	OPERATIONS *InnerOp;
-	int ReturnStatus;
+	NODE *InnerHead;     /**< Riferimento alla testa della lista della città*/
+	OPERATIONS *InnerOp; /**< Operazioni per gestire i nodi PERSONA */
+	int ReturnStatus;    /**< Stato di ritorno della funzione */
 
+	//Inizializzazione variabili
 	InnerHead = NULL;         
 	ReturnStatus = 0;
 
 	InnerOp = InizializzaOperazioniListaPersone();
-
+    //Inserisco la persona nella lista relativa alla città di residenza
 	InnerHead = List_RecursiveOrderedInsert(Value, InnerHead, &ReturnStatus, InnerOp);
 
 	free(InnerOp);
@@ -81,15 +83,16 @@ void DuplicatoCitta( void *Persona, NODE *HeadContainer )
 {
 	//A questa funzione viene passato l'indirizzo della struct Persona e
 	//un riferimento al nodo in cui è stato trovato il duplicato
-	OPERATIONS *InnerOp;
-	int ReturnStatus;
+	OPERATIONS *InnerOp; /**< Operazioni per gestire i nodi PERSONA */
+	int ReturnStatus;    /**< Stato di ritorno della funzione */
 
+	//Inizializzazione variabili
 	ReturnStatus = 0;
 
 	InnerOp = InizializzaOperazioniListaPersone();
-    printf("Inserisco il duplicato\n");
+
 	HeadContainer->Info = List_RecursiveOrderedInsert(Persona, HeadContainer->Info,
-		   	&ReturnStatus, InnerOp); //TODO check error
+		   	&ReturnStatus, InnerOp);
 
 	free(InnerOp);
 
@@ -102,14 +105,16 @@ void DuplicatoCitta( void *Persona, NODE *HeadContainer )
  * */
 void StampaListaCitta( const void *Head )
 {
-	/* che deve fare questa funzione? Gli viene passato
-	 * un nodo come valore, quindi deve richiamare la funzione 
-	 * stampa della lista interna, semplicemente
+	/* A questa funzione viene passato
+	 * un nodo come parametro, quindi deve richiamare la funzione 
+	 * stampa della lista interna
 	 * */
-	OPERATIONS *InnerOp;
+	OPERATIONS *InnerOp; /**< Operazioni per gestire i nodi PERSONA */
+	
 	InnerOp = InizializzaOperazioniListaPersone();
 
 	List_RecursivePrint( (NODE *)Head, InnerOp );
+
 	free(InnerOp);
 
 }
@@ -126,13 +131,30 @@ void StampaListaCitta( const void *Head )
  * */
 void EliminaNodoCitta(void *Persona, void *NodeInfo)
 {
-	NODE *HeadTemp = (NODE *)NodeInfo;
-    int ReturnStatus; 
-	OPERATIONS *InnerOp;
+	NODE *HeadTemp;      /**< Testa della lista relativa alla città */
+	OPERATIONS *InnerOp; /**< Operazioni per gestire i nodi PERSONA */
+	int ReturnStatus;    /**< Stato di ritorno della funzione */
 
+	//Inizializzazione variabili
+	HeadTemp = (NODE *)NodeInfo;
 	InnerOp = InizializzaOperazioniListaPersone();
 
 	HeadTemp = List_RecursiveDelete( Persona, HeadTemp, &ReturnStatus, InnerOp ); 
+
+	free(InnerOp);
+}
+
+void EliminaListaCitta(void *Persona, void *NodeInfo)
+{
+	NODE *HeadTemp;      /**< Testa della lista relativa alla città */
+	OPERATIONS *InnerOp; /**< Operazioni per gestire i nodi PERSONA */
+
+	//Inizializzazione variabili
+	HeadTemp = (NODE *)NodeInfo;
+	InnerOp = InizializzaOperazioniListaPersone();
+
+	HeadTemp = List_RecursiveDestroy( HeadTemp, InnerOp ); 
+
 	free(InnerOp);
 }
 /*============================================================================*
@@ -149,12 +171,15 @@ void EliminaNodoCitta(void *Persona, void *NodeInfo)
 int ConfrontaPersona( const void *Pers1, const void *Pers2 )
 {
 	int ReturnStatus;
-	PERSONA *P1 =  (PERSONA *)Pers1;
-	PERSONA *P2 =  (PERSONA *)Pers2;
+	PERSONA *P1 = (PERSONA *)Pers1;
+	PERSONA *P2 = (PERSONA *)Pers2;
 
+	//Confronta i cognomi
 	ReturnStatus = strcasecmp( P1->Cognome, P2->Cognome );
+	//Se il cognome delle due persone è lo stesso, confronta i due nomi
 	if( ReturnStatus == 0 )
 	{
+		//Confronta i nomi
 		ReturnStatus = strcasecmp( P1->Nome, P2->Nome );
 	}
 
@@ -179,7 +204,7 @@ OPERATIONS *InizializzaOperazioniListaPersone( void )
 	{
 		InnerOp->InitNode = InizializzaPersona;
 		InnerOp->Compare = ConfrontaPersona;
-		InnerOp->DeleteNode = CancellaPersona;
+		InnerOp->Delete = CancellaPersona;
 		InnerOp->Print = StampaPersona;
 		InnerOp->ManageDuplicate = DuplicatoPersona; 
 	}
@@ -200,12 +225,15 @@ void *InizializzaPersona( void *InputPers )
 	//Questa dovrebbe creare una struct PERSONA, copiare i valori da
 	//<InputPers> e poi ritornarne l'indirizzo.
 	PERSONA *PersTemp = (PERSONA *)InputPers;
+
 	PERSONA *NewPers = (PERSONA *)malloc( sizeof( PERSONA ) );
 
+	//Alloca spazio per nome, cognome e città
 	NewPers->Nome = (char *) malloc( (strlen(PersTemp->Nome) + 1) * sizeof(char) ); 
 	NewPers->Cognome = (char *) malloc( (strlen(PersTemp->Cognome) + 1) * sizeof(char) ); 
 	NewPers->Citta = (char *) malloc( (strlen(PersTemp->Citta) + 1) * sizeof(char) ); 
 
+	//Copia i valori in input nelle rispettive locazioni
 	strcpy( NewPers->Nome, PersTemp->Nome); 
 	strcpy( NewPers->Cognome, PersTemp->Cognome);   
 	strcpy( NewPers->Citta, PersTemp->Citta);
@@ -222,6 +250,7 @@ void *InizializzaPersona( void *InputPers )
 void CancellaPersona( void *Value, void *NodeInfo )
 {
    PERSONA *PersTemp = (PERSONA *)NodeInfo;
+
    free( PersTemp->Nome );
    free( PersTemp->Cognome );
    free( PersTemp->Citta );

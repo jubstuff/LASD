@@ -27,7 +27,7 @@ int main(void)
 	Op.Compare = ConfrontaStringhe;
 	Op.InitNode = InizializzaNodoStringa;
 	Op.Print = StampaNodoStringa;
-	Op.DeleteNode = DeallocaStringa;
+	Op.Delete = DeallocaStringa;
 	Op.ManageDuplicate = DuplicatoStringa; 
 
 	do 

@@ -27,7 +27,7 @@ int main(void) {
 	//Inizializza la struct con le operazioni
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
-	Op.DeleteNode = DeallocaInt;
+	Op.Delete = DeallocaInt;
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
 	//Inizializza il seme per la generazione di numeri casuali

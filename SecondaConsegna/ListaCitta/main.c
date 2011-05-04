@@ -31,7 +31,7 @@ int main(void)
 
 	Op.Compare = ConfrontaNodoCitta;
 	Op.InitNode = InizializzaNodoCitta;
-	Op.DeleteNode = EliminaNodoCitta;
+	Op.Delete = EliminaNodoCitta;
 	Op.Print = StampaListaCitta;
 	Op.ManageDuplicate = DuplicatoCitta; 
 	do 
@@ -106,7 +106,9 @@ int main(void)
 				if( Head != NULL )
 				{
 					printf("\n\nCancellazione Lista...\n\n");
+					Op.Delete = EliminaListaCitta;
 					Head = List_RecursiveDestroy( Head, &Op );
+					Op.Delete = EliminaNodoCitta;
 				}
 				else
 				{
@@ -129,6 +131,7 @@ int main(void)
 
 				break;
 			case '0': //Uscita
+				Op.Delete = EliminaListaCitta;
 				Head = List_RecursiveDestroy( Head, &Op ); 
 				break;
 

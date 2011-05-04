@@ -35,8 +35,6 @@ void DeallocaStringa( void *InputValue, void *NodeInfo );
 
 int ConfrontaStringhe( const void *Str1, const void *Str2 );
 
-void LeggiStringa( char *Buf, int LenMax);
-
 void DuplicatoStringa( void *Value, NODE *CurrentNode );
 
 /*==============================================================================
@@ -57,6 +55,8 @@ NODE *CaricaListaDaFile ( char *NomeFile, int LenMax, int *ReturnStatus, OPERATI
 /*==============================================================================
  * Funzioni di utilità
  *============================================================================*/
+void LeggiStringa( char *Buf, int LenMax);
+
 char Menu();
 
 void Pause();

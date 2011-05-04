@@ -99,7 +99,7 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 typedef struct operations {
 	COMPARATOR Compare;        /**< Confronta due nodi */
 	INITIALIZER InitNode;      /**< Inizializza un nodo */
-	DELETER DeleteNode;        /**< Elimina un nodo */
+	DELETER Delete;        /**< Elimina un nodo */
 	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
 } OPERATIONS;

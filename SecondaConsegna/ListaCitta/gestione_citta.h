@@ -25,6 +25,10 @@
  * 
  * */
 
+/**
+ * Struct che contiene nome e cognome di una persona, e la città di residenza
+ *
+ * */
 typedef struct persona_t 
 {
 	char *Nome;
@@ -32,15 +36,10 @@ typedef struct persona_t
 	char *Citta;
 } PERSONA; 
 
-/**
- * Confronta la citta di residenza di due persone,
- * confrontandole in ordine lessicografico
- *
- * @return -1, 0, 1 se Pers1->Citta [>,==,<] Pers2->Citta rispettivamente
- * */
+/*============================================================================*
+ * OPERAZIONI LISTA ESTERNA - ORDINATA PER CITTA'
+ *===========================================================================*/
 int ConfrontaNodoCitta( const void *Nodo1, const void *Persona );
-
-int ConfrontaPersona( const void *Pers1, const void *Pers2 );
 
 void *InizializzaNodoCitta( void *Value );
 
@@ -50,7 +49,14 @@ void StampaListaCitta( const void *Head );
 
 void EliminaNodoCitta(void *Persona, void *NodeInfo);
 
+void EliminaListaCitta(void *Persona, void *NodeInfo);
+
+/*============================================================================*
+ * OPERAZIONI LISTA INTERNA - ORDINATA PER PERSONA
+ *===========================================================================*/
 OPERATIONS *InizializzaOperazioniListaPersone( void );
+
+int ConfrontaPersona( const void *Pers1, const void *Pers2 );
 
 void *InizializzaPersona( void *InputPers );
 
@@ -60,6 +66,9 @@ void StampaPersona( const void *Value );
 
 void DuplicatoPersona( void *Value, NODE *CurrentNode );
 
+/*==============================================================================
+ * Funzioni di utilità
+ *============================================================================*/
 void LeggiStringa( char *Buf, int LenMax);
 char Menu();
 #endif /* _GESTIONE_CITTA_H_ */
