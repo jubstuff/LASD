@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 00:31:00 CEST
+ * Ultima Modifica: sab 07 mag 2011 00:44:31 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -31,7 +31,9 @@ int main(void)
 	AddVertex( G, "Cinque");
 	AddVertex( G, "Nove");
 	AddVertex( G, "Dieciiiiiiii");
-
+    printf("Numero Vertici: %d\n", G->NumVertices);
+	AddEdge( G, 0, 1, 20); 
+	AddEdge( G, 5, 3, 100); 
 	PrintGraph( G );
 
 	return 0;

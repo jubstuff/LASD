@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 00:32:22 CEST
+ * Ultima Modifica: sab 07 mag 2011 00:45:22 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -54,10 +54,10 @@ void AddEdge( GRAPH_M *G, int VertexFrom, int VertexTo, double Weight )
 	/* Inserisco l'arco solo se i vertici di partenza e arrivo appartengono
 	 * al grafo
 	 * */
-    if( VertexFrom < G->MaxVertices && VertexTo < G->MaxVertices )
+    if( VertexFrom <= G->NumVertices && VertexTo <= G->NumVertices )
 	{
 		/* Recupero l'arco interessato */
-		TempEdge = &( G->AdjacencyMatrix[VertexFrom * G->MaxVertices + VertexTo] );
+		TempEdge = &( G->AdjacencyMatrix[VertexFrom * G->NumVertices + VertexTo] );
 		/* Abilito l'arco e imposto il peso corrispondente */
 		TempEdge->Exist = 1;
 		TempEdge->Weight = Weight;
