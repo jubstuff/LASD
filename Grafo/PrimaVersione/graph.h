@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 11:44:39 CEST
+ * Ultima Modifica: sab 07 mag 2011 12:30:52 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -15,7 +15,16 @@
 
 #define REALLOC_SIZE 5 /**< Numeri di vertici aggiuntivi da allocare */
 
+/**
+ * Alloca e inizializza una struttura dati atta a contenere informazioni
+ * sul grafo
+ * */
 typedef void *(*ALLOCATE_DS)(void *DataStructure, int NumVertices); 
+
+typedef struct operations_tag
+{
+	ALLOCATE_DS AllocateDs;
+} G_OPERATIONS;
 
 /**
  * Struct per la definizione di un arco utilizzato nella rappresentazione del 
@@ -36,11 +45,13 @@ typedef struct graph_tag
 	int MaxVertices;          /**< Massimo Numero di vertici */
 	int NumVertices;          /**< Numero Attuale di vertici */
 	char **Labels;            /**< Etichette dei vertici */
+    G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
     ALLOCATE_DS AllocateDS;   /**< Funzione per allocare la struttura dati */
 } GRAPH;
 
 GRAPH *InitGraph( int MaxVertices );
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices );
+void FreeAdjacencyMatrix( void *DataStructure );
 void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 void AddVertex( GRAPH *G, char *Label );
 void PrintGraph( GRAPH *G );
