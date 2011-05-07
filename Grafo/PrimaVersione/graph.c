@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 00:45:22 CEST
+ * Ultima Modifica: sab 07 mag 2011 09:26:38 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -17,12 +17,12 @@
 #include <string.h>
 #include "graph.h"
 
-GRAPH_M *InitGraph( int MaxVertices )
+GRAPH *InitGraph( int MaxVertices )
 {
 	int i; /**< Indice per cicli */
 
 	/* Alloco la struct che conterrà le info sul grafo */
-	GRAPH_M *G = (GRAPH_M *)malloc( sizeof(GRAPH_M) ); /* TODO check errors */
+	GRAPH *G = (GRAPH *)malloc( sizeof(GRAPH) ); /* TODO check errors */
 
 	/* Imposto un massimo numero iniziale di vertici, pari a quello passato
 	 * in ingresso */
@@ -47,7 +47,14 @@ GRAPH_M *InitGraph( int MaxVertices )
 	return G;
 }
 
-void AddEdge( GRAPH_M *G, int VertexFrom, int VertexTo, double Weight )
+void DestroyGraph( GRAPH *G )
+{
+	free( G->Labels );
+	free( G->AdjacencyMatrix );
+	free( G );
+}
+
+void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight )
 {
 	EDGE_M *TempEdge; /**< Variabile d'appoggio per l'arco */
 
@@ -64,13 +71,37 @@ void AddEdge( GRAPH_M *G, int VertexFrom, int VertexTo, double Weight )
 	}
 }
 
-void AddVertex( GRAPH_M *G, char *Label ) 
+void AddVertex( GRAPH *G, char *Label ) 
 {
+	int i;
+	/* Se il numero di vertici supera quelli allocati, ne alloco una quantità
+	 * superiore
+	 * */
+	if( G->NumVertices == G->MaxVertices )
+	{
+		/* Alloco più di un vertice, così da non dover richiamare realloc
+		 * troppe volte
+		 * Il numero di vertici aggiuntivi da allocare può essere deciso in base
+		 * all'utilizzo, modificando la costante REALLOC_SIZE
+		 * */
+		G->MaxVertices += REALLOC_SIZE;
+		/* Realloco e inizializzo gli archi aggiuntivi */
+		G->AdjacencyMatrix = (EDGE_M *)realloc(G->AdjacencyMatrix, 
+				G->MaxVertices * G->MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
+		for( i = G->NumVertices; i < G->MaxVertices * G->MaxVertices; i++ )
+		{
+			G->AdjacencyMatrix[i].Exist = 0;
+			G->AdjacencyMatrix[i].Weight = 0;
+		}
+		/* Realloco il vettore contenente le etichette dei vertici */
+		G->Labels = (char **)realloc( G->Labels, G->MaxVertices * sizeof(char *) ); /* TODO check errors */
+	}
+	/* L'etichetta viene assegnata al nuovo vertice ed il numero di vertici incrementato */
 	G->Labels[G->NumVertices] = Label;
 	G->NumVertices++;
 }
 
-void PrintGraph( GRAPH_M *G )
+void PrintGraph( GRAPH *G )
 {
 	int i;
 	int j;
