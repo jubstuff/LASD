@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 11:44:26 CEST
+ * Ultima Modifica: sab 07 mag 2011 11:48:31 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -35,8 +35,9 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	/* G->AdjacencyMatrix = (EDGE_M *)malloc( MaxVertices * MaxVertices * sizeof(EDGE_M) );*/ /* TODO check errors */
-	G->AdjacencyMatrix = (EDGE_M *)AllocateAdjacencyMatrix( G->DataStructure, MaxVertices );
+	/* G->AdjacencyMatrix = (EDGE_M *)AllocateAdjacencyMatrix( G->DataStructure, MaxVertices ); */
+	G->AllocateDS = AllocateAdjacencyMatrix;
+	G->AdjacencyMatrix = G->AllocateDS( G->DataStructure, MaxVertices );
     for( i = 0; i < MaxVertices * MaxVertices; i++ )
 	{
 		G->AdjacencyMatrix[i].Exist = 0;
