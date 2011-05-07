@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 09:26:38 CEST
+ * Ultima Modifica: sab 07 mag 2011 11:44:26 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -23,7 +23,7 @@ GRAPH *InitGraph( int MaxVertices )
 
 	/* Alloco la struct che conterrà le info sul grafo */
 	GRAPH *G = (GRAPH *)malloc( sizeof(GRAPH) ); /* TODO check errors */
-
+    G->DataStructure = NULL;
 	/* Imposto un massimo numero iniziale di vertici, pari a quello passato
 	 * in ingresso */
 	G->MaxVertices = MaxVertices;
@@ -35,7 +35,8 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	G->AdjacencyMatrix = (EDGE_M *)malloc( MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
+	/* G->AdjacencyMatrix = (EDGE_M *)malloc( MaxVertices * MaxVertices * sizeof(EDGE_M) );*/ /* TODO check errors */
+	G->AdjacencyMatrix = (EDGE_M *)AllocateAdjacencyMatrix( G->DataStructure, MaxVertices );
     for( i = 0; i < MaxVertices * MaxVertices; i++ )
 	{
 		G->AdjacencyMatrix[i].Exist = 0;
@@ -45,6 +46,11 @@ GRAPH *InitGraph( int MaxVertices )
 	G->Labels = (char **)malloc( MaxVertices * sizeof(char *) ); /* TODO check errors */
 
 	return G;
+}
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices )
+{
+	return (void *)realloc(DataStructure, 
+			NumVertices * NumVertices * sizeof(EDGE_M) ); /* TODO check errors */
 }
 
 void DestroyGraph( GRAPH *G )
@@ -100,6 +106,7 @@ void AddVertex( GRAPH *G, char *Label )
 	G->Labels[G->NumVertices] = Label;
 	G->NumVertices++;
 }
+
 
 void PrintGraph( GRAPH *G )
 {

@@ -6,14 +6,17 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 09:26:38 CEST
+ * Ultima Modifica: sab 07 mag 2011 11:44:39 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
  *
  =============================================================================*/
 
-#define REALLOC_SIZE 5
+#define REALLOC_SIZE 5 /**< Numeri di vertici aggiuntivi da allocare */
+
+typedef void *(*ALLOCATE_DS)(void *DataStructure, int NumVertices); 
+
 /**
  * Struct per la definizione di un arco utilizzato nella rappresentazione del 
  * grafo a matrice di adiacenza
@@ -26,16 +29,18 @@ typedef struct edge_m_tag
 /**
  * Struct per la definizione di un grafo tramite una matrice di adiacenza
  * */
-typedef struct graph_matrix_tag
+typedef struct graph_tag
 {
-	EDGE_M *AdjacencyMatrix; /**< Matrice di adiacenza */
-	void *DataStructure;
+	EDGE_M *AdjacencyMatrix;  /**< Matrice di adiacenza */
+	void *DataStructure;      /**< Struttura dati rappresentante il grafo */
 	int MaxVertices;          /**< Massimo Numero di vertici */
 	int NumVertices;          /**< Numero Attuale di vertici */
 	char **Labels;            /**< Etichette dei vertici */
+    ALLOCATE_DS AllocateDS;   /**< Funzione per allocare la struttura dati */
 } GRAPH;
 
 GRAPH *InitGraph( int MaxVertices );
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices );
 void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 void AddVertex( GRAPH *G, char *Label );
 void PrintGraph( GRAPH *G );
