@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 11:48:31 CEST
+ * Ultima Modifica: sab 07 mag 2011 12:10:15 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -35,14 +35,8 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	/* G->AdjacencyMatrix = (EDGE_M *)AllocateAdjacencyMatrix( G->DataStructure, MaxVertices ); */
-	G->AllocateDS = AllocateAdjacencyMatrix;
+	G->AllocateDS = AllocateAdjacencyMatrix; /* TODO Spostarla fuori */
 	G->AdjacencyMatrix = G->AllocateDS( G->DataStructure, MaxVertices );
-    for( i = 0; i < MaxVertices * MaxVertices; i++ )
-	{
-		G->AdjacencyMatrix[i].Exist = 0;
-		G->AdjacencyMatrix[i].Weight = 0;
-	}
 	/* Alloco il vettore contenente le etichette dei vertici */
 	G->Labels = (char **)malloc( MaxVertices * sizeof(char *) ); /* TODO check errors */
 
@@ -50,8 +44,17 @@ GRAPH *InitGraph( int MaxVertices )
 }
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices )
 {
-	return (void *)realloc(DataStructure, 
+	int i;
+	EDGE_M *TempAdjMatrix = (EDGE_M *)realloc(DataStructure, 
 			NumVertices * NumVertices * sizeof(EDGE_M) ); /* TODO check errors */
+
+    for( i = 0; i < NumVertices * NumVertices; i++ )
+	{
+		TempAdjMatrix[i].Exist = 0;
+		TempAdjMatrix[i].Weight = 0;
+	}
+
+	return (void *)TempAdjMatrix;
 }
 
 void DestroyGraph( GRAPH *G )
