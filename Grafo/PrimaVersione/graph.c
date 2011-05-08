@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 12:30:41 CEST
+ * Ultima Modifica: sab 07 mag 2011 12:33:58 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -19,13 +19,17 @@
 
 GRAPH *InitGraph( int MaxVertices )
 {
-	int i; /**< Indice per cicli */
+	GRAPH *G;
 
 	/* Alloco la struct che conterrà le info sul grafo */
-	GRAPH *G = (GRAPH *)malloc( sizeof(GRAPH) ); /* TODO check errors */
+	G = (GRAPH *)malloc( sizeof(GRAPH) ); /* TODO check errors */
+
     G->DataStructure = NULL;
+
 	G->Op = (G_OPERATIONS *)malloc( sizeof(G_OPERATIONS) ); /* TODO check errors */
-    G->Op->AllocateDS = AllocateAdjacencyMatrix; /* TODO spostarlo fuori */
+
+    G->Op->AllocateDS = AllocateAdjacencyMatrix; /* TODO Passare come parametro struct operazioni*/
+
 	/* Imposto un massimo numero iniziale di vertici, pari a quello passato
 	 * in ingresso */
 	G->MaxVertices = MaxVertices;
@@ -37,8 +41,7 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	G->AllocateDS = AllocateAdjacencyMatrix; /* TODO Spostarla fuori */
-	G->AdjacencyMatrix = G->AllocateDS( G->DataStructure, MaxVertices );
+	G->AdjacencyMatrix = G->Op->AllocateDS( G->DataStructure, MaxVertices );
 	/* Alloco il vettore contenente le etichette dei vertici */
 	G->Labels = (char **)malloc( MaxVertices * sizeof(char *) ); /* TODO check errors */
 
@@ -47,7 +50,7 @@ GRAPH *InitGraph( int MaxVertices )
 
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices )
 {
-	int i;
+	int i; /**< Indice per cicli */
 	EDGE_M *TempAdjMatrix;
 
 	TempAdjMatrix = (EDGE_M *)realloc(DataStructure, 

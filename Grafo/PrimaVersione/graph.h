@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 12:30:52 CEST
+ * Ultima Modifica: sab 07 mag 2011 12:33:07 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -23,7 +23,7 @@ typedef void *(*ALLOCATE_DS)(void *DataStructure, int NumVertices);
 
 typedef struct operations_tag
 {
-	ALLOCATE_DS AllocateDs;
+	ALLOCATE_DS AllocateDS;
 } G_OPERATIONS;
 
 /**
@@ -46,7 +46,6 @@ typedef struct graph_tag
 	int NumVertices;          /**< Numero Attuale di vertici */
 	char **Labels;            /**< Etichette dei vertici */
     G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
-    ALLOCATE_DS AllocateDS;   /**< Funzione per allocare la struttura dati */
 } GRAPH;
 
 GRAPH *InitGraph( int MaxVertices );
