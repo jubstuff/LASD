@@ -20,10 +20,12 @@
  * sul grafo
  * */
 typedef void *(*ALLOCATE_DS)(void *DataStructure, int NumVertices); 
+typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
 
 typedef struct operations_tag
 {
 	ALLOCATE_DS AllocateDS;
+    DEALLOCATE_DS DeallocateDS;
 } G_OPERATIONS;
 
 /**

@@ -29,6 +29,7 @@ GRAPH *InitGraph( int MaxVertices )
 	G->Op = (G_OPERATIONS *)malloc( sizeof(G_OPERATIONS) ); /* TODO check errors */
 
     G->Op->AllocateDS = AllocateAdjacencyMatrix; /* TODO Passare come parametro struct operazioni*/
+	G->Op->DeallocateDS = FreeAdjacencyMatrix;
 
 	/* Imposto un massimo numero iniziale di vertici, pari a quello passato
 	 * in ingresso */
@@ -73,7 +74,7 @@ void FreeAdjacencyMatrix( void *DataStructure )
 void DestroyGraph( GRAPH *G )
 {
 	free( G->Labels );
-	free( G->DataStructure );
+	G->Op->DeallocateDS( G->DataStructure );
 	free( G );
 }
 
