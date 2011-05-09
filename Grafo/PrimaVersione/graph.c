@@ -60,20 +60,17 @@ void DestroyGraph( GRAPH *G )
 
 void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight )
 {
-	EDGE_M *TempEdge; /**< Variabile d'appoggio per l'arco */
-
 	/* Inserisco l'arco solo se i vertici di partenza e arrivo appartengono
 	 * al grafo
 	 * */
     if( VertexFrom <= G->NumVertices && VertexTo <= G->NumVertices )
 	{
-		AddEdgeMatrix( G->DataStructure, G->NumVertices, VertexFrom, VertexTo, Weight);
+		AddEdgeMatrix( G->DataStructure, G->NumVertices, VertexFrom, VertexTo, Weight); //TODO aggiungere questa funzione alle operazioni del grafo
 	}
 }
 
 void AddVertex( GRAPH *G, char *Label ) 
 {
-	int i;
 	/* Se il numero di vertici supera quelli allocati, ne alloco una quantità
 	 * superiore
 	 * */
@@ -95,6 +92,16 @@ void AddVertex( GRAPH *G, char *Label )
 	G->NumVertices++;
 }
 
+void RemoveEdge( GRAPH *G, int VertexFrom, int VertexTo )
+{
+	RemoveEdgeMatrix( G->DataStructure, G->NumVertices, VertexFrom, VertexTo ); //TODO aggiungere questa funzione alle operazioni del grafo
+}
+
+void RemoveVertex( GRAPH *G, int Vertex )
+{
+	//TODO aggiungere funzione rimozione
+	G->NumVertices--;
+}
 
 void PrintGraph( GRAPH *G )
 {
@@ -172,4 +179,22 @@ void AddEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int Ve
 	/* Abilito l'arco e imposto il peso corrispondente */
 	TempEdge->Exist = 1;
 	TempEdge->Weight = Weight;
+}
+
+void RemoveEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int VertexTo )
+{
+	EDGE_M *TempEdge; /**< Variabile d'appoggio per l'arco */
+
+	/* Recupero l'arco interessato */
+	TempEdge = &( ((EDGE_M *)(DataStructure))[VertexFrom * NumVertices + VertexTo] );
+	/* Abilito l'arco e imposto il peso corrispondente */
+	TempEdge->Exist = 0;
+	TempEdge->Weight = 0;
+}
+
+/**
+ * FUNZIONI PER LISTE DI ADIACENZA
+ * */
+void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxVertices )
+{
 }

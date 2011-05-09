@@ -51,10 +51,16 @@ typedef struct graph_tag
 } GRAPH;
 
 GRAPH *InitGraph( int MaxVertices );
-void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
-void FreeAdjacencyMatrix( void *DataStructure );
 void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 void AddVertex( GRAPH *G, char *Label );
+void RemoveEdge( GRAPH *G, int VertexFrom, int VertexTo );
+void RemoveVertex( GRAPH *G, int Vertex );
 void PrintGraph( GRAPH *G );
 void DestroyGraph( GRAPH *G );
+
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
+void FreeAdjacencyMatrix( void *DataStructure );
 void AddEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int VertexTo, double Weight );
+void RemoveEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int VertexTo );
+
+void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxVertices );
