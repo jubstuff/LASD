@@ -67,11 +67,7 @@ void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight )
 	 * */
     if( VertexFrom <= G->NumVertices && VertexTo <= G->NumVertices )
 	{
-		/* Recupero l'arco interessato */
-		TempEdge = &( ((EDGE_M *)(G->DataStructure))[VertexFrom * G->NumVertices + VertexTo] ); //TODO sostituire con funzione di recupero archi generica
-		/* Abilito l'arco e imposto il peso corrispondente */
-		TempEdge->Exist = 1;
-		TempEdge->Weight = Weight;
+		AddEdgeMatrix( G->DataStructure, G->NumVertices, VertexFrom, VertexTo, Weight);
 	}
 }
 
@@ -167,3 +163,13 @@ void FreeAdjacencyMatrix( void *DataStructure )
 	free( DataStructure );
 }
 
+void AddEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int VertexTo, double Weight )
+{
+	EDGE_M *TempEdge; /**< Variabile d'appoggio per l'arco */
+
+	/* Recupero l'arco interessato */
+	TempEdge = &( ((EDGE_M *)(DataStructure))[VertexFrom * NumVertices + VertexTo] );
+	/* Abilito l'arco e imposto il peso corrispondente */
+	TempEdge->Exist = 1;
+	TempEdge->Weight = Weight;
+}

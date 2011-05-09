@@ -57,3 +57,4 @@ void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 void AddVertex( GRAPH *G, char *Label );
 void PrintGraph( GRAPH *G );
 void DestroyGraph( GRAPH *G );
+void AddEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int VertexTo, double Weight );
