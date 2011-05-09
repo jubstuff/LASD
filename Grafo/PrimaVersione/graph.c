@@ -82,7 +82,7 @@ void AddVertex( GRAPH *G, char *Label )
 	 * superiore
 	 * */
 	if( G->NumVertices == G->MaxVertices )
-	{      /* TODO Sostituire questa parte sottostante con la reallocazione della DS generale */
+	{      
 		/* Alloco più di un vertice, così da non dover richiamare realloc
 		 * troppe volte
 		 * Il numero di vertici aggiuntivi da allocare può essere deciso in base
@@ -90,13 +90,7 @@ void AddVertex( GRAPH *G, char *Label )
 		 * */
 		G->MaxVertices += REALLOC_SIZE;
 		/* Realloco e inizializzo gli archi aggiuntivi */
-		G->AdjacencyMatrix = (EDGE_M *)realloc(G->AdjacencyMatrix, 
-				G->MaxVertices * G->MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
-		for( i = G->NumVertices; i < G->MaxVertices * G->MaxVertices; i++ )
-		{
-			G->AdjacencyMatrix[i].Exist = 0;
-			G->AdjacencyMatrix[i].Weight = 0;
-		}
+		G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxVertices );
 		/* Realloco il vettore contenente le etichette dei vertici */
 		G->Labels = (char **)realloc( G->Labels, G->MaxVertices * sizeof(char *) ); /* TODO check errors */
 	}

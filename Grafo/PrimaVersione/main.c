@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_VERTICES 10 
+#define NUM_VERTICES 2 
 
 int main(void)
 {
