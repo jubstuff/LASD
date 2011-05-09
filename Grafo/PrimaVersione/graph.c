@@ -41,7 +41,7 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	G->AdjacencyMatrix = G->Op->AllocateDS( G->DataStructure, MaxVertices );
+	G->DataStructure = G->Op->AllocateDS( G->DataStructure, MaxVertices );
 	/* Alloco il vettore contenente le etichette dei vertici */
 	G->Labels = (char **)malloc( MaxVertices * sizeof(char *) ); /* TODO check errors */
 
@@ -73,7 +73,7 @@ void FreeAdjacencyMatrix( void *DataStructure )
 void DestroyGraph( GRAPH *G )
 {
 	free( G->Labels );
-	free( G->AdjacencyMatrix );
+	free( G->DataStructure );
 	free( G );
 }
 
@@ -87,7 +87,7 @@ void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight )
     if( VertexFrom <= G->NumVertices && VertexTo <= G->NumVertices )
 	{
 		/* Recupero l'arco interessato */
-		TempEdge = &( G->AdjacencyMatrix[VertexFrom * G->NumVertices + VertexTo] );
+		TempEdge = &( ((EDGE_M *)(G->DataStructure))[VertexFrom * G->NumVertices + VertexTo] ); //TODO sostituire con funzione di recupero archi generica
 		/* Abilito l'arco e imposto il peso corrispondente */
 		TempEdge->Exist = 1;
 		TempEdge->Weight = Weight;
@@ -101,7 +101,7 @@ void AddVertex( GRAPH *G, char *Label )
 	 * superiore
 	 * */
 	if( G->NumVertices == G->MaxVertices )
-	{
+	{      /* TODO Sostituire questa parte sottostante con la reallocazione della DS generale */
 		/* Alloco più di un vertice, così da non dover richiamare realloc
 		 * troppe volte
 		 * Il numero di vertici aggiuntivi da allocare può essere deciso in base
@@ -155,13 +155,13 @@ void PrintGraph( GRAPH *G )
 	}
 	printf("\n");
 	/* Stampo le righe di adiacenza dei vertici */
-	for( i = 0; i < G->NumVertices; i++)
+	for( i = 0; i < G->NumVertices; i++) /* TODO sostituire questi cicli con la funzione di stampa generica */
 	{
 		printf("%-*s ", MaxLabelLength, G->Labels[i]); 
 		for( j = 0; j < G->NumVertices; j++)
 		{
-			printf("(%d, %*.2f) ", G->AdjacencyMatrix[i * G->NumVertices + j].Exist,
-					MaxLabelLength, G->AdjacencyMatrix[i * G->NumVertices + j].Weight );
+			printf("(%d, %*.2f) ", ((EDGE_M *)(G->DataStructure))[i * G->NumVertices + j].Exist,
+					MaxLabelLength, ((EDGE_M *)(G->DataStructure))[i * G->NumVertices + j].Weight );
 		}
 		printf("\n");
 	}

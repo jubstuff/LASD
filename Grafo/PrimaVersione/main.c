@@ -38,7 +38,7 @@ int main(void)
 	AddEdge( G, 2, 1, 0); 
 	AddEdge( G, 2, 3, 0); 
 	AddEdge( G, 3, 1, 0); 
-	AddEdge( G, 3, 2, 0); 
+	AddEdge( G, 3, 2, 0);
 	/*
 	 * A--B
 	 * | /|
