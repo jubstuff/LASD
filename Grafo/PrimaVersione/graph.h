@@ -19,7 +19,7 @@
  * Alloca e inizializza una struttura dati atta a contenere informazioni
  * sul grafo
  * */
-typedef void *(*ALLOCATE_DS)(void *DataStructure, int NumVertices); 
+typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
 typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
 
 typedef struct operations_tag
@@ -51,7 +51,7 @@ typedef struct graph_tag
 } GRAPH;
 
 GRAPH *InitGraph( int MaxVertices );
-void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices );
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
 void FreeAdjacencyMatrix( void *DataStructure );
 void AddEdge( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 void AddVertex( GRAPH *G, char *Label );

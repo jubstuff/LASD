@@ -42,34 +42,14 @@ GRAPH *InitGraph( int MaxVertices )
 	 * accedere al vertice (A, B) sarà necessario accedere all'elemento
 	 * AdjacencyMatrix[A * MaxVertices + B] 
 	 * */
-	G->DataStructure = G->Op->AllocateDS( G->DataStructure, MaxVertices );
+	//G->DataStructure = G->Op->AllocateDS( G->DataStructure, MaxVertices );
+	G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, MaxVertices );
 	/* Alloco il vettore contenente le etichette dei vertici */
 	G->Labels = (char **)malloc( MaxVertices * sizeof(char *) ); /* TODO check errors */
 
 	return G;
 }
 
-void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices )
-{
-	int i; /**< Indice per cicli */
-	EDGE_M *TempAdjMatrix;
-
-	TempAdjMatrix = (EDGE_M *)realloc(DataStructure, 
-			NumVertices * NumVertices * sizeof(EDGE_M) ); /* TODO check errors */
-
-    for( i = 0; i < NumVertices * NumVertices; i++ )
-	{
-		TempAdjMatrix[i].Exist = 0;
-		TempAdjMatrix[i].Weight = 0;
-	}
-
-	return (void *)TempAdjMatrix;
-}
-
-void FreeAdjacencyMatrix( void *DataStructure )
-{
-	free( DataStructure );
-}
 
 void DestroyGraph( GRAPH *G )
 {
@@ -167,3 +147,29 @@ void PrintGraph( GRAPH *G )
 		printf("\n");
 	}
 }
+
+/**
+ * FUNZIONI PER MATRICE DI ADIACENZA
+ * */
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices )
+{
+	int i; /**< Indice per cicli */
+	EDGE_M *TempAdjMatrix;
+
+	TempAdjMatrix = (EDGE_M *)realloc( DataStructure, 
+			MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
+
+    for( i = NumVertices; i < MaxVertices * MaxVertices; i++ )
+	{
+		TempAdjMatrix[i].Exist = 0;
+		TempAdjMatrix[i].Weight = 0;
+	}
+
+	return (void *)TempAdjMatrix;
+}
+
+void FreeAdjacencyMatrix( void *DataStructure )
+{
+	free( DataStructure );
+}
+
