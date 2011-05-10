@@ -6,7 +6,7 @@
  *
  * Data Creazione: 06-05-2011
  *
- * Ultima Modifica: sab 07 mag 2011 12:33:07 CEST
+ * Ultima Modifica: mar 10 mag 2011 19:30:14 CEST
  *
  * Autore: Giustino Borzacchiello - 566/3291 - giustinob@gmail.com
  *
@@ -42,6 +42,12 @@ typedef struct edge_m_tag
 	int    Exist;  /**< 1 se l'arco esiste, 0 altrimenti */
 	double Weight; /**< Peso associato all'arco, default 0 */
 } EDGE_M;
+
+typedef struct edge_l_tag
+{
+	int DestVertex; /**< Destinazione dell'arco */
+	double Weight; /**< Peso associato all'arco, default 0 */
+} EDGE_L;
 /**
  * Struct per la definizione di un grafo tramite una matrice di adiacenza
  * */
