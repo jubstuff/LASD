@@ -66,6 +66,30 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 	}
 	return Current;
 }
+/**
+ * Inserisce un nodo in testa alla lista puntata da Current
+ *
+ * */
+NODE *List_Insert( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op )
+{
+	NODE *NewNode;
+	*ReturnStatus = 0; 
+
+	/*alloca e inizializza il nuovo nodo*/
+	NewNode = ListCreateNewNode( Value, Op );
+	if ( NewNode != NULL )
+	{
+		//Posiziona il nuovo nodo prima del nodo corrente
+		NewNode->Next = Current;
+		Current = NewNode;
+	}
+	else 
+	{   
+		*ReturnStatus = E_MALLOC;
+	}
+
+	return Current;
+}
 
 
 /**

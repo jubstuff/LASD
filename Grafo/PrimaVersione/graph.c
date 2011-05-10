@@ -12,9 +12,6 @@
  *
  *
  =============================================================================*/
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "graph.h"
 
 GRAPH *InitGraph( int MaxVertices )
@@ -197,4 +194,13 @@ void RemoveEdgeMatrix( void *DataStructure, int NumVertices, int VertexFrom, int
  * */
 void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxVertices )
 {
+
+	NODE *TempAdjList;
+
+	TempAdjList = (NODE *)realloc( DataStructure,
+			MaxVertices * sizeof(NODE) ); /* TODO check errors */
+
+	return (void *)TempAdjList;
 }
+
+

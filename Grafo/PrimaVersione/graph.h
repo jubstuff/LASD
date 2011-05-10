@@ -13,6 +13,11 @@
  *
  =============================================================================*/
 
+#include "../../lib/lista.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #define REALLOC_SIZE 5 /**< Numeri di vertici aggiuntivi da allocare */
 
 /**
