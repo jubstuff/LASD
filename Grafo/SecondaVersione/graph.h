@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 10 mag 2011 22:38:52 CEST
+ * Ultima Modifica: mer 11 mag 2011 23:11:02 CEST
  *
  * Autore: 
  *
@@ -22,6 +22,7 @@
  * */
 typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
 typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
+typedef void (*ADD_EDGE)(int VertexFrom, int VertexTo, double weight);
 
 typedef struct g_operations_tag
 {
@@ -31,21 +32,21 @@ typedef struct g_operations_tag
 
 typedef struct vertex_details_tag
 {
-	char *Label;            /**< Etichetta dei vertici */
-	int  InDegree;          /**< Grado entrante del vertice */
-	int  OutDegree;         /**< Grado uscente del vertice */
-	int  Processed;         /**< Colorazione del vertice */
+	char *Label;    /**< Etichetta dei vertici */
+	int  InDegree;  /**< Grado entrante del vertice */
+	int  OutDegree; /**< Grado uscente del vertice */
+	int  Processed; /**< Colorazione del vertice */
+	void *Data;     /**< Dati associati al vertice */
 } V_DETAILS;
 
 typedef struct graph_tag
 {
 	void *DataStructure;      /**< Struttura dati rappresentante il grafo */
-	int MaxVertices;          /**< Massimo Numero di vertici */
+	int MaxNumVertices;       /**< Massimo Numero di vertici */
 	int NumVertices;          /**< Numero Attuale di vertici */
 	V_DETAILS *VertexDetails; /**< Informazioni sui vertici */
     G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
 } GRAPH;                                                               
-
 
 typedef struct edge_m_tag
 {
@@ -59,4 +60,10 @@ typedef struct edge_l_tag
 	double Weight;     /**< Peso associato all'arco, default 0 */
 } EDGE_L;
 
-#endif /* _GRAPH_H_ */
+/**
+ * DEFINIZIONI FUNZIONI
+ * */
+GRAPH *InitializeGraph( int MaxNumVertices );
+
+#endif /* _GRAPH_H_ */                      
+
