@@ -118,6 +118,7 @@ typedef struct operations {
  * 
  */ 
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op );
+NODE *List_Insert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op );
 
 /**
  * Alloca un nuovo nodo, con relativo campo

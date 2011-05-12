@@ -16,18 +16,21 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+#define REALLOC_SIZE 5
+
 /**
  * Alloca e inizializza una struttura dati atta a contenere la struttura
  * sul grafo
  * */
 typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
 typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
-typedef void (*ADD_EDGE)(int VertexFrom, int VertexTo, double weight);
+typedef void (*ADD_EDGE)(int Source, int Destination, double weight);
 
 typedef struct g_operations_tag
 {
 	ALLOCATE_DS AllocateDS;
     DEALLOCATE_DS DeallocateDS;
+	ADD_EDGE AddEdge;
 } G_OPERATIONS;
 
 typedef struct vertex_details_tag
@@ -63,7 +66,12 @@ typedef struct edge_l_tag
 /**
  * DEFINIZIONI FUNZIONI
  * */
-GRAPH *InitializeGraph( int MaxNumVertices );
+GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op );
+void DestroyGraph( GRAPH *G );
+void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
+void InsertVertex( GRAPH *G, char *Label, void *Data );
+void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices );
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
 
 #endif /* _GRAPH_H_ */                      
 
