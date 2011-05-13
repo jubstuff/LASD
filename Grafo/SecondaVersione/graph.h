@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 11:07:14 CEST
+ * Ultima Modifica: ven 13 mag 2011 12:26:32 CEST
  *
  * Autore: 
  *
@@ -16,22 +16,10 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+#include "../../lib/lista.h"
 #define REALLOC_SIZE 5
 
-/**
- * Alloca e inizializza una struttura dati atta a contenere la struttura
- * sul grafo
- * */
-typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
-typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
-typedef void (*ADD_EDGE)(GRAPH *G, int Source, int Destination, double Weight);
-
-typedef struct g_operations_tag
-{
-	ALLOCATE_DS AllocateDS;
-    DEALLOCATE_DS DeallocateDS;
-	ADD_EDGE AddEdge;
-} G_OPERATIONS;
+typedef struct g_operations_tag G_OPERATIONS;
 
 typedef struct vertex_details_tag
 {
@@ -50,6 +38,21 @@ typedef struct graph_tag
 	V_DETAILS *VertexDetails; /**< Informazioni sui vertici */
     G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
 } GRAPH;                                                               
+
+/**
+ * Alloca e inizializza una struttura dati atta a contenere la struttura
+ * sul grafo
+ * */
+typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
+typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
+typedef void (*ADD_EDGE)(GRAPH *G, int Source, int Destination, double Weight);
+
+typedef struct g_operations_tag
+{
+	ALLOCATE_DS AllocateDS;
+    DEALLOCATE_DS DeallocateDS;
+	ADD_EDGE AddEdge;
+} G_OPERATIONS;
 
 typedef struct edge_m_tag
 {
@@ -77,10 +80,13 @@ void InsertVertex( GRAPH *G, char *Label, void *Data );
 void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices );
 OPERATIONS *InitOperationAdjList( void );
 void *InitNodeAdjList( void *Edge );
-void *DeleteNodeAdjList( void *InputValue, void *Edge );
+void DeleteNodeAdjList( void *InputValue, void *Edge );
+void DeallocateAdjacencyList( void *DataStructure, int NumVertices );
 /**
  * OPERAZIONI PER MATRICE
  * */
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
+void AddEdgeMatrix( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
+EDGE_M *GetCell( EDGE_M *Matrix, int Dim, int Row, int Column );
 #endif /* _GRAPH_H_ */                      
 

@@ -6,14 +6,13 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 11:05:32 CEST
+ * Ultima Modifica: ven 13 mag 2011 12:27:11 CEST
  *
  * Autore: 
  *
  *
  =============================================================================*/
 #include "graph.h"
-#include "../../lib/lista.h"
 #include <stdlib.h>
 
 GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
@@ -77,7 +76,7 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 	//Incremento di 1 il grado uscente del vertice Source
 	G->VertexDetails[Source].OutDegree += 1;
 	//Richiamo il metodo AddEdge da Op
-	G->Op->AddEdge( Source, Destination, Weight );
+	G->Op->AddEdge( G, Source, Destination, Weight );
 	//Imposto il peso dell'arco
 }
 
@@ -139,14 +138,14 @@ void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVert
 	return (void *)TempAdjMatrix;
 }
 
-void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double Weight ) 
+void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight ) 
 {
 	EDGE_L *TempEdge; /**< Puntatore temporaneo al nuovo arco */
 	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
 	int ReturnStatus; /**< Codice di ritorno delle funzioni */
 	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
 
-	AdjList = (NODE **)DataStructure;
+	AdjList = (NODE **)G->DataStructure;
 
 	//Alloco un EDGE_L a
 	TempEdge = (EDGE_L *)malloc( sizeof( EDGE_L ) ); 
@@ -159,7 +158,7 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 		// - imposto a.Weight = Weight
 		TempEdge->Weight = Weight;
 		//Inserisco il nodo nella lista relativa a DataStructure[Source], passando a come valore
-		DataStructure = List_Insert( (void *)TempEdge, (NODE *)( AdjList[Source] ), &ReturnStatus, ListOp ); 
+		G->DataStructure = List_Insert( (void *)TempEdge, (NODE *)( AdjList[Source] ), &ReturnStatus, ListOp ); 
 		//dealloco la struttura delle operazioni per la lista
 		free( ListOp );
 	}
@@ -170,20 +169,9 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 }
 
 
+
+
 #ifdef IMPLEMENTED
-void AddEdgeAdjMatrix( void *DataStructure, int Source, int Destination, double Weight )
-{
-	//Recupero l'EDGE_M di posto [Source][Destination]
-	//Imposto Exist = 1
-	//Copio Weight nell'arco recuperato
-}
-
-void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
-{
-	//Richiamo List_Destroy su ogni elemento di DataStructure
-	//Dealloco DataStructure
-}
-
 void DeallocateAdjacencyMatrix( void *DataStructure, int NumVertices )
 {
 	//Dealloco ogni array di EDGE_M che compone DataStructure
@@ -221,7 +209,47 @@ void *InitNodeAdjList( void *Edge )
  * @param Edge   Riferimento al valore da deallocare
  *
  * */
-void *DeleteNodeAdjList( void *InputValue, void *Edge )
+void DeleteNodeAdjList( void *InputValue, void *Edge )
 {
 	free( Edge );
+}
+void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
+{
+	int i; /**< Indice per cicli */
+	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
+	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
+
+	//inizializzo le operazioni per la gestione della lista
+	ListOp = InitOperationAdjList();
+
+	AdjList = (NODE **)DataStructure;
+	for( i = 0; i < NumVertices; i++ )
+	{
+		//Richiamo List_Destroy su ogni elemento di DataStructure
+		AdjList[i] = List_RecursiveDestroy(AdjList[i], ListOp );
+	}
+	//Dealloco DataStructure
+	free( DataStructure );
+	free( ListOp );
+}
+
+/**
+ * OPERAZIONI PER MATRICE 
+ * */
+void AddEdgeMatrix( GRAPH *G, int VertexFrom, int VertexTo, double Weight )
+{
+	EDGE_M *TempEdge; /**< Variabile d'appoggio per l'arco */
+
+	/* Recupero l'arco interessato */
+	//TempEdge = &( ((EDGE_M *)(G->DataStructure))[VertexFrom * G->NumVertices + VertexTo] );
+	TempEdge = (EDGE_M *)GetCell( (EDGE_M *)G->DataStructure, G->NumVertices, VertexFrom, VertexTo );
+	/* Abilito l'arco e imposto il peso corrispondente */
+	TempEdge->Exist = 1;
+	TempEdge->Weight = Weight;
+}
+
+EDGE_M *GetCell( EDGE_M *Matrix, int Dim, int Row, int Column )
+{
+	//Restituisco l'indirizzo dell'arco (Row, Column)
+	return &Matrix[Row * Dim + Column];
 }
