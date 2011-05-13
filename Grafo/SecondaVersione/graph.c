@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mer 11 mag 2011 23:11:00 CEST
+ * Ultima Modifica: ven 13 mag 2011 10:28:34 CEST
  *
  * Autore: 
  *
@@ -144,7 +144,7 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 	EDGE_L *TempEdge; /**< Puntatore temporaneo al nuovo arco */
 	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
 	int ReturnStatus; /**< Codice di ritorno delle funzioni */
-	NODE **AdjList;   /**< Puntatore temporaneo alla lista di adiacenza */
+	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
 
 	AdjList = (NODE **)DataStructure;
 
@@ -152,13 +152,16 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 	TempEdge = (EDGE_L *)malloc( sizeof( EDGE_L ) ); 
 	if( TempEdge )
 	{
-		//TODO creare funzione che ritorna le operazioni per la lista
+		//inizializzo le operazioni per la gestione della lista
+		ListOp = InitOperationAdjList();
 		// - imposto a.DestVertex = Destination
 		TempEdge->DestVertex = Destination;
 		// - imposto a.Weight = Weight
 		TempEdge->Weight = Weight;
 		//Inserisco il nodo nella lista relativa a DataStructure[Source], passando a come valore
 		DataStructure = List_Insert( (void *)TempEdge, (NODE *)( AdjList[Source] ), &ReturnStatus, ListOp ); 
+		//dealloco la struttura delle operazioni per la lista
+		free( ListOp );
 	}
 	else 
 	{
@@ -166,6 +169,42 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 	}
 }
 
+/**
+ * OPERAZIONI PER LISTA
+ * */
+OPERATIONS *InitOperationAdjList( void )
+{
+	OPERATIONS *InnerOp;
+
+	InnerOp = (OPERATIONS *)malloc( sizeof(OPERATIONS) );
+	if( InnerOp != NULL )
+	{
+		InnerOp->InitNode = InitNodeAdjList;
+		InnerOp->Compare = NULL;
+		InnerOp->Delete = DeleteNodeAdjList;
+		InnerOp->Print = NULL;
+		InnerOp->ManageDuplicate = NULL; 
+	}
+
+	return InnerOp;
+}
+
+void *InitNodeAdjList( void *Edge )
+{
+	return Edge;
+}
+
+/**
+ * Dealloca un arco dalla lista di adiacenzo
+ *
+ * @param InputValue Valore da eliminare passato in ingresso
+ * @param Edge   Riferimento al valore da deallocare
+ *
+ * */
+void *DeleteNodeAdjList( void *InputValue, void *Edge )
+{
+	free( Edge );
+}
 #ifdef IMPLEMENTED
 void AddEdgeAdjMatrix( void *DataStructure, int Source, int Destination, double Weight )
 {

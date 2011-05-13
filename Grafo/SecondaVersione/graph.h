@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mer 11 mag 2011 23:11:02 CEST
+ * Ultima Modifica: ven 13 mag 2011 10:28:12 CEST
  *
  * Autore: 
  *
@@ -70,8 +70,17 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op );
 void DestroyGraph( GRAPH *G );
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
 void InsertVertex( GRAPH *G, char *Label, void *Data );
-void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices );
-void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
 
+/**
+ * OPERAZIONI PER LISTA
+ * */
+void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices );
+OPERATIONS *InitOperationAdjList( void );
+void *InitNodeAdjList( void *Edge );
+void *DeleteNodeAdjList( void *InputValue, void *Edge );
+/**
+ * OPERAZIONI PER MATRICE
+ * */
+void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
 #endif /* _GRAPH_H_ */                      
 

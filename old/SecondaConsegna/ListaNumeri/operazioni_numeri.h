@@ -10,7 +10,7 @@
  * lista di interi
  * 
  */
-#include "../lib/lista.h"
+#include "../../../lib/lista.h"
 
 #ifndef _OPERAZIONI_NUMERI_H_ 
 #define _OPERAZIONI_NUMERI_H_

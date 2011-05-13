@@ -198,7 +198,7 @@ NODE *GestisciInserimentoNumero( NODE *Head, OPERATIONS *Op)
 	if( Success )
 	{
 		//Effettua l'inserimento
-		Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, Op);
+		Head = List_Insert( (void *)&Value, Head, &ReturnStatus, Op);
 
 		//Verifica se c'è stato un errore nell'inserimento
 		if( ReturnStatus > 0 )
