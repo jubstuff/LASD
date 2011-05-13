@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 13:00:21 CEST
+ * Ultima Modifica: ven 13 mag 2011 18:40:47 CEST
  *
  * Autore: 
  *
@@ -124,7 +124,7 @@ OPERATIONS *InitOperationAdjList( void )
 		InnerOp->InitNode = InitNodeAdjList;
 		InnerOp->Compare = NULL;
 		InnerOp->Delete = DeleteNodeAdjList;
-		InnerOp->Print = NULL;
+		InnerOp->Print = PrintNodeAdjList;
 		InnerOp->ManageDuplicate = NULL; 
 	}
 
@@ -145,6 +145,11 @@ void *InitNodeAdjList( void *Edge )
 void DeleteNodeAdjList( void *InputValue, void *Edge )
 {
 	free( Edge );
+}
+
+void PrintNodeAdjList( const void *Edge )
+{
+	printf( "(%d)", Edge->DestVertex );
 }
 void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
 {
@@ -210,6 +215,25 @@ void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight )
 	{
 		//TODO ritornare codice di errore
 	}
+}
+void PrintAdjList( GRAPH *G )
+{
+	int i;            /**< Indice per cicli */
+	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
+	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
+
+	//Recuperare il vettore di liste di adiacenza
+	AdjList = (EDGE_L **)G->DataStructure;
+
+	//inizializzo le operazioni per la gestione della lista
+	ListOp = InitOperationAdjList();
+	for( i = 0; i < G->NumVertices; i++ )
+	{
+		//Stampare la lista associata ad ogni vertice 
+		List_RecursivePrint( AdjList[i], ListOp );
+	}
+	free( ListOp );
+
 }
 /**=============================================================================
  * OPERAZIONI PER MATRICE 
