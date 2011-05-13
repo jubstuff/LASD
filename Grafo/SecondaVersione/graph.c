@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 10:28:34 CEST
+ * Ultima Modifica: ven 13 mag 2011 11:05:32 CEST
  *
  * Autore: 
  *
@@ -169,6 +169,27 @@ void AddEdgeAdjList( void *DataStructure, int Source, int Destination, double We
 	}
 }
 
+
+#ifdef IMPLEMENTED
+void AddEdgeAdjMatrix( void *DataStructure, int Source, int Destination, double Weight )
+{
+	//Recupero l'EDGE_M di posto [Source][Destination]
+	//Imposto Exist = 1
+	//Copio Weight nell'arco recuperato
+}
+
+void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
+{
+	//Richiamo List_Destroy su ogni elemento di DataStructure
+	//Dealloco DataStructure
+}
+
+void DeallocateAdjacencyMatrix( void *DataStructure, int NumVertices )
+{
+	//Dealloco ogni array di EDGE_M che compone DataStructure
+	//Dealloco DataStructure
+}
+#endif
 /**
  * OPERAZIONI PER LISTA
  * */
@@ -193,7 +214,6 @@ void *InitNodeAdjList( void *Edge )
 {
 	return Edge;
 }
-
 /**
  * Dealloca un arco dalla lista di adiacenzo
  *
@@ -205,23 +225,3 @@ void *DeleteNodeAdjList( void *InputValue, void *Edge )
 {
 	free( Edge );
 }
-#ifdef IMPLEMENTED
-void AddEdgeAdjMatrix( void *DataStructure, int Source, int Destination, double Weight )
-{
-	//Recupero l'EDGE_M di posto [Source][Destination]
-	//Imposto Exist = 1
-	//Copio Weight nell'arco recuperato
-}
-
-void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
-{
-	//Richiamo List_Destroy su ogni elemento di DataStructure
-	//Dealloco DataStructure
-}
-
-void DeallocateAdjacencyMatrix( void *DataStructure, int NumVertices )
-{
-	//Dealloco ogni array di EDGE_M che compone DataStructure
-	//Dealloco DataStructure
-}
-#endif

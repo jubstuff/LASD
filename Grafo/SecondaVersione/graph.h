@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 10:28:12 CEST
+ * Ultima Modifica: ven 13 mag 2011 11:07:14 CEST
  *
  * Autore: 
  *
@@ -24,7 +24,7 @@
  * */
 typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
 typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
-typedef void (*ADD_EDGE)(int Source, int Destination, double weight);
+typedef void (*ADD_EDGE)(GRAPH *G, int Source, int Destination, double Weight);
 
 typedef struct g_operations_tag
 {
