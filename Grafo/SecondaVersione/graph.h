@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 12:26:32 CEST
+ * Ultima Modifica: ven 13 mag 2011 13:00:46 CEST
  *
  * Autore: 
  *
@@ -44,14 +44,16 @@ typedef struct graph_tag
  * sul grafo
  * */
 typedef void *(*ALLOCATE_DS)( void *DataStructure, int NumVertices, int MaxVertices ); 
-typedef void (*DEALLOCATE_DS)(void *DataStructure ); 
+typedef void (*DEALLOCATE_DS)(void *DataStructure, int NumVertices ); 
 typedef void (*ADD_EDGE)(GRAPH *G, int Source, int Destination, double Weight);
+typedef void (*PRINT_DS)( GRAPH *G );
 
 typedef struct g_operations_tag
 {
 	ALLOCATE_DS AllocateDS;
     DEALLOCATE_DS DeallocateDS;
 	ADD_EDGE AddEdge;
+	PRINT_DS PrintDS;
 } G_OPERATIONS;
 
 typedef struct edge_m_tag
@@ -67,12 +69,13 @@ typedef struct edge_l_tag
 } EDGE_L;
 
 /**
- * DEFINIZIONI FUNZIONI
+ * DEFINIZIONI FUNZIONI GRAFO
  * */
 GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op );
 void DestroyGraph( GRAPH *G );
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
 void InsertVertex( GRAPH *G, char *Label, void *Data );
+void PrintGraph( GRAPH *G );
 
 /**
  * OPERAZIONI PER LISTA
@@ -88,5 +91,7 @@ void DeallocateAdjacencyList( void *DataStructure, int NumVertices );
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
 void AddEdgeMatrix( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
 EDGE_M *GetCell( EDGE_M *Matrix, int Dim, int Row, int Column );
+void DeallocateAdjacencyMatrix( void *DataStructure, int NumVertices );
+void PrintAdjMatrix( GRAPH *G );
 #endif /* _GRAPH_H_ */                      
 
