@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 11:11:55 CEST
+ * Ultima Modifica: sab 14 mag 2011 11:41:22 CEST
  *
  * Autore: 
  *
@@ -35,7 +35,7 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	// - Label = NULL
 	// - Processed = 0
 	// - Data = NULL
-	for( i = 0; i < MaxNumVertices; i++ )
+	for( i = 0; i < G->MaxNumVertices; i++ )
 	{
 		G->VertexDetails[i].InDegree = 0;
 		G->VertexDetails[i].OutDegree = 0;
@@ -47,6 +47,7 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	// Copiare Op nel campo del GRAPH
 	G->Op = Op;
 	// Allocare la struttura dati
+
 	/* Il puntatore a DataStructure deve essere inizializzato a NULL perché 
 	 * altrimenti passerei alla funzione realloc, presente in AllocateDS un
 	 * riferimento non valido */
