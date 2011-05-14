@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 18:40:47 CEST
+ * Ultima Modifica: sab 14 mag 2011 11:07:05 CEST
  *
  * Autore: 
  *
@@ -60,10 +60,10 @@ void DestroyGraph( GRAPH *G )
 	G->Op->DeallocateDS( G->DataStructure, G->NumVertices );
 	//Dealloco l'array di V_DETAILS, avendo cura di deallocare 
 	//gli elementi contenuti in ogni singolo elemento
-	for( i = 0; i < G->MaxNumVertices; i++ ) //TODO qui qual è il limite? MaxNumVertices o NumVertices?
+	for( i = 0; i < G->NumVertices; i++ ) 
 	{
-		free( G->VertexDetails[i].Label );
-		free( G->VertexDetails[i].Data );
+			free( G->VertexDetails[i].Label );
+			free( G->VertexDetails[i].Data );
 	}
 	free( G->VertexDetails );
 	//Dealloco il GRAPH
@@ -149,7 +149,7 @@ void DeleteNodeAdjList( void *InputValue, void *Edge )
 
 void PrintNodeAdjList( const void *Edge )
 {
-	printf( "(%d)", Edge->DestVertex );
+	printf( "(%d)", ( (EDGE_L *)Edge )->DestVertex );
 }
 void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
 {
@@ -223,7 +223,7 @@ void PrintAdjList( GRAPH *G )
 	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
 
 	//Recuperare il vettore di liste di adiacenza
-	AdjList = (EDGE_L **)G->DataStructure;
+	AdjList = (NODE **)G->DataStructure;
 
 	//inizializzo le operazioni per la gestione della lista
 	ListOp = InitOperationAdjList();
@@ -243,6 +243,7 @@ void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVert
 	int i; /**< Indice per cicli */
 	EDGE_M *TempAdjMatrix; /**< Matrice di adiacenza temporanea */
 
+	TempAdjMatrix = NULL;
 	//Alloco un array di puntatori EDGE_M[MaxNumVertices]
 	TempAdjMatrix = (EDGE_M *)realloc( DataStructure, 
 			MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */

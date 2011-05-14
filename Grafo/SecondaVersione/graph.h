@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 13:10:11 CEST
+ * Ultima Modifica: ven 13 mag 2011 23:49:09 CEST
  *
  * Autore: 
  *
@@ -84,8 +84,10 @@ void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVer
 OPERATIONS *InitOperationAdjList( void );
 void *InitNodeAdjList( void *Edge );
 void DeleteNodeAdjList( void *InputValue, void *Edge );
+void PrintNodeAdjList( const void *Edge );
 void DeallocateAdjacencyList( void *DataStructure, int NumVertices );
 void PrintAdjList( GRAPH *G );
+void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight );
 /**
  * OPERAZIONI PER MATRICE
  * */
