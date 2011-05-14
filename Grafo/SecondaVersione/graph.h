@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: ven 13 mag 2011 23:49:09 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:15:29 CEST
  *
  * Autore: 
  *
@@ -16,8 +16,7 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
-#include "../../lib/lista.h"
-#define REALLOC_SIZE 5
+#define REALLOC_SIZE 0
 
 typedef struct g_operations_tag G_OPERATIONS;
 
@@ -77,17 +76,6 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
 void InsertVertex( GRAPH *G, char *Label, void *Data );
 void PrintGraph( GRAPH *G );
 
-/**
- * OPERAZIONI PER LISTA
- * */
-void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices );
-OPERATIONS *InitOperationAdjList( void );
-void *InitNodeAdjList( void *Edge );
-void DeleteNodeAdjList( void *InputValue, void *Edge );
-void PrintNodeAdjList( const void *Edge );
-void DeallocateAdjacencyList( void *DataStructure, int NumVertices );
-void PrintAdjList( GRAPH *G );
-void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight );
 /**
  * OPERAZIONI PER MATRICE
  * */

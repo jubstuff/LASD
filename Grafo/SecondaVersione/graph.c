@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 11:41:22 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:15:16 CEST
  *
  * Autore: 
  *
@@ -28,7 +28,7 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	//Impostare NumVertices a zero
 	G->NumVertices = 0;
 	//Allocare l'array di V_DETAILS[MaxNumVertices]
-	G->VertexDetails = (V_DETAILS *)malloc( MaxNumVertices * sizeof( V_DETAILS ) );	//TODO check errors
+	G->VertexDetails = (V_DETAILS *)malloc( G->MaxNumVertices * sizeof( V_DETAILS ) );	//TODO check errors
 	//Inizializzare l'array di V_DETAILS
 	// - InDegree = 0
 	// - OutDegree = 0
@@ -117,130 +117,6 @@ void PrintGraph( GRAPH *G )
 #ifdef IMPLEMENTED
 #endif
 /**=============================================================================
- * OPERAZIONI PER LISTA
- *============================================================================*/
-OPERATIONS *InitOperationAdjList( void )
-{
-	OPERATIONS *InnerOp;
-
-	InnerOp = (OPERATIONS *)malloc( sizeof(OPERATIONS) );
-	if( InnerOp != NULL )
-	{
-		InnerOp->InitNode = InitNodeAdjList;
-		InnerOp->Compare = NULL;
-		InnerOp->Delete = DeleteNodeAdjList;
-		InnerOp->Print = PrintNodeAdjList;
-		InnerOp->ManageDuplicate = NULL; 
-	}
-
-	return InnerOp;
-}
-
-void *InitNodeAdjList( void *Edge )
-{
-	return Edge;
-}
-/**
- * Dealloca un arco dalla lista di adiacenzo
- *
- * @param InputValue Valore da eliminare passato in ingresso
- * @param Edge   Riferimento al valore da deallocare
- *
- * */
-void DeleteNodeAdjList( void *InputValue, void *Edge )
-{
-	free( Edge );
-}
-
-void PrintNodeAdjList( const void *Edge )
-{
-	printf( "(%d)", ( (EDGE_L *)Edge )->DestVertex );
-}
-void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
-{
-	int i; /**< Indice per cicli */
-	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
-	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
-
-	//inizializzo le operazioni per la gestione della lista
-	ListOp = InitOperationAdjList();
-
-	AdjList = (NODE **)DataStructure;
-	for( i = 0; i < NumVertices; i++ )
-	{
-		//Richiamo List_Destroy su ogni elemento di DataStructure
-		AdjList[i] = List_RecursiveDestroy(AdjList[i], ListOp );
-	}
-	//Dealloco DataStructure
-	free( DataStructure );
-	free( ListOp );
-}
-
-void *AllocateAdjacencyList( void *DataStructure, int NumVertices, int MaxNumVertices )
-{
-	NODE **AdjList; /**< Puntatore temporaneo alla lista di adiacenza */
-	int i; /**< Contatore per cicli */
-
-	//Alloco un array di puntatori a NODE[MaxNumVertices]
-	AdjList = (NODE **)realloc( DataStructure, MaxNumVertices * sizeof( NODE *) );
-	//Inizializzo a NULL tutti i puntatori
-	for( i = 0; i < MaxNumVertices; i++ )
-	{
-		AdjList[i] = NULL;
-	}
-	//Restituisco il puntatore all'array
-	return (void *)AdjList;
-}
-
-void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight ) 
-{
-	EDGE_L *TempEdge; /**< Puntatore temporaneo al nuovo arco */
-	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
-	int ReturnStatus; /**< Codice di ritorno delle funzioni */
-	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
-
-	AdjList = (NODE **)G->DataStructure;
-
-	//Alloco un EDGE_L a
-	TempEdge = (EDGE_L *)malloc( sizeof( EDGE_L ) ); 
-	if( TempEdge )
-	{
-		//inizializzo le operazioni per la gestione della lista
-		ListOp = InitOperationAdjList();
-		// - imposto a.DestVertex = Destination
-		TempEdge->DestVertex = Destination;
-		// - imposto a.Weight = Weight
-		TempEdge->Weight = Weight;
-		//Inserisco il nodo nella lista relativa a DataStructure[Source], passando a come valore
-		G->DataStructure = List_Insert( (void *)TempEdge, (NODE *)( AdjList[Source] ), &ReturnStatus, ListOp ); 
-		//dealloco la struttura delle operazioni per la lista
-		free( ListOp );
-	}
-	else 
-	{
-		//TODO ritornare codice di errore
-	}
-}
-void PrintAdjList( GRAPH *G )
-{
-	int i;            /**< Indice per cicli */
-	OPERATIONS *ListOp; /**< Puntatore alle operazioni per la lista */
-	NODE **AdjList;   /**< Puntatore temporaneo alle liste di adiacenza */
-
-	//Recuperare il vettore di liste di adiacenza
-	AdjList = (NODE **)G->DataStructure;
-
-	//inizializzo le operazioni per la gestione della lista
-	ListOp = InitOperationAdjList();
-	for( i = 0; i < G->NumVertices; i++ )
-	{
-		//Stampare la lista associata ad ogni vertice 
-		List_RecursivePrint( AdjList[i], ListOp );
-	}
-	free( ListOp );
-
-}
-/**=============================================================================
  * OPERAZIONI PER MATRICE 
  *============================================================================*/
 void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices )
@@ -250,9 +126,8 @@ void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVert
 
 	TempAdjMatrix = NULL;
 	//Alloco un array di puntatori EDGE_M[MaxNumVertices]
-	TempAdjMatrix = (EDGE_M *)realloc( DataStructure, 
-			MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
-
+	TempAdjMatrix = (EDGE_M *)realloc( DataStructure, MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
+    //TempAdjMatrix = (EDGE_M *)malloc( MaxVertices * MaxVertices * sizeof(EDGE_M) ); /* TODO check errors */
 	//Inizializzo tutti gli elementi: Exist = 0, Weight = 0
     for( i = NumVertices; i < MaxVertices * MaxVertices; i++ )
 	{

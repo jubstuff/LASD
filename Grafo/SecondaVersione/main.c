@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 11:34:59 CEST
+ * Ultima Modifica: sab 14 mag 2011 12:46:59 CEST
  *
  * Autore: 
  *
@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define LISTA 1
+#define MATRICE 1
 #define MAX_LENGTH 1000
 
 int main(void)
@@ -42,7 +42,7 @@ int main(void)
 #endif
 
 
-	G = InitializeGraph( 1, &GraphOp );
+	G = InitializeGraph( 2, &GraphOp );
 
     str1 = malloc( (strlen("Uno")+1) * sizeof(char) );
 	strcpy( str1, "Uno" );
@@ -50,6 +50,10 @@ int main(void)
 
     str2 = malloc( (strlen("Due")+1) * sizeof(char) );
 	strcpy( str2, "Due" );
+	InsertVertex( G, str2, NULL );
+
+    str2 = malloc( (strlen("Tre")+1) * sizeof(char) );
+	strcpy( str2, "Tre" );
 	InsertVertex( G, str2, NULL );
 
 	PrintGraph( G );
