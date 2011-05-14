@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 10:55:17 CEST
+ * Ultima Modifica: sab 14 mag 2011 11:15:28 CEST
  *
  * Autore: 
  *
@@ -43,6 +43,7 @@ int main(void)
 
 
 	G = InitializeGraph( 10, &GraphOp );
+
     str1 = malloc( (strlen("Uno")+1) * sizeof(char) );
 	strcpy( str1, "Uno" );
 	InsertVertex( G, str1, NULL );
@@ -50,6 +51,7 @@ int main(void)
     str2 = malloc( (strlen("Due")+1) * sizeof(char) );
 	strcpy( str2, "Due" );
 	InsertVertex( G, str2, NULL );
+	InsertVertex( G, "Tre", NULL );
 
 	PrintGraph( G );
 

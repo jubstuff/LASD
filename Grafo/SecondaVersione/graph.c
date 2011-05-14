@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 11:07:05 CEST
+ * Ultima Modifica: sab 14 mag 2011 11:11:55 CEST
  *
  * Autore: 
  *
@@ -47,6 +47,10 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	// Copiare Op nel campo del GRAPH
 	G->Op = Op;
 	// Allocare la struttura dati
+	/* Il puntatore a DataStructure deve essere inizializzato a NULL perché 
+	 * altrimenti passerei alla funzione realloc, presente in AllocateDS un
+	 * riferimento non valido */
+	G->DataStructure = NULL;
 	G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
 
 	return G;
