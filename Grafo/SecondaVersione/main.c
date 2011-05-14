@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 12:46:59 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:22:58 CEST
  *
  * Autore: 
  *
@@ -14,6 +14,9 @@
  =============================================================================*/
 
 #include "graph.h"
+#include "AdjList.h"
+#include "AdjMatrix.h"
+
 #include "common.h"
 #include <stdlib.h>
 #include <string.h>

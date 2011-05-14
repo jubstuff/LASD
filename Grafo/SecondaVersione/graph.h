@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:15:29 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:23:47 CEST
  *
  * Autore: 
  *
@@ -55,17 +55,7 @@ typedef struct g_operations_tag
 	PRINT_DS PrintDS;
 } G_OPERATIONS;
 
-typedef struct edge_m_tag
-{
-	int    Exist;  /**< 1 se l'arco esiste, 0 altrimenti */
-	double Weight; /**< Peso associato all'arco, default 0 */
-} EDGE_M;
 
-typedef struct edge_l_tag
-{
-	int    DestVertex; /**< Destinazione dell'arco */
-	double Weight;     /**< Peso associato all'arco, default 0 */
-} EDGE_L;
 
 /**
  * DEFINIZIONI FUNZIONI GRAFO
@@ -76,13 +66,5 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
 void InsertVertex( GRAPH *G, char *Label, void *Data );
 void PrintGraph( GRAPH *G );
 
-/**
- * OPERAZIONI PER MATRICE
- * */
-void *AllocateAdjacencyMatrix( void *DataStructure, int NumVertices, int MaxVertices );
-void AddEdgeMatrix( GRAPH *G, int VertexFrom, int VertexTo, double Weight );
-EDGE_M *GetCell( EDGE_M *Matrix, int Dim, int Row, int Column );
-void DeallocateAdjacencyMatrix( void *DataStructure, int NumVertices );
-void PrintAdjMatrix( GRAPH *G );
 #endif /* _GRAPH_H_ */                      
 

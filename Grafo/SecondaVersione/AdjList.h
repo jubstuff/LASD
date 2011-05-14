@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:12:54 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:23:47 CEST
  *
  * Autore: 
  *
@@ -17,6 +17,12 @@
 
 #include "../../lib/lista.h"
 #include "graph.h"
+
+typedef struct edge_l_tag
+{
+	int    DestVertex; /**< Destinazione dell'arco */
+	double Weight;     /**< Peso associato all'arco, default 0 */
+} EDGE_L;
 
 OPERATIONS *InitOperationAdjList( void );
 void *InitNodeAdjList( void *Edge );

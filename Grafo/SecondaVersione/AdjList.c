@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:13:17 CEST
+ * Ultima Modifica: sab 14 mag 2011 13:17:28 CEST
  *
  * Autore: 
  *
@@ -15,6 +15,7 @@
 #include "AdjList.h"
 #include <stdlib.h>
 #include <stdio.h>
+
 OPERATIONS *InitOperationAdjList( void )
 {
 	OPERATIONS *InnerOp;
