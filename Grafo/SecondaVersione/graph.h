@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 19:47:06 CEST
+ * Ultima Modifica: mar 17 mag 2011 20:05:47 CEST
  *
  * Autore: 
  *
@@ -70,7 +70,7 @@ typedef struct g_operations_tag
 GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op );
 void DestroyGraph( GRAPH *G );
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
-void InsertVertex( GRAPH *G, char *Label, void *Data );
+int InsertVertex( GRAPH *G, char *Label, void *Data );
 void PrintGraph( GRAPH *G );
 
 #endif /* _GRAPH_H_ */                      

@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 19:52:25 CEST
+ * Ultima Modifica: mar 17 mag 2011 20:05:47 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -82,26 +82,40 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 	//Imposto il peso dell'arco
 }
 
-void InsertVertex( GRAPH *G, char *Label, void *Data )
+int InsertVertex( GRAPH *G, char *Label, void *Data )
 {
+    V_DETAILS *TempVertex; /**< Vertice temporaneo di appoggio */
+	int ReturnStatus;
+
+	ReturnStatus = 0;
 
 	//Se NumVertici = MaxNumVertices
 	if( G->NumVertices == G->MaxNumVertices )
 	{
-		//  - Incremento MaxNumVertices di REALLOC_SIZE
+		//  - Incremento MaxNumVertices di REALLOC_SIZE    //TODO ma si può accorpare con l'inizializzazione fatta all'inizio?
         G->MaxNumVertices += REALLOC_SIZE;
 		//  - Realloco V_DETAILS[MaxNumVertices] e inizializzo i nuovi elementi, (da NumVertices in poi)
-		G->VertexDetails = (V_DETAILS *)realloc( G->VertexDetails, G->MaxNumVertices * sizeof( V_DETAILS ) );	//TODO check errors 
+		G->VertexDetails = (V_DETAILS **)realloc( G->VertexDetails, G->MaxNumVertices * sizeof( V_DETAILS *) );	//TODO check errors 
 		//  - Richiamo ALLOCATE_DS con i parametri adatti
 		G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
 	}
-	
-	//Imposto l'etichetta relativa al nodo G->NumVertices 
-	G->VertexDetails[G->NumVertices].Label = Label;
-	//Copio i dati relativi al nuovo vertice
-	G->VertexDetails[G->NumVertices].Data = Data;
-	//Incremento il numero di vertici del grafo
-	G->NumVertices++;
+	TempVertex = (V_DETAILS *)malloc( sizeof( V_DETAILS ) );
+	if( TempVertex )
+	{
+		//Imposto l'etichetta relativa al nodo G->NumVertices 
+		TempVertex.Label = Label;
+		//Copio i dati relativi al nuovo vertice
+		TempVertex.Data = Data;
+		G->VertexDetails[G->NumVertices] = TempVertex;
+		//Incremento il numero di vertici del grafo
+		G->NumVertices++;
+	}
+	else
+   	{
+		ReturnStatus = -1;
+	}
+
+	return ReturnStatus;
 }
 
 void PrintGraph( GRAPH *G )
