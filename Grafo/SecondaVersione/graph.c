@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:20:44 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:47:07 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -15,6 +15,7 @@
 #include "graph.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 {
@@ -126,6 +127,24 @@ void DestroyGraph( GRAPH *G )
 	free( G );
 }
 
+int SearchLabel( GRAPH *G, const char *Label )
+{
+	int ReturnStatus = -1;
+	int ExaminedVertex;
+
+	ExaminedVertex = 0;
+	while( (ReturnStatus == -1) && ExaminedVertex < G->NumVertices ) //TODO controllare sempre i limiti
+	{
+		if( strcmp( G->VertexDetails[ExaminedVertex]->Label, Label ) == 0 )
+		{
+			ReturnStatus = ExaminedVertex;
+		}
+		ExaminedVertex++;
+	}
+
+	return ReturnStatus;
+}
+
 #ifdef IMPLEMENTED
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 {
@@ -135,7 +154,6 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 	G->VertexDetails[Source]->OutDegree += 1;
 	//Richiamo il metodo AddEdge da Op
 	G->Op->AddEdge( G, Source, Destination, Weight );
-	//Imposto il peso dell'arco
 }
 
 #endif

@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:20:26 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:41:50 CEST
  *
  * Autore: 
  *
@@ -19,6 +19,7 @@
 
 #include "common.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #define LISTA 1
@@ -61,7 +62,8 @@ int main(void)
 
 	PrintGraph( G );
 
-
+	int a = SearchLabel( G, "Tre" );
+    printf("Il numero del vertice con etichetta Tre è %d\n", a);       
 	DestroyGraph( G );
 	return 0;
 }

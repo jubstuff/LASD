@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 20:31:17 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:40:16 CEST
  *
  * Autore: 
  *
@@ -74,6 +74,7 @@ void DestroyGraph( GRAPH *G );
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight );
 int InsertVertex( GRAPH *G, char *Label, void *Data );
 void PrintGraph( GRAPH *G );
+int SearchLabel( GRAPH *G, const char *Label );
 
 #endif /* _GRAPH_H_ */                      
 
