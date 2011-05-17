@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:23:47 CEST
+ * Ultima Modifica: dom 15 mag 2011 12:19:02 CEST
  *
  * Autore: 
  *
@@ -34,9 +34,16 @@ typedef struct graph_tag
 	void *DataStructure;      /**< Struttura dati rappresentante il grafo */
 	int MaxNumVertices;       /**< Massimo Numero di vertici */
 	int NumVertices;          /**< Numero Attuale di vertici */
-	V_DETAILS *VertexDetails; /**< Informazioni sui vertici */
+	V_DETAILS *VertexDetails; /**< Informazioni sui vertici */  
     G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
 } GRAPH;                                                               
+
+/*
+ * VertexDetails sarebbe la struttura dati che contiene i vertici e che mi permette 
+ * di trovare l'indice relativo ad un'etichetta. Si potrebbe poi sostituire con
+ * una struttura dati che mi consenta di effettuare le ricerche in O(logn) invece
+ * che in O(n) ma questa è un'ottimizzazione che può venire dopo
+ * */
 
 /**
  * Alloca e inizializza una struttura dati atta a contenere la struttura
