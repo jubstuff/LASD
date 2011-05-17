@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:50:47 CEST
+ * Ultima Modifica: mar 17 mag 2011 23:21:44 CEST
  *
  * Autore: 
  *
@@ -59,12 +59,20 @@ int main(void)
     str2 = malloc( (strlen("Tre")+1) * sizeof(char) );
 	strcpy( str2, "Tre" );
 	InsertVertex( G, str2, NULL );
+    str2 = malloc( (strlen("Quattro")+1) * sizeof(char) );
+	strcpy( str2, "Quattro" );
+	InsertVertex( G, str2, NULL );
 
-    InsertEdge(G, 0, 1, 0);
+    InsertEdge(G, 0, 2, 0);
+    InsertEdge(G, 1, 2, 0);
+    InsertEdge(G, 1, 3, 0);
+    InsertEdge(G, 2, 0, 0);
+    InsertEdge(G, 2, 1, 0);
+    InsertEdge(G, 2, 3, 0);
+    InsertEdge(G, 3, 1, 0);
+    InsertEdge(G, 3, 2, 0);
 	PrintGraph( G );
 
-	int a = SearchLabel( G, "Tre" );
-    printf("Il numero del vertice con etichetta Tre è %d\n", a);       
 	DestroyGraph( G );
 	return 0;
 }
