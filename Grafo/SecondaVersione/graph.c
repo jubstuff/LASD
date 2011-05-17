@@ -6,9 +6,9 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 19:48:37 CEST
+ * Ultima Modifica: mar 17 mag 2011 19:52:25 CEST
  *
- * Autore: 
+ * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
  *
  =============================================================================*/
@@ -22,29 +22,34 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	int i; /**< Contatore per cicli */
 
 	//Allocare la struct GRAPH
-	G = (GRAPH *)malloc( sizeof( GRAPH ) ); /* TODO check errors */
-	//Impostare MaxNumVertices a MaxNumVertices + REALLOC_SIZE
-	G->MaxNumVertices = MaxNumVertices + REALLOC_SIZE;
-	//Impostare NumVertices a zero
-	G->NumVertices = 0;
-	//Allocare l'array di V_DETAILS[MaxNumVertices]
-	G->VertexDetails = (V_DETAILS **)malloc( G->MaxNumVertices * sizeof( V_DETAILS * ) );	//TODO check errors
-	//Inizializzare l'array di V_DETAILS
-	for( i = 0; i < G->MaxNumVertices; i++ )
+	G = (GRAPH *)malloc( sizeof( GRAPH ) ); 
+	if( G )
 	{
-		G->VertexDetails[i] = NULL;
-		
+		//Impostare MaxNumVertices a MaxNumVertices + REALLOC_SIZE
+		G->MaxNumVertices = MaxNumVertices + REALLOC_SIZE;
+		//Impostare NumVertices a zero
+		G->NumVertices = 0;
+		//Allocare l'array di V_DETAILS[MaxNumVertices]
+		G->VertexDetails = (V_DETAILS **)malloc( G->MaxNumVertices * sizeof( V_DETAILS * ) );
+		if( G->VertexDetails )
+		{
+			//Inizializzare l'array di V_DETAILS
+			for( i = 0; i < G->MaxNumVertices; i++ )
+			{
+				G->VertexDetails[i] = NULL;
+
+			}
+			// Copiare Op nel campo del GRAPH
+			G->Op = Op;
+			// Allocare la struttura dati
+
+			/* Il puntatore a DataStructure deve essere inizializzato a NULL perché 
+			 * altrimenti passerei alla funzione realloc, presente in AllocateDS un
+			 * riferimento non valido */
+			G->DataStructure = NULL;
+			G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
+		}
 	}
-	// Copiare Op nel campo del GRAPH
-	G->Op = Op;
-	// Allocare la struttura dati
-
-	/* Il puntatore a DataStructure deve essere inizializzato a NULL perché 
-	 * altrimenti passerei alla funzione realloc, presente in AllocateDS un
-	 * riferimento non valido */
-	G->DataStructure = NULL;
-	G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
-
 	return G;
 }
 
