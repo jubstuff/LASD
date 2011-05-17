@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 21:48:35 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:20:26 CEST
  *
  * Autore: 
  *
@@ -59,7 +59,7 @@ int main(void)
 	strcpy( str2, "Tre" );
 	InsertVertex( G, str2, NULL );
 
-	//PrintGraph( G );
+	PrintGraph( G );
 
 
 	DestroyGraph( G );

@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:14:56 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:26:48 CEST
  *
  * Autore: 
  *
@@ -51,7 +51,7 @@ void DeleteNodeAdjList( void *InputValue, void *Edge )
 
 void PrintNodeAdjList( const void *Edge )
 {
-	printf( "(%d)", ( (EDGE_L *)Edge )->DestVertex );
+	printf( "(%s)", ( (EDGE_L *)Edge )->Destination->Label );
 }
 void DeallocateAdjacencyList( void *DataStructure, int NumVertices )
 {
@@ -105,7 +105,7 @@ void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight )
 		//inizializzo le operazioni per la gestione della lista
 		ListOp = InitOperationAdjList();
 		// - imposto a.DestVertex = Destination
-		TempEdge->DestVertex = Destination;
+		TempEdge->DestVertex = Destination; //TODO rimuovere indice numerico
 		TempEdge->Destination = G->VertexDetails[Destination];
 		// - imposto a.Weight = Weight
 		TempEdge->Weight = Weight;
@@ -133,7 +133,7 @@ void PrintAdjList( GRAPH *G )
 	for( i = 0; i < G->NumVertices; i++ )
 	{
 		//Stampare la lista associata ad ogni vertice 
-		printf("Vertice %d", i);
+		printf("Vertice %s -> ", G->VertexDetails[i]->Label);
 		List_RecursivePrint( AdjList[i], ListOp );
 		printf("\n");
 	}

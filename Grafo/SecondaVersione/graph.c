@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 21:48:24 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:20:44 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -138,10 +138,10 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 	//Imposto il peso dell'arco
 }
 
+#endif
 
 void PrintGraph( GRAPH *G )
 {
 	//Richiamo la stampa relativa alla struttura dati idonea
 	G->Op->PrintDS( G );
 }
-#endif
