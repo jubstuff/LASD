@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:24:01 CEST
+ * Ultima Modifica: mar 17 mag 2011 19:48:37 CEST
  *
  * Autore: 
  *
@@ -28,20 +28,11 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	//Impostare NumVertices a zero
 	G->NumVertices = 0;
 	//Allocare l'array di V_DETAILS[MaxNumVertices]
-	G->VertexDetails = (V_DETAILS *)malloc( G->MaxNumVertices * sizeof( V_DETAILS ) );	//TODO check errors
+	G->VertexDetails = (V_DETAILS **)malloc( G->MaxNumVertices * sizeof( V_DETAILS * ) );	//TODO check errors
 	//Inizializzare l'array di V_DETAILS
-	// - InDegree = 0
-	// - OutDegree = 0
-	// - Label = NULL
-	// - Processed = 0
-	// - Data = NULL
 	for( i = 0; i < G->MaxNumVertices; i++ )
 	{
-		G->VertexDetails[i].InDegree = 0;
-		G->VertexDetails[i].OutDegree = 0;
-		G->VertexDetails[i].Label = NULL;
-		G->VertexDetails[i].Processed = 0;
-		G->VertexDetails[i].Data = NULL;
+		G->VertexDetails[i] = NULL;
 		
 	}
 	// Copiare Op nel campo del GRAPH
