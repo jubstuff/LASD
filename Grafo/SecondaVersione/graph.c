@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 20:16:53 CEST
+ * Ultima Modifica: mar 17 mag 2011 20:18:13 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -100,7 +100,7 @@ int InsertVertex( GRAPH *G, char *Label, void *Data )
 		if( TempVDetails == NULL )
 		{
 			//La realloc ha fallito, ma G->VertexDetails è ancora un puntatore valido.
-			ReturnStatus = -2;
+			ReturnStatus = E_REALLOC;
 		}
 		else
 	   	{
@@ -110,7 +110,7 @@ int InsertVertex( GRAPH *G, char *Label, void *Data )
 		//  - Richiamo ALLOCATE_DS con i parametri adatti
 		G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
 	}
-	if( ReturnStatus != -2 )
+	if( ReturnStatus != E_REALLOC )
 	{
 		TempVertex = (V_DETAILS *)malloc( sizeof( V_DETAILS ) );
 		if( TempVertex )

@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 20:05:47 CEST
+ * Ultima Modifica: mar 17 mag 2011 20:18:41 CEST
  *
  * Autore: 
  *
@@ -16,7 +16,9 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
-#define REALLOC_SIZE 0
+#define REALLOC_SIZE 5
+#define E_REALLOC 1
+#define E_MALLOC 2
 
 typedef struct g_operations_tag G_OPERATIONS;
 
