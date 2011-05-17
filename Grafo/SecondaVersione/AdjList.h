@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:23:47 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:15:15 CEST
  *
  * Autore: 
  *
@@ -21,6 +21,7 @@
 typedef struct edge_l_tag
 {
 	int    DestVertex; /**< Destinazione dell'arco */
+	V_DETAILS *Destination;
 	double Weight;     /**< Peso associato all'arco, default 0 */
 } EDGE_L;
 

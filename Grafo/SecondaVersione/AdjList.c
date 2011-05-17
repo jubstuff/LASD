@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: sab 14 mag 2011 13:17:28 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:14:56 CEST
  *
  * Autore: 
  *
@@ -106,6 +106,7 @@ void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight )
 		ListOp = InitOperationAdjList();
 		// - imposto a.DestVertex = Destination
 		TempEdge->DestVertex = Destination;
+		TempEdge->Destination = G->VertexDetails[Destination];
 		// - imposto a.Weight = Weight
 		TempEdge->Weight = Weight;
 		//Inserisco il nodo nella lista relativa a DataStructure[Source], passando a come valore
