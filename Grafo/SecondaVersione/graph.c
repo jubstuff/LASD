@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 20:05:47 CEST
+ * Ultima Modifica: mar 17 mag 2011 20:16:53 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -84,6 +84,7 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 
 int InsertVertex( GRAPH *G, char *Label, void *Data )
 {
+	V_DETAILS **TempVDetails; /**< Variabile di appoggio controllare il valore restituito da realloc */
     V_DETAILS *TempVertex; /**< Vertice temporaneo di appoggio */
 	int ReturnStatus;
 
@@ -95,26 +96,38 @@ int InsertVertex( GRAPH *G, char *Label, void *Data )
 		//  - Incremento MaxNumVertices di REALLOC_SIZE    //TODO ma si può accorpare con l'inizializzazione fatta all'inizio?
         G->MaxNumVertices += REALLOC_SIZE;
 		//  - Realloco V_DETAILS[MaxNumVertices] e inizializzo i nuovi elementi, (da NumVertices in poi)
-		G->VertexDetails = (V_DETAILS **)realloc( G->VertexDetails, G->MaxNumVertices * sizeof( V_DETAILS *) );	//TODO check errors 
+		TempVDetails = (V_DETAILS **)realloc( G->VertexDetails, G->MaxNumVertices * sizeof( V_DETAILS *) );
+		if( TempVDetails == NULL )
+		{
+			//La realloc ha fallito, ma G->VertexDetails è ancora un puntatore valido.
+			ReturnStatus = -2;
+		}
+		else
+	   	{
+			//La realloc è andata a buon fine
+			G->VertexDetails = TempVDetails;
+		}
 		//  - Richiamo ALLOCATE_DS con i parametri adatti
 		G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
 	}
-	TempVertex = (V_DETAILS *)malloc( sizeof( V_DETAILS ) );
-	if( TempVertex )
+	if( ReturnStatus != -2 )
 	{
-		//Imposto l'etichetta relativa al nodo G->NumVertices 
-		TempVertex.Label = Label;
-		//Copio i dati relativi al nuovo vertice
-		TempVertex.Data = Data;
-		G->VertexDetails[G->NumVertices] = TempVertex;
-		//Incremento il numero di vertici del grafo
-		G->NumVertices++;
+		TempVertex = (V_DETAILS *)malloc( sizeof( V_DETAILS ) );
+		if( TempVertex )
+		{
+			//Imposto l'etichetta relativa al nodo G->NumVertices 
+			TempVertex.Label = Label;
+			//Copio i dati relativi al nuovo vertice
+			TempVertex.Data = Data;
+			G->VertexDetails[G->NumVertices] = TempVertex;
+			//Incremento il numero di vertici del grafo
+			G->NumVertices++;
+		}
+		else
+		{
+			ReturnStatus = -1; //TODO creare un insieme di error codes
+		}
 	}
-	else
-   	{
-		ReturnStatus = -1;
-	}
-
 	return ReturnStatus;
 }
 
