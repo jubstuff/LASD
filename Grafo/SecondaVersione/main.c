@@ -6,7 +6,7 @@
  *
  * Data Creazione: 12-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:41:50 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:50:47 CEST
  *
  * Autore: 
  *
@@ -60,6 +60,7 @@ int main(void)
 	strcpy( str2, "Tre" );
 	InsertVertex( G, str2, NULL );
 
+    InsertEdge(G, 0, 1, 0);
 	PrintGraph( G );
 
 	int a = SearchLabel( G, "Tre" );

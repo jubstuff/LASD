@@ -6,7 +6,7 @@
  *
  * Data Creazione: 14-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:26:48 CEST
+ * Ultima Modifica: mar 17 mag 2011 23:14:17 CEST
  *
  * Autore: 
  *
@@ -110,7 +110,7 @@ void AddEdgeAdjList( GRAPH *G, int Source, int Destination, double Weight )
 		// - imposto a.Weight = Weight
 		TempEdge->Weight = Weight;
 		//Inserisco il nodo nella lista relativa a DataStructure[Source], passando a come valore
-		G->DataStructure = List_Insert( (void *)TempEdge, (NODE *)( AdjList[Source] ), &ReturnStatus, ListOp ); 
+		AdjList[Source] = List_Insert( (void *)TempEdge, AdjList[Source], &ReturnStatus, ListOp ); 
 		//dealloco la struttura delle operazioni per la lista
 		free( ListOp );
 	}

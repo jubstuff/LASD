@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 22:47:07 CEST
+ * Ultima Modifica: mar 17 mag 2011 22:48:39 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -145,7 +145,6 @@ int SearchLabel( GRAPH *G, const char *Label )
 	return ReturnStatus;
 }
 
-#ifdef IMPLEMENTED
 void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 {
 	//Incremento di 1 il grado entrante del vertice Destination
@@ -155,8 +154,6 @@ void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
 	//Richiamo il metodo AddEdge da Op
 	G->Op->AddEdge( G, Source, Destination, Weight );
 }
-
-#endif
 
 void PrintGraph( GRAPH *G )
 {
