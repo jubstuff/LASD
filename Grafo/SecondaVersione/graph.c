@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: mar 17 mag 2011 20:18:13 CEST
+ * Ultima Modifica: mar 17 mag 2011 21:48:24 CEST
  *
  * Autore: Giustino Borzacchiello - giustinob@gmail.com
  *
@@ -53,40 +53,11 @@ GRAPH *InitializeGraph( int MaxNumVertices, G_OPERATIONS *Op )
 	return G;
 }
 
-void DestroyGraph( GRAPH *G )
-{
-	int i; /**< Contatore per cicli */
-	
-	//Dealloco la struttura dati rappresentate il grafo
-	G->Op->DeallocateDS( G->DataStructure, G->NumVertices );
-	//Dealloco l'array di V_DETAILS, avendo cura di deallocare 
-	//gli elementi contenuti in ogni singolo elemento
-	for( i = 0; i < G->NumVertices; i++ ) 
-	{
-			free( G->VertexDetails[i].Label );
-			free( G->VertexDetails[i].Data );
-	}
-	free( G->VertexDetails );
-	//Dealloco il GRAPH
-	free( G );
-}
-
-void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
-{
-	//Incremento di 1 il grado entrante del vertice Destination
-	G->VertexDetails[Destination].InDegree += 1;
-	//Incremento di 1 il grado uscente del vertice Source
-	G->VertexDetails[Source].OutDegree += 1;
-	//Richiamo il metodo AddEdge da Op
-	G->Op->AddEdge( G, Source, Destination, Weight );
-	//Imposto il peso dell'arco
-}
-
 int InsertVertex( GRAPH *G, char *Label, void *Data )
 {
 	V_DETAILS **TempVDetails; /**< Variabile di appoggio controllare il valore restituito da realloc */
     V_DETAILS *TempVertex; /**< Vertice temporaneo di appoggio */
-	int ReturnStatus;
+	int ReturnStatus; /**< Valore di ritorno della funzione */
 
 	ReturnStatus = 0;
 
@@ -100,7 +71,7 @@ int InsertVertex( GRAPH *G, char *Label, void *Data )
 		if( TempVDetails == NULL )
 		{
 			//La realloc ha fallito, ma G->VertexDetails è ancora un puntatore valido.
-			ReturnStatus = E_REALLOC;
+			ReturnStatus = ERR_REALLOC;
 		}
 		else
 	   	{
@@ -110,30 +81,67 @@ int InsertVertex( GRAPH *G, char *Label, void *Data )
 		//  - Richiamo ALLOCATE_DS con i parametri adatti
 		G->DataStructure = G->Op->AllocateDS( G->DataStructure, G->NumVertices, G->MaxNumVertices );
 	}
-	if( ReturnStatus != E_REALLOC )
+	if( ReturnStatus != ERR_REALLOC )
 	{
 		TempVertex = (V_DETAILS *)malloc( sizeof( V_DETAILS ) );
 		if( TempVertex )
 		{
 			//Imposto l'etichetta relativa al nodo G->NumVertices 
-			TempVertex.Label = Label;
+			TempVertex->Label = Label;
 			//Copio i dati relativi al nuovo vertice
-			TempVertex.Data = Data;
+			TempVertex->Data = Data;
 			G->VertexDetails[G->NumVertices] = TempVertex;
 			//Incremento il numero di vertici del grafo
 			G->NumVertices++;
 		}
 		else
 		{
-			ReturnStatus = -1; //TODO creare un insieme di error codes
+			ReturnStatus = ERR_MALLOC; 
 		}
 	}
 	return ReturnStatus;
 }
+void DestroyGraph( GRAPH *G )
+{
+	int i; /**< Contatore per cicli */
+	
+	//Dealloco la struttura dati rappresentate il grafo
+	G->Op->DeallocateDS( G->DataStructure, G->NumVertices );
+	//Dealloco l'array di V_DETAILS, avendo cura di deallocare 
+	//gli elementi contenuti in ogni singolo elemento
+	for( i = 0; i < G->NumVertices; i++ ) //TODO Controllare se qui deve essere MAXVERTICES
+	{
+		if( G->VertexDetails[i] )
+		{
+			free( G->VertexDetails[i]->Label );
+			if( G->VertexDetails[i]->Data )
+			{
+				free( G->VertexDetails[i]->Data );
+			}
+			free( G->VertexDetails[i] );
+		}
+	}
+	free( G->VertexDetails );
+	//Dealloco il GRAPH
+	free( G );
+}
+
+#ifdef IMPLEMENTED
+void InsertEdge( GRAPH *G, int Source, int Destination, double Weight )
+{
+	//Incremento di 1 il grado entrante del vertice Destination
+	G->VertexDetails[Destination]->InDegree += 1;
+	//Incremento di 1 il grado uscente del vertice Source
+	G->VertexDetails[Source]->OutDegree += 1;
+	//Richiamo il metodo AddEdge da Op
+	G->Op->AddEdge( G, Source, Destination, Weight );
+	//Imposto il peso dell'arco
+}
+
 
 void PrintGraph( GRAPH *G )
 {
 	//Richiamo la stampa relativa alla struttura dati idonea
 	G->Op->PrintDS( G );
 }
-
+#endif
