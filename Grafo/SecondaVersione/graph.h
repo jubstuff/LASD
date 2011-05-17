@@ -6,7 +6,7 @@
  *
  * Data Creazione: 10-05-2011
  *
- * Ultima Modifica: dom 15 mag 2011 12:19:02 CEST
+ * Ultima Modifica: mar 17 mag 2011 19:47:06 CEST
  *
  * Autore: 
  *
@@ -34,7 +34,7 @@ typedef struct graph_tag
 	void *DataStructure;      /**< Struttura dati rappresentante il grafo */
 	int MaxNumVertices;       /**< Massimo Numero di vertici */
 	int NumVertices;          /**< Numero Attuale di vertici */
-	V_DETAILS *VertexDetails; /**< Informazioni sui vertici */  
+	V_DETAILS **VertexDetails; /**< Informazioni sui vertici */  
     G_OPERATIONS *Op;         /**< Metodi operanti sul grafo */
 } GRAPH;                                                               
 
