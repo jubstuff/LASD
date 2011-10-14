@@ -1,6 +1,7 @@
 #include "jvertex.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct jvertex_tag
 {
@@ -15,7 +16,7 @@ struct jvertex_tag
  * 		   NULL on error
  *
  * */
-J_VERTEX *NewJVertex()
+J_VERTEX *JVertex_New()
 {
 	J_VERTEX *Vert = NULL; /**< Temporary vertex */
 
@@ -50,9 +51,10 @@ int main()
 {
 	J_VERTEX *V = NULL;
 
-	V = NewJVertex();
-	assert( V->Data == NULL );
-	assert( V->Label == NULL );
+	
+	V = JVertex_New();
+	assert( V->Data == 0xdadadada );
+	assert( V->Label == 0xdadadada );
 
 	return 0;
 
