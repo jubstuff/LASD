@@ -23,9 +23,15 @@ J_VERTEX *NewJVertex()
 	Vert = (J_VERTEX *)malloc(sizeof(struct jvertex_tag));
 	if( Vert )
 	{
-		/* Initialize vertex attributes */
-		Vert->Label = NULL;
-		Vert->Data  = NULL;
+		/* Initialize vertex 
+		 *
+		 * This call uses a technique named shredding[1]
+		 * In this way, when debugging, I can realize wheter I'm working with
+		 * uninitialized structs. 
+		 *
+		 * [1] "Writing solid code" - Steve Maguire
+		 * */
+		memset(Vert, 0xda, sizeof(J_VERTEX));
 	}
 	else
 	{

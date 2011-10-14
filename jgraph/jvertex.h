@@ -20,4 +20,5 @@ typedef struct jvertex_tag J_VERTEX;
 
 J_VERTEX *NewJVertex();
 
+
 #endif
