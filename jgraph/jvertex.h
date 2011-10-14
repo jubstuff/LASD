@@ -19,6 +19,7 @@
 typedef struct jvertex_tag J_VERTEX;
 
 J_VERTEX *JVertex_New();
+int JVertex_Delete( J_VERTEX * );
 
 
 #endif

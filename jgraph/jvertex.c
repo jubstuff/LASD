@@ -44,6 +44,18 @@ J_VERTEX *JVertex_New()
 
 }   
 
+/**
+ *
+ * Delete a Vertex
+ *
+ * */
+int JVertex_Delete( J_VERTEX *V )
+{
+	/* Wipe all data from Vertex and free memory */
+	memset(V, 0xdd, sizeof( J_VERTEX ));
+	free( V );
+	return 0;
+}
 
 #ifdef TEST_DRIVER
 #include <assert.h>
@@ -53,8 +65,12 @@ int main()
 
 	
 	V = JVertex_New();
-	assert( V->Data == 0xdadadada );
-	assert( V->Label == 0xdadadada );
+	assert( (int)V->Data == 0xdadadada );
+	assert( (int)V->Label == 0xdadadada );
+
+    assert( JVertex_Delete( V ) == 0 );
+
+    printf("Test went all fine!\n");
 
 	return 0;
 
