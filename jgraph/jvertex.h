@@ -13,6 +13,8 @@
  *
  =============================================================================*/
 
+#include <stdlib.h>
+
 #ifndef JVERTEX_H
 #define JVERTEX_H
 
@@ -20,6 +22,8 @@ typedef struct jvertex_tag J_VERTEX;
 
 J_VERTEX *JVertex_New();
 int JVertex_Delete( J_VERTEX * );
+char *JVertex_GetLabel( J_VERTEX * );
+char *JVertex_SetLabel( J_VERTEX *, size_t , const char *);
 
 
 #endif
