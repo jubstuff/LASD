@@ -129,24 +129,19 @@ const char *Atom_new(const char *str, int len)
 	h = hash_number % NELEMS(buckets);
 
 	/* Esamina la lista nella posizione h */
+	//TODO si può trasformare in un ciclo while
 	for( p=buckets[h]; p; p = p->link)
 	{
-		/* Non confronto stringhe di lunghezza diversa e con numero hash
-		 * diverso
+		/* 
+		 * Se la stringa in esame ha la stessa lunghezza e stesso hash_number, 
+		 * di quella in input, significa che è già presente.
 		 * */
 		if( len == p->len && hash_number == p->hash_number)
 		{
+			return p->str;
 #ifdef DEBUG
-	printf("Trovata chiave corrispondente: verifico la stringa\n");
+	printf("Stringa già esistente\n");
 #endif
-			for( i=0; i < len && p->str[i] == str[i]; )
-			{
-				i++;
-			}
-			if( i == len )
-			{
-				return p->str;
-			}
 		}
 	}
 	/* Alloco spazio per un Atomo e per una stringa di lunghezza len (aggiungo
@@ -222,6 +217,7 @@ const char *Atom_int(long n)
 void Atom_free(const char *str)
 {
 	assert(str);
+	//Cercare atomo con la stringa
 }
 
 void Atom_reset(void)
