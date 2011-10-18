@@ -3,5 +3,8 @@
 
 int main(void)
 {
+	Atom_new("prova", sizeof("prova"));
+	Atom_new("prova", sizeof("prova"));
+
 	return 0;
 }
