@@ -21,6 +21,7 @@ static struct atom
 	unsigned long hash_number;
 } *buckets[2039];
 
+
 static unsigned long scatter[] = {
 2078917053, 143302914, 1027100827, 1953210302, 755253631, 2002600785,
 1405390230, 45248011, 1099951567, 433832350, 2018585307, 438263339,
@@ -141,6 +142,7 @@ const char *Atom_new(const char *str, int len)
 		 * */
 		if( len == p->len && hash_number == p->hash_number)
 		{
+			//BUGBUG bisogna comunque controllare la stringa!!!
 			return p->str;
 #ifdef DEBUG
 	printf("Stringa già esistente\n");
