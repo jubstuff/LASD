@@ -125,13 +125,8 @@ const char *Atom_new(const char *str, int len)
 	assert(len >= 0);
 
 	//h = hash str[0..len-1]
-	// for( h = 0, i = 0; i < len; i++ )
-	// {
-	// 	h = (h<<1) + scatter[(unsigned char)str[i]];
-	// }
-	h = Atom_CalculateHash(str, len);
-	hash_number = h;
-	h %= NELEMS(buckets);
+	hash_number = Atom_CalculateHash(str, len);
+	h = hash_number % NELEMS(buckets);
 
 	/* Esamina la lista nella posizione h */
 	for( p=buckets[h]; p; p = p->link)
