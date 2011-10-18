@@ -67,14 +67,14 @@ static unsigned long scatter[] = {
 1884137923, 53392249, 1735424165, 1602280572
 };
 
-static unsigned long Atom_CalculateHash(const char *str)
+static unsigned long Atom_CalculateHash(const char *Str, int Len)
 {
 	unsigned long h;
 	int i;
 
-	for( h = 0, i = 0; i < len; i++ )
+	for( h = 0, i = 0; i < Len; i++ )
 	{
-		h = (h<<1) + scatter[(unsigned char)str[i]];
+		h = (h<<1) + scatter[(unsigned char)Str[i]];
 	}
 	return h;
 }
@@ -125,10 +125,11 @@ const char *Atom_new(const char *str, int len)
 	assert(len >= 0);
 
 	//h = hash str[0..len-1]
-	for( h = 0, i = 0; i < len; i++ )
-	{
-		h = (h<<1) + scatter[(unsigned char)str[i]];
-	}
+	// for( h = 0, i = 0; i < len; i++ )
+	// {
+	// 	h = (h<<1) + scatter[(unsigned char)str[i]];
+	// }
+	h = Atom_CalculateHash(str, len);
 	hash_number = h;
 	h %= NELEMS(buckets);
 
