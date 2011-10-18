@@ -256,6 +256,22 @@ void Atom_free(const char *str)
     FREE(c);
 }
 
+
+
 void Atom_reset(void)
 {
+	int i;
+	struct atom *p;
+
+	for( i = 0; i < NELEMS(buckets); i++ )
+	{
+		p = buckets[i];
+		while( p != NULL )
+		{
+			buckets[i] = p->link;
+			FREE(p);
+			p = buckets[i];
+		}
+
+	}
 }
