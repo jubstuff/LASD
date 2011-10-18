@@ -25,8 +25,12 @@ char *GenRandom(char *S, int Len)
 
 int main(void)
 {
-	Atom_new("prova", sizeof("prova"));
-	Atom_new("prova", sizeof("prova"));
+	char str[] = "prova";
+	Atom_new(str, strlen(str));
+	VisitAtoms();
+	Atom_free(str);
+	VisitAtoms();
+
 #ifdef TEST
 	char str[10];
 	struct timeval t1;

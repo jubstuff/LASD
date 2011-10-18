@@ -118,7 +118,6 @@ const char *Atom_new(const char *str, int len)
 {
 	unsigned long h;
 	unsigned long hash_number;
-	int i;
 	struct atom *p;
 
 	assert(str);
@@ -127,6 +126,10 @@ const char *Atom_new(const char *str, int len)
 	//h = hash str[0..len-1]
 	hash_number = Atom_CalculateHash(str, len);
 	h = hash_number % NELEMS(buckets);
+#ifdef DEBUG
+	fprintf(stderr, "Hash number for string %s => %ld\n", str, hash_number);
+	fprintf(stderr, "Hash value for string %s => %ld\n", str, h);
+#endif
 
 	/* Esamina la lista nella posizione h */
 	//TODO si può trasformare in un ciclo while
@@ -216,8 +219,41 @@ const char *Atom_int(long n)
 
 void Atom_free(const char *str)
 {
+	unsigned long h;
+	unsigned long hash_number;
+	struct atom *p;
+	struct atom *c;
+	int Len;
+
 	assert(str);
+
+	Len = strlen(str);
+
 	//Cercare atomo con la stringa
+	hash_number = Atom_CalculateHash(str, Len);
+	h = hash_number % NELEMS(buckets);
+#ifdef DEBUG
+	fprintf(stderr, "Hash number for string %s => %ld\n", str, hash_number);
+	fprintf(stderr, "Hash value for string %s => %ld\n", str, h);
+#endif
+
+	c = buckets[h];
+	p = NULL;
+	while( c && (hash_number != c->hash_number) )
+	{
+		p = c;
+		c = c->link;
+	}
+
+	if( p == NULL )
+	{
+		buckets[h] = c->link;
+	}
+	else
+	{
+		p->link = c->link;
+	}
+    FREE(c);
 }
 
 void Atom_reset(void)
