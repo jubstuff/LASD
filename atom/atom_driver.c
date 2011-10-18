@@ -25,13 +25,12 @@ char *GenRandom(char *S, int Len)
 
 int main(void)
 {
-	char str[] = "prova";
-	Atom_new(str, strlen(str));
-	VisitAtoms();
-	Atom_free(str);
-	VisitAtoms();
+//	char str[] = "prova";
+//	Atom_new(str, strlen(str));
+//	VisitAtoms();
+//	Atom_free(str);
+//	VisitAtoms();
 
-#ifdef TEST
 	char str[10];
 	struct timeval t1;
 	gettimeofday(&t1, NULL);
@@ -45,8 +44,8 @@ int main(void)
 	}
 
 	VisitAtoms();
-#endif
 
+	Atom_reset();
 
 	return 0;
 }
