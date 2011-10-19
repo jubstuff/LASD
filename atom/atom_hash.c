@@ -161,12 +161,28 @@ const char *Atom_new(const char *str, int len)
 	p = ALLOC(sizeof(*p) + len + 1);
 	p->len = len;
 	p->hash_number = hash_number;
+
+	/* La posizione della stringa comincia dopo la struct:
+	 *
+	 *         --------
+	 * p----->|________| link
+	 *        |________| len
+	 *        |________| hash_number
+	 *        |________| str----|
+     * p+1--->|_|_|_|__|<-------
+	 *        |_|_|_|__|
+	 *    
+	 * Quindi comincio a copiare i byte che compongono la stringa a partire
+	 * dalla posizione (p+1) e la termino con il carattere \0
+	 *
+	 * */
 	p->str = (char *)(p + 1);
 	if( len > 0 )
 	{
 		memcpy(p->str, str, len);
 	}
 	p->str[len] = '\0';
+	/* Inserisco in testa alla lista */
 	p->link = buckets[h];
 	buckets[h] = p;
 	return p->str;
@@ -263,7 +279,6 @@ void Atom_free(const char *str)
 	}
     FREE(c);
 }
-
 
 
 void Atom_reset(void)
