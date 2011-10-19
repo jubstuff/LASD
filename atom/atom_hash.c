@@ -142,8 +142,14 @@ const char *Atom_new(const char *str, int len)
 		 * */
 		if( len == p->len && hash_number == p->hash_number)
 		{
-			//BUGBUG bisogna comunque controllare la stringa!!!
-			return p->str;
+			for( i=0; i < len && p->str[i] == str[i]; )
+			{
+				i++;
+			}
+			if( i == len )
+			{
+				return p->str;
+			}
 #ifdef DEBUG
 	printf("Stringa già esistente\n");
 #endif
