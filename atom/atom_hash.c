@@ -98,7 +98,6 @@ void VisitAtoms()
 int Atom_length(const char *str)
 {
 	struct atom *c;
-	int i;
 	int Len;
 	unsigned long h;
 	unsigned long hash_number;
@@ -128,7 +127,6 @@ const char *Atom_new(const char *str, int len)
 	unsigned long h;
 	unsigned long hash_number;
 	struct atom *p;
-	int i;
 
 	assert(str);
 	assert(len >= 0);
