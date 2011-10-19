@@ -27,7 +27,7 @@ int main(void)
 {
 	char str[] = "prova";
 	Atom_new(str, strlen(str));
-	VisitAtoms();
+	printf("%d\n",Atom_length2(str));
 	Atom_free(str);
 
 	//char str[10];

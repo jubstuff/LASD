@@ -9,7 +9,6 @@
 void VisitAtoms();
 
 extern int Atom_length(const char *str);
-extern int Atom_length2(const char *str);
 /**
  * Crea un nuovo Atomo e lo aggiunge alla hash table.
  *

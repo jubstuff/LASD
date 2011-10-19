@@ -97,26 +97,6 @@ void VisitAtoms()
 
 int Atom_length(const char *str)
 {
-	struct atom *p;
-	int i;
-
-	assert(str);
-	for( i = 0; i < NELEMS(buckets); i++ )
-	{
-		for( p = buckets[i]; p; p = p->link )
-		{
-			if(p->str == str)
-			{
-				return p->len;
-			}
-		}
-	}
-	assert(0);
-	return 0;
-}
-
-int Atom_length2(const char *str)
-{
 	struct atom *c;
 	int i;
 	int Len;
