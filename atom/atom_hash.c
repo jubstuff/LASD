@@ -185,6 +185,7 @@ const char *Atom_new(const char *str, int len)
 	/* Inserisco in testa alla lista */
 	p->link = buckets[h];
 	buckets[h] = p;
+
 	return p->str;
 }
 
