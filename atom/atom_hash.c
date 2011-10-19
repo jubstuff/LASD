@@ -17,8 +17,8 @@ static struct atom
 {
 	struct atom *link;
 	int len;
-	char *str;
 	unsigned long hash_number;
+	char *str;
 } *buckets[2039];
 
 
@@ -115,11 +115,40 @@ int Atom_length(const char *str)
 	return 0;
 }
 
+int Atom_length2(const char *str)
+{
+	struct atom *c;
+	int i;
+	int Len;
+	unsigned long h;
+	unsigned long hash_number;
+
+	Len = strlen(str);
+
+	assert(str);
+	//Cercare atomo con la stringa passata in input
+	hash_number = Atom_CalculateHash(str, Len);
+	h = hash_number % NELEMS(buckets);
+#ifdef DEBUG
+	fprintf(stderr, "Hash number for string %s => %ld\n", str, hash_number);
+	fprintf(stderr, "Hash value for string %s => %ld\n", str, h);
+#endif
+	c = buckets[h];
+	/* Se due stringhe hanno un hash_number uguale, significa che corrispondono
+	 * */
+	while( c && (hash_number != c->hash_number) )
+	{
+		c = c->link;
+	}
+	return c->len;
+}
+
 const char *Atom_new(const char *str, int len)
 {
 	unsigned long h;
 	unsigned long hash_number;
 	struct atom *p;
+	int i;
 
 	assert(str);
 	assert(len >= 0);
@@ -142,14 +171,7 @@ const char *Atom_new(const char *str, int len)
 		 * */
 		if( len == p->len && hash_number == p->hash_number)
 		{
-			for( i=0; i < len && p->str[i] == str[i]; )
-			{
-				i++;
-			}
-			if( i == len )
-			{
-				return p->str;
-			}
+			return p->str;
 #ifdef DEBUG
 	printf("Stringa già esistente\n");
 #endif
@@ -263,6 +285,8 @@ void Atom_free(const char *str)
 
 	c = buckets[h];
 	p = NULL;
+	/* Se due stringhe hanno un hash_number uguale, significa che corrispondono
+	 * */
 	while( c && (hash_number != c->hash_number) )
 	{
 		p = c;

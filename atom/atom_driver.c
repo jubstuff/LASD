@@ -25,27 +25,23 @@ char *GenRandom(char *S, int Len)
 
 int main(void)
 {
-//	char str[] = "prova";
-//	Atom_new(str, strlen(str));
-//	VisitAtoms();
-//	Atom_free(str);
-//	VisitAtoms();
-
-	char str[10];
-	struct timeval t1;
-	gettimeofday(&t1, NULL);
-	int i;
-
-	srand(t1.tv_usec * t1.tv_sec);
-
-	for( i = 0; i < 10000; i++)
-	{
-		Atom_new(GenRandom(str, sizeof str), 10);
-	}
-
+	char str[] = "prova";
+	Atom_new(str, strlen(str));
 	VisitAtoms();
+	Atom_free(str);
 
-	Atom_reset();
+	//char str[10];
+	//struct timeval t1;
+	//gettimeofday(&t1, NULL);
+	//int i;
+
+	//srand(t1.tv_usec * t1.tv_sec);
+
+	//for( i = 0; i < 10000; i++)
+	//{
+	//	Atom_new(GenRandom(str, sizeof str), 10);
+	//}
+	//Atom_reset();
 
 	return 0;
 }
