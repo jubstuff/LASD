@@ -69,6 +69,27 @@ J_STATUS MemFree( void **Ptr )
 	return Status;
 }
 
+J_STATUS MemRealloc( long Nbytes, void **Ptr )
+{
+    J_STATUS Status;
+    void *TempPtr;
+
+    Status = SUCCESS;
+
+    TempPtr = realloc( *Ptr, Nbytes );
+    if( TempPtr != NULL )
+	{
+		*Ptr = TempPtr;
+	}
+	else
+	{
+		Status = ERROR;
+		*Ptr = NULL;
+	}
+
+	return Status;
+}
+
 void *Mem_alloc(long nbytes, const char *file, int line)
 {
 	void *ptr;
