@@ -26,8 +26,10 @@
 //=======External Functions This Runner Calls=====
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_AllocatingOneByteIsSuccess(void);
-extern void test_AllocatingTooMuchMemoryIsError(void);
+extern void test_MemAllocAllocatingOneByteIsSuccess(void);
+extern void test_MemAllocAllocatingTooMuchMemoryIsError(void);
+extern void test_MemCallocAllocatingOneByteIsSuccess(void);
+extern void test_MemCallocAllocatingTooMuchMemoryIsError(void);
 
 
 //=======Test Reset Option=====
@@ -43,8 +45,10 @@ int main(void)
 {
   Unity.TestFile = "TestMem.c";
   UnityBegin();
-  RUN_TEST(test_AllocatingOneByteIsSuccess, 14);
-  RUN_TEST(test_AllocatingTooMuchMemoryIsError, 21);
+  RUN_TEST(test_MemAllocAllocatingOneByteIsSuccess, 16);
+  RUN_TEST(test_MemAllocAllocatingTooMuchMemoryIsError, 25);
+  RUN_TEST(test_MemCallocAllocatingOneByteIsSuccess, 40);
+  RUN_TEST(test_MemCallocAllocatingTooMuchMemoryIsError, 49);
 
   return (UnityEnd());
 }
