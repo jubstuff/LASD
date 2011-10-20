@@ -51,6 +51,23 @@ J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr)
 
 }
 
+J_STATUS MemFree( void *Ptr )
+{
+	J_STATUS Status;
+
+	Status = SUCCESS;
+
+	if( Ptr )
+	{
+		free(Ptr)
+	}
+	else
+	{
+		Status = ERROR;
+	}
+	return Status;
+}
+
 void *Mem_alloc(long nbytes, const char *file, int line)
 {
 	void *ptr;
