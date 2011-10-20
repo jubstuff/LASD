@@ -30,6 +30,8 @@ extern void test_MemAllocAllocatingOneByteIsSuccess(void);
 extern void test_MemAllocAllocatingTooMuchMemoryIsError(void);
 extern void test_MemCallocAllocatingOneByteIsSuccess(void);
 extern void test_MemCallocAllocatingTooMuchMemoryIsError(void);
+extern void test_MemFreeDeallocateAllocatedMemory(void);
+extern void test_MemFreePointerAlreadyDeallocatedShouldFail(void);
 
 
 //=======Test Reset Option=====
@@ -49,6 +51,8 @@ int main(void)
   RUN_TEST(test_MemAllocAllocatingTooMuchMemoryIsError, 25);
   RUN_TEST(test_MemCallocAllocatingOneByteIsSuccess, 40);
   RUN_TEST(test_MemCallocAllocatingTooMuchMemoryIsError, 49);
+  RUN_TEST(test_MemFreeDeallocateAllocatedMemory, 64);
+  RUN_TEST(test_MemFreePointerAlreadyDeallocatedShouldFail, 75);
 
   return (UnityEnd());
 }

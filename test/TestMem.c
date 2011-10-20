@@ -61,4 +61,29 @@ void test_MemCallocAllocatingTooMuchMemoryIsError(void)
 	TEST_ASSERT_NULL(Ptr);
 }
 
+void test_MemFreeDeallocateAllocatedMemoryIsSuccess(void)
+{
+	void *Ptr;
+	J_STATUS Status;
+
+	MemAlloc(1, &Ptr);
+
+	Status = MemFree(&Ptr);
+	TEST_ASSERT_EQUAL(SUCCESS, Status);
+}
+
+void test_MemFreePointerAlreadyDeallocatedIsError(void)
+{
+	void *Ptr;
+	J_STATUS Status;
+
+	MemAlloc(1, &Ptr);
+
+	Status = MemFree(&Ptr);
+	Status = MemFree(&Ptr);
+
+	TEST_ASSERT_EQUAL(ERROR, Status);
+	TEST_ASSERT_NULL(Ptr);
+}
+
 #undef MEGABYTE
