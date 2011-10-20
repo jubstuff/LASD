@@ -12,7 +12,7 @@
 extern void *Mem_alloc( long nbytes, const char *file, int line);
 extern J_STATUS MemAlloc( long nbytes, void **OutPtr);
 extern J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr);
-extern J_STATUS MemFree( void *Ptr );
+extern J_STATUS MemFree( void **Ptr );
 extern void *Mem_calloc( long count, long nbytes, const char *file, int line);
 extern void Mem_free(void *ptr, const char *file, int line);
 extern void *Mem_resize(void *ptr, long nbytes, const char *file, int line);

@@ -51,20 +51,21 @@ J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr)
 
 }
 
-J_STATUS MemFree( void *Ptr )
+J_STATUS MemFree( void **Ptr )
 {
 	J_STATUS Status;
 
 	Status = SUCCESS;
 
-	if( Ptr )
+	if( *Ptr )
 	{
-		free(Ptr)
+		free(*Ptr);
 	}
 	else
 	{
 		Status = ERROR;
 	}
+	*Ptr = NULL;
 	return Status;
 }
 
