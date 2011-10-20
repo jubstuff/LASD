@@ -1,6 +1,7 @@
 #include "mem.h"
 #include "unity.h"
 #include "errors.h"
+#include <string.h>
 
 #define MEGABYTE 1024*1024
 
@@ -19,6 +20,7 @@ void test_MemAllocAllocatingOneByteIsSuccess(void)
 	J_STATUS Status;
 
 	Status = MemAlloc(1, &Ptr);
+	Ptr = (void *)'a';
 	TEST_ASSERT_EQUAL(SUCCESS, Status);
 }
 
@@ -84,6 +86,33 @@ void test_MemFreePointerAlreadyDeallocatedIsError(void)
 
 	TEST_ASSERT_EQUAL(ERROR, Status);
 	TEST_ASSERT_NULL(Ptr);
+}
+
+void test_MemReallocShouldShrinkMemory(void)
+{
+	//TEST_IGNORE();
+	char *Ptr;
+	J_STATUS Status;
+
+	MemAlloc(5, (void **)&Ptr);
+	strcpy(Ptr, "ciao");
+	Status = MemRealloc(3, (void **)&Ptr);
+	TEST_ASSERT_EQUAL(SUCCESS, Status);
+	TEST_ASSERT_EQUAL_MEMORY("ci", Ptr, 2);
+}
+
+void test_MemReallocShouldEnlargeMemory(void)
+{
+	char *Ptr;
+	J_STATUS Status;
+
+	MemAlloc(5, (void **)&Ptr);
+	strcpy(Ptr, "ciao");
+	Status = MemRealloc(12, (void **)&Ptr);
+	TEST_ASSERT_EQUAL(SUCCESS, Status);
+	strcat(Ptr, ", mondo");
+	TEST_ASSERT_EQUAL_MEMORY("ciao, mondo", Ptr, 11);
+
 }
 
 #undef MEGABYTE

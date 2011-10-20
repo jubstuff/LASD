@@ -30,8 +30,10 @@ extern void test_MemAllocAllocatingOneByteIsSuccess(void);
 extern void test_MemAllocAllocatingTooMuchMemoryIsError(void);
 extern void test_MemCallocAllocatingOneByteIsSuccess(void);
 extern void test_MemCallocAllocatingTooMuchMemoryIsError(void);
-extern void test_MemFreeDeallocateAllocatedMemory(void);
-extern void test_MemFreePointerAlreadyDeallocatedShouldFail(void);
+extern void test_MemFreeDeallocateAllocatedMemoryIsSuccess(void);
+extern void test_MemFreePointerAlreadyDeallocatedIsError(void);
+extern void test_MemReallocShouldShrinkMemory(void);
+extern void test_MemReallocShouldEnlargeMemory(void);
 
 
 //=======Test Reset Option=====
@@ -47,12 +49,14 @@ int main(void)
 {
   Unity.TestFile = "TestMem.c";
   UnityBegin();
-  RUN_TEST(test_MemAllocAllocatingOneByteIsSuccess, 16);
-  RUN_TEST(test_MemAllocAllocatingTooMuchMemoryIsError, 25);
-  RUN_TEST(test_MemCallocAllocatingOneByteIsSuccess, 40);
-  RUN_TEST(test_MemCallocAllocatingTooMuchMemoryIsError, 49);
-  RUN_TEST(test_MemFreeDeallocateAllocatedMemory, 64);
-  RUN_TEST(test_MemFreePointerAlreadyDeallocatedShouldFail, 75);
+  RUN_TEST(test_MemAllocAllocatingOneByteIsSuccess, 17);
+  RUN_TEST(test_MemAllocAllocatingTooMuchMemoryIsError, 27);
+  RUN_TEST(test_MemCallocAllocatingOneByteIsSuccess, 42);
+  RUN_TEST(test_MemCallocAllocatingTooMuchMemoryIsError, 51);
+  RUN_TEST(test_MemFreeDeallocateAllocatedMemoryIsSuccess, 66);
+  RUN_TEST(test_MemFreePointerAlreadyDeallocatedIsError, 77);
+  RUN_TEST(test_MemReallocShouldShrinkMemory, 91);
+  RUN_TEST(test_MemReallocShouldEnlargeMemory, 104);
 
   return (UnityEnd());
 }
