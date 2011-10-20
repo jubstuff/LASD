@@ -26,7 +26,8 @@
 //=======External Functions This Runner Calls=====
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_Mock(void);
+extern void test_AllocatingOneByteIsSuccess(void);
+extern void test_AllocatingTooMuchMemoryIsError(void);
 
 
 //=======Test Reset Option=====
@@ -42,7 +43,8 @@ int main(void)
 {
   Unity.TestFile = "TestMem.c";
   UnityBegin();
-  RUN_TEST(test_Mock, 14);
+  RUN_TEST(test_AllocatingOneByteIsSuccess, 14);
+  RUN_TEST(test_AllocatingTooMuchMemoryIsError, 21);
 
   return (UnityEnd());
 }
