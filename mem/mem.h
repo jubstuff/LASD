@@ -1,14 +1,16 @@
 /**
  * mem.h
  *
- * simple memory interface
+ * Abstraction for C's standard library memory management functions
  *
  * */
+#include "errors.h"
 
 #ifndef MEM_H
 #define MEM_H
 
 extern void *Mem_alloc( long nbytes, const char *file, int line);
+extern J_STATUS MemAlloc( long nbytes, void *OutPtr);
 extern void *Mem_calloc( long count, long nbytes, const char *file, int line);
 extern void Mem_free(void *ptr, const char *file, int line);
 extern void *Mem_resize(void *ptr, long nbytes, const char *file, int line);

@@ -9,6 +9,27 @@
 #include <stddef.h>
 #include "mem.h"
 
+J_STATUS MemAlloc( long Nbytes, void *OutPtr)
+{
+	void *Ptr;
+	J_STATUS Status;
+
+	status = SUCCESS;
+
+	Ptr = malloc(Nbytes);
+	if( ptr != NULL )
+	{
+		OutPtr = Ptr;
+	}
+	else
+	{
+		status = ERROR;
+		OutPtr = NULL;
+	}
+	return Status;
+
+}
+
 void *Mem_alloc(long nbytes, const char *file, int line)
 {
 	void *ptr;
