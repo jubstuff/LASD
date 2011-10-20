@@ -14,7 +14,7 @@ J_STATUS MemAlloc( long Nbytes, void *OutPtr)
 	void *Ptr;
 	J_STATUS Status;
 
-	status = SUCCESS;
+	Status = SUCCESS;
 
 	Ptr = malloc(Nbytes);
 	if( Ptr != NULL )
@@ -23,7 +23,7 @@ J_STATUS MemAlloc( long Nbytes, void *OutPtr)
 	}
 	else
 	{
-		status = ERROR;
+		Status = ERROR;
 		OutPtr = NULL;
 	}
 	return Status;
