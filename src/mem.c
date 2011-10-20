@@ -9,7 +9,7 @@
 #include <stddef.h>
 #include "mem.h"
 
-J_STATUS MemAlloc( long Nbytes, void *OutPtr)
+J_STATUS MemAlloc( long Nbytes, void **OutPtr)
 {
 	void *Ptr;
 	J_STATUS Status;
@@ -19,12 +19,33 @@ J_STATUS MemAlloc( long Nbytes, void *OutPtr)
 	Ptr = malloc(Nbytes);
 	if( Ptr != NULL )
 	{
-		OutPtr = Ptr;
+		*OutPtr = Ptr;
 	}
 	else
 	{
 		Status = ERROR;
-		OutPtr = NULL;
+		*OutPtr = NULL;
+	}
+	return Status;
+
+}
+
+J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr)
+{
+	void *Ptr;
+	J_STATUS Status;
+
+	Status = SUCCESS;
+
+	Ptr = calloc(Count, Nbytes);
+	if( Ptr != NULL )
+	{
+		*OutPtr = Ptr;
+	}
+	else
+	{
+		Status = ERROR;
+		*OutPtr = NULL;
 	}
 	return Status;
 
