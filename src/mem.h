@@ -14,17 +14,15 @@ extern J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr);
 extern J_STATUS MemFree( void **Ptr );
 extern J_STATUS MemRealloc( long Nbytes, void **Ptr );
 
-#define ALLOC(nbytes) \
-	Mem_alloc((nbytes), __FILE__, __LINE__)
+#define ALLOC(nbytes, ptr) \
+	MemAlloc((nbytes), (ptr))
 
-#define CALLOC(nbytes) \
-	Mem_calloc((nbytes), __FILE__, __LINE__)
+#define CALLOC(count, nbytes, ptr) \
+	MemCalloc((count), (nbytes), (ptr))
 
-#define FREE(ptr) ((void)(Mem_free((ptr), \
-				__FILE__, __LINE__), (ptr) = 0))
+#define FREE(ptr) (MemFree((ptr)))
 
-#define RESIZE(ptr, nbytes) ((ptr) = Mem_resize((ptr), \
-			(nbytes), __FILE__, __LINE__))
+#define RESIZE(nbytes, ptr) (MemRealloc((nbytes), (ptr)))
 
 #define  NEW(p) ((p) = ALLOC((long)sizeof *(p)))
 
