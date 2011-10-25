@@ -13,6 +13,14 @@
 #include <stdlib.h>
 #include "lista.h"
 
+/*=============================================================================*
+ * Definizioni struttura nodo
+ =============================================================================*/
+struct node {
+	struct node *Next; /**< Puntatore al nodo successivo */
+	void *Info;        /**< Campo del nodo */
+};
+
 /**
  * Inserisce un nodo all'interno della lista
  *
@@ -30,7 +38,7 @@
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op ) 
+NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op ) 
 {
 	NODE *NewNode;
 	*ReturnStatus = 0; 
@@ -42,7 +50,7 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 		NewNode = ListCreateNewNode( Value, Op );
 		if ( NewNode != NULL )
 		{
-			//Posiziona il nuovo nodo prima del nodo corrente
+			/* Posiziona il nuovo nodo prima del nodo corrente */
 			NewNode->Next = Current;
 			Current = NewNode;
 		}
@@ -55,13 +63,13 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
 	 * fare nulla, ma notifica la condizione tramite ReturnStatus */
 	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
-		//Esiste già un nodo con pari campo nella lista
+		/* Esiste già un nodo con pari campo nella lista */
 		Op->ManageDuplicate( Value, Current );
 		*ReturnStatus = W_DUPLICATE;
 	}
 	else
 	{
-		// vai avanti nella ricerca, aggiornando il campo Next del nodo corrente 
+		/* vai avanti nella ricerca, aggiornando il campo Next del nodo corrente */
 		Current->Next = List_RecursiveOrderedInsert(Value, Current->Next, ReturnStatus, Op);
 	}
 	return Current;
@@ -78,15 +86,15 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatu
  * @return Il riferimento al nuovo nodo creato, oppure NULL in caso di fallimento
  *         nell'allocazione
  * */ 
-NODE *ListCreateNewNode(void *Value, OPERATIONS *Op)
+NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
 {
 	NODE * NewNode;
 
-	//Alloca spazio per il nuovo nodo
+	/* Alloca spazio per il nuovo nodo */
 	NewNode = (NODE *) malloc(sizeof(NODE));
 	if ( NewNode != NULL )
 	{
-		//Associa il valore passato dall'utente al campo del nodo
+		/* Associa il valore passato dall'utente al campo del nodo */
 		NewNode->Info = Op->InitNode(Value);
 		NewNode->Next = NULL;
 	}
@@ -113,7 +121,7 @@ NODE *ListCreateNewNode(void *Value, OPERATIONS *Op)
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op) 
+NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op) 
 {
     NODE *Temp; /**< Nodo di appoggio per cancellazione */
     
@@ -124,13 +132,13 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
 		if( Op->Compare( Current->Info, Value ) == 0 )
 		{
 			Temp = Current->Next;
-			//Dealloca il campo chiave del nodo
+			/* Dealloca il campo chiave del nodo */
 			Op->Delete( Value, Current->Info );
 			
-			//Libera memoria per il nodo
+			/* Libera memoria per il nodo */
    			free( Current );
 			Current = Temp;
-			*ReturnStatus = I_REMOVED; //Nodo trovato e rimosso
+			*ReturnStatus = I_REMOVED; /* Nodo trovato e rimosso */
 		}
 		/* altrimenti prosegui la ricerca */
 		else
@@ -157,19 +165,19 @@ NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERAT
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  * */
-NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS *Op )
+NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op )
 {
 	NODE *Temp;
 
-    //Se la lista non è vuota oppure il limite inferiore è maggiore del limite superiore
-	//non fare nulla
+    /* Se la lista non è vuota oppure il limite inferiore è maggiore del limite superiore
+	 * non fare nulla */
 	if( (Current != NULL) || (Op->Compare(Inf, Sup) > 0)  )
 	{
-		//Scorri la lista fino al nodo che supera il limite superiore
+		/* Scorri la lista fino al nodo che supera il limite superiore */
 		if( Op->Compare(Current->Info, Sup) <= 0 )
 		{
 			Current->Next = List_RecursiveDeleteRange( Current->Next, Inf, Sup, Op );
-			//Cancella i nodi finché sono maggiori del limite inferiore
+			/* Cancella i nodi finché sono maggiori del limite inferiore */
 			if( Op->Compare(Current->Info, Inf) >= 0 )
 			{
 				Temp = Current->Next;
@@ -192,7 +200,7 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS
  *
  * @return Il puntatore alla testa eventualmente modificato.
  */
-NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
+NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op)
 {
     if( Current != NULL )
 	{
@@ -218,7 +226,7 @@ NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op)
  *                dei nodi.
  *
  */
-void List_RecursivePrint( NODE *Current, OPERATIONS *Op )
+void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op )
 {
     /* stampa la lista, se non vuota */
 	if( Current != NULL )

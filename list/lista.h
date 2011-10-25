@@ -20,17 +20,15 @@
 #define _LISTA_H_
 
 
-#define E_MALLOC    1   //Errore nella chiamata a malloc
-#define W_DUPLICATE 2   //Warning nell'inserimento di un nodo duplicato
-#define I_REMOVED   3   //Notifica che il nodo è stato rimosso correttamente
+#define E_MALLOC    1   /* Errore nella chiamata a malloc */
+#define W_DUPLICATE 2   /* Warning nell'inserimento di un nodo duplicato */
+#define I_REMOVED   3   /* Notifica che il nodo è stato rimosso correttamente */
 
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-typedef struct node {
-	struct node *Next; /**< Puntatore al nodo successivo */
-	void *Info;        /**< Campo del nodo */
-} NODE;
+typedef struct node_tag NODE;
+
 
 /*=============================================================================*
  * Definizioni tipi puntatori a funzione
@@ -102,7 +100,7 @@ typedef struct operations {
 	DELETER Delete;        /**< Elimina un nodo */
 	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
-} OPERATIONS;
+} JLIST_METHODS;
 
 
 /*==============================================================================
@@ -117,37 +115,37 @@ typedef struct operations {
  * con campo <Value> all'interno della lista <Current>.
  * 
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op );
+NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op );
 
 /**
  * Alloca un nuovo nodo, con relativo campo
  *
  * */ 
-NODE *ListCreateNewNode(void *Value, OPERATIONS *Op);
+NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op);
 
 
 /**
  * Utilizza un approccio ricorsivo per cancellare il nodo con campo
  * pari a <Value> dalla lista con testa <Current>
  * */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, OPERATIONS *Op) ;
+NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op) ;
 
 /**
  * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,
  * estremi compresi
  * */
-NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, OPERATIONS *Op );
+NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op );
 
 /**
  * Dealloca tutti i nodi della lista
  *
  */
-NODE *List_RecursiveDestroy(NODE *Current, OPERATIONS *Op);
+NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op);
 
 
 /**
  * Stampa a video tutti i nodi della lista con testa Current
  * */
-void List_RecursivePrint( NODE *Current, OPERATIONS *Op );
+void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op );
 
 #endif /* _LISTA_H_ */
