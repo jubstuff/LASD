@@ -29,6 +29,8 @@
  =============================================================================*/
 typedef struct node_tag NODE;
 
+typedef struct list_tag J_LIST;
+
 
 /*=============================================================================*
  * Definizioni tipi puntatori a funzione
@@ -97,7 +99,7 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 typedef struct operations {
 	COMPARATOR Compare;        /**< Confronta due nodi */
 	INITIALIZER InitNode;      /**< Inizializza un nodo */
-	DELETER Delete;        /**< Elimina un nodo */
+	DELETER Delete;            /**< Elimina un nodo */
 	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
 } JLIST_METHODS;
@@ -117,6 +119,7 @@ typedef struct operations {
  */ 
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op );
 
+int JList_Insert( void *Value, J_LIST *L );
 /**
  * Alloca un nuovo nodo, con relativo campo
  *

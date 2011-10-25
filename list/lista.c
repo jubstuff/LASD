@@ -16,10 +16,17 @@
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-struct node {
-	struct node *Next; /**< Puntatore al nodo successivo */
+struct node_tag {
+	NODE *Next; /**< Puntatore al nodo successivo */
 	void *Info;        /**< Campo del nodo */
 };
+
+struct list_tag
+{
+	NODE *Head;
+	JLIST_METHODS *Op;
+};
+
 
 /**
  * Inserisce un nodo all'interno della lista

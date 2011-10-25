@@ -15,11 +15,11 @@ void DuplicatoInt( void *Value, NODE *Nodo );
 
 int main(void)
 {
-    NODE *Head;
     JLIST_METHODS Op;
+    J_LIST *L;
 	
 	/* inizializza la lista */
-	Head = NULL;
+	L->Head = NULL;
 	/* Inizializza la struct con le operazioni */
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
