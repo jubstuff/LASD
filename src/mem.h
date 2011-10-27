@@ -14,18 +14,4 @@ extern J_STATUS MemCalloc( long Count, long Nbytes, void **OutPtr);
 extern J_STATUS MemFree( void **Ptr );
 extern J_STATUS MemRealloc( long Nbytes, void **Ptr );
 
-#define ALLOC(nbytes, ptr) \
-	MemAlloc((nbytes), (ptr))
-
-#define CALLOC(count, nbytes, ptr) \
-	MemCalloc((count), (nbytes), (ptr))
-
-#define FREE(ptr) (MemFree((ptr)))
-
-#define RESIZE(nbytes, ptr) (MemRealloc((nbytes), (ptr)))
-
-#define  NEW(p) ((p) = ALLOC((long)sizeof *(p)))
-
-#define NEWO(p) ((p) = CALLOC(1, (long)sizeof *(p)))
-
 #endif
