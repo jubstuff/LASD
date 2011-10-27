@@ -79,6 +79,8 @@ typedef void (*PRINTER)(const void *Value);
  * @param Value Riferimento al valore passato in input
  * @param CurrentNode Riferimento al nodo in cui è stato trovato il duplicato
  *
+ * TODO Ci puo stare NODE come tipo qui? No, perché in ogni caso l'utente non 
+ * saprebbe come gestirlo. Quindi si dovrebbe rimuovere
  * */
 typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 
@@ -117,10 +119,19 @@ J_STATUS JList_HeadInsert( void *Value, J_LIST *L );
 
 J_STATUS JList_DeleteNode( void *Value, J_LIST *L );
 
+J_STATUS JList_Search( void *Value, J_LIST *L, NODE **NodeFound );
+
 void     JList_DeleteRange( void *Inf, void  *Sup, J_LIST *L );
 
 void     JList_Destroy( J_LIST *L );
 
 void     JList_Print( J_LIST *L );
+
+/*==============================================================================
+ * Funzioni per la gestione dei nodi
+ *============================================================================*/
+
+void *JNode_GetData( NODE *N );
+
 
 #endif /* _LISTA_H_ */

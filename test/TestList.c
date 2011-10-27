@@ -33,8 +33,7 @@ void setUp(void)
 
 void tearDown(void)
 {
-    MemFree((void **)&List);
-
+    JList_Destroy( List );
 }
 
 /**
@@ -43,8 +42,13 @@ void tearDown(void)
 
 void test_ListOrderdedInsertWithListStruct(void)
 {
+    TEST_ASSERT_EQUAL(1, JList_isEmpty(List) );
     Value = 10;
     ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    Value = 1;
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    JList_Print(List);
+    TEST_ASSERT_EQUAL(0, JList_isEmpty(List) );
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
 }
 
@@ -52,12 +56,71 @@ void test_ListDeleteReallyRemovesNode(void)
 {
     Value = 10;
     ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    TEST_ASSERT_EQUAL(0, JList_isEmpty(List));
     ReturnStatus = JList_DeleteNode( (void *)&Value, List );
+    TEST_ASSERT_EQUAL(1, JList_isEmpty(List));
 
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
 
 }
 
+void test_HeadInsertInsertInHead(void)
+{
+    Value = 4;
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    Value = 1;
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    Value = 9;
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    JList_Print(List);
+}
+
+void test_DeleteRange(void)
+{
+    /* Funziona solo su una lista ordinata */
+    int i;
+    int Inf = 3;
+    int Sup = 6;
+    for( i = 0; i < 10; i++ )
+    {
+        Value = i+1;
+        ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    }
+    JList_DeleteRange( (void *)&Inf, (void *)&Sup, List );
+    JList_Print(List);
+}
+
+void test_SearchEmptyListFails(void)
+{
+    Value = 5;
+    NODE *ResultNode;
+    ReturnStatus = JList_Search( (void *)&Value, List, &ResultNode);
+    TEST_ASSERT_NULL(ResultNode);
+}
+
+void test_SearchExistingNodeSucceed(void)
+{
+    Value = 5;
+    int Result;
+    NODE *ResultNode;
+
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    ReturnStatus = JList_Search( (void *)&Value, List, &ResultNode);
+    
+    Result = *((int *)JNode_GetData(ResultNode));
+    TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
+    TEST_ASSERT_EQUAL(5, Result);
+}
+
+void test_SeachNotExistingNodeFails(void)
+{
+    Value = 10;
+    NODE *ResultNode;
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    Value = 5;
+    ReturnStatus = JList_Search( (void *)&Value, List, &ResultNode);
+    TEST_ASSERT_EQUAL(W_LIST_NOTFOUND, ReturnStatus);
+}
 /**
  * DEFINIZIONE TEST HELPERS
  * */
@@ -67,7 +130,6 @@ void *InizializzaNodoInt( void *Value )
 	int *Num = NULL;
 	MemAlloc( sizeof(int), (void **)&Num );
 	
-	printf("Inizializzo il numero....\n");
 	*Num = *( (int *)Value );
 	return (void *)Num;
 }

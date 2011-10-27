@@ -28,6 +28,11 @@ extern void setUp(void);
 extern void tearDown(void);
 extern void test_ListOrderdedInsertWithListStruct(void);
 extern void test_ListDeleteReallyRemovesNode(void);
+extern void test_HeadInsertInsertInHead(void);
+extern void test_DeleteRange(void);
+extern void test_SearchEmptyListFails(void);
+extern void test_SearchExistingNodeSucceed(void);
+extern void test_SeachNotExistingNodeFails(void);
 
 
 //=======Test Reset Option=====
@@ -43,8 +48,13 @@ int main(void)
 {
   Unity.TestFile = "TestList.c";
   UnityBegin();
-  RUN_TEST(test_ListOrderdedInsertWithListStruct, 44);
-  RUN_TEST(test_ListDeleteReallyRemovesNode, 51);
+  RUN_TEST(test_ListOrderdedInsertWithListStruct, 43);
+  RUN_TEST(test_ListDeleteReallyRemovesNode, 55);
+  RUN_TEST(test_HeadInsertInsertInHead, 67);
+  RUN_TEST(test_DeleteRange, 78);
+  RUN_TEST(test_SearchEmptyListFails, 93);
+  RUN_TEST(test_SearchExistingNodeSucceed, 101);
+  RUN_TEST(test_SeachNotExistingNodeFails, 115);
 
   return (UnityEnd());
 }

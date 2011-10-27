@@ -37,6 +37,7 @@ static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnSt
 static void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op );
 static NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op);
 static NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op );
+static NODE *List_RecursiveSearch( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op);
 
 /**
  * Inizializza una lista con i relativi metodi.
@@ -162,12 +163,51 @@ void JList_Print( J_LIST *L )
 void JList_Destroy( J_LIST *L )
 {
     L->Head = List_RecursiveDestroy(L->Head, L->Op);
+    MemFree( (void **)&L );
+}
+
+J_STATUS JList_Search( void *Value, J_LIST *L, NODE **NodeFound )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    *NodeFound = List_RecursiveSearch( Value, L->Head, &ReturnStatus, L->Op);
+    
+    return ReturnStatus;
+}
+
+void *JNode_GetData( NODE *N )
+{
+    return N->Info;
 }
 
 /*********************************************************************************
  * IMPLEMENTAZIONE METODI PRIVATI                                                *
  *                                                                               *
  *********************************************************************************/
+
+static NODE *List_RecursiveSearch( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op)
+{
+    *ReturnStatus = W_LIST_NOTFOUND;
+
+	/* cerca il nodo solo se la lista non è vuota */
+	if( Current != NULL )
+    {
+        /* se il nodo corrente è quello cercato */
+		if( Op->Compare( Current->Info, Value ) == 0 )
+		{
+            /* Esegui operazioni sul nodo */
+			*ReturnStatus = SUCCESS; 
+		}
+		/* altrimenti prosegui la ricerca */
+		else
+		{
+			List_RecursiveDelete( Value, Current->Next, ReturnStatus, Op );
+		}
+	} 
+	return Current;
+}
 
 /**
  * Inserisce un nodo all'interno della lista
