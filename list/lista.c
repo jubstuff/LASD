@@ -21,11 +21,20 @@
 // 	void *Info;        /**< Campo del nodo */
 // };
 
-struct list_tag
+// struct list_tag
+// {
+// 	NODE *Head;
+// 	JLIST_METHODS *Op;
+// };
+
+J_STATUS List_OrderedInsert( void *Value, J_LIST *L )
 {
-	NODE *Head;
-	JLIST_METHODS *Op;
-};
+    J_STATUS ReturnStatus;
+
+    L->Head = List_RecursiveOrderedInsert( Value, L->Head, &ReturnStatus, L->Op );
+    return ReturnStatus;
+}
+
 
 
 /**
@@ -45,7 +54,7 @@ struct list_tag
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op ) 
+static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op ) 
 {
 	NODE *NewNode;
 	*ReturnStatus = SUCCESS; 
@@ -63,7 +72,7 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *Return
 		}
 		else 
 		{   
-			*ReturnStatus = E_MALLOC;
+			*ReturnStatus = E_NO_MEM;
 		}
 	}   
 	/* se il valore del nodo corrente è uguale a quello in ingresso, non
@@ -72,7 +81,7 @@ NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *Return
 	{
 		/* Esiste già un nodo con pari campo nella lista */
 		Op->ManageDuplicate( Value, Current );
-		*ReturnStatus = W_DUPLICATE;
+		*ReturnStatus = W_LIST_DUP;
 	}
 	else
 	{

@@ -34,7 +34,14 @@ typedef struct node_tag {
 	void *Info;        /**< Campo del nodo */
 } NODE;
 
-typedef struct list_tag J_LIST;
+typedef struct operations JLIST_METHODS;
+
+//typedef struct list_tag J_LIST;
+typedef struct list_tag
+{
+	NODE *Head;
+	JLIST_METHODS *Op;
+}J_LIST;
 
 
 /*=============================================================================*
@@ -101,13 +108,13 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
  * nella descrizione di ogni tipo di puntatore a funzione.
  *
  * */
-typedef struct operations {
+struct operations {
 	COMPARATOR Compare;        /**< Confronta due nodi */
 	INITIALIZER InitNode;      /**< Inizializza un nodo */
 	DELETER Delete;            /**< Elimina un nodo */
 	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
-} JLIST_METHODS;
+};
 
 
 /*==============================================================================
@@ -115,6 +122,7 @@ typedef struct operations {
  *============================================================================*/
 
 
+J_STATUS List_OrderedInsert( void *Value, J_LIST *L );
 /**
  * Inserisce un nodo all'interno della lista
  *
@@ -122,7 +130,7 @@ typedef struct operations {
  * con campo <Value> all'interno della lista <Current>.
  * 
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
+static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
 
 int JList_Insert( void *Value, J_LIST *L );
 /**
