@@ -116,8 +116,8 @@ static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS 
 			*ReturnStatus = E_NO_MEM;
 		}
 	}   
-	/* se il valore del nodo corrente è uguale a quello in ingresso, non
-	 * fare nulla, ma notifica la condizione tramite ReturnStatus */
+	/* se il valore del nodo corrente è uguale a quello in ingresso
+	 * notifica la condizione tramite ReturnStatus */
 	else if( ( Op->Compare( (void *)Current->Info, (void *)Value ) == 0 )  )
 	{
 		/* Esiste già un nodo con pari campo nella lista */
@@ -172,7 +172,8 @@ static NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
  * @param Value        Valore associata al nodo da rimuovere.
  * @param Current      Testa della lista da cui rimuovere il nodo.
  * @param ReturnStatus Esito dell'operazione. Può assumere valore:
- *                     - I_REMOVED, in caso di nodo trovato e rimosso
+ *                     - SUCCESS, in caso di nodo trovato e rimosso
+ *                     - W_LIST_NOTFOUND, in caso di nodo non trovato
  * @param Op           Riferimento al record contenente le operazioni di manipolazione
  *                     dei nodi.
  *
@@ -197,7 +198,7 @@ static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnSt
 			/* Libera memoria per il nodo */
    			free( Current );
 			Current = Temp;
-			*ReturnStatus = I_REMOVED; /* Nodo trovato e rimosso */
+			*ReturnStatus = SUCCESS; /* Nodo trovato e rimosso */
 		}
 		/* altrimenti prosegui la ricerca */
 		else
