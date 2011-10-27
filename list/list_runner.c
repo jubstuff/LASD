@@ -6,6 +6,7 @@
 #include "lista.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "mem.h"
 
 void *InizializzaNodoInt( void *Value );
 void StampaNodoInt( const void *Value );
@@ -16,10 +17,8 @@ void DuplicatoInt( void *Value, NODE *Nodo );
 int main(void)
 {
     JLIST_METHODS Op;
-    J_LIST *L;
 	
 	/* inizializza la lista */
-	L->Head = NULL;
 	/* Inizializza la struct con le operazioni */
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
@@ -32,7 +31,10 @@ int main(void)
 
 void *InizializzaNodoInt( void *Value )
 {
-	int *Num = (int *) malloc( sizeof(int) );
+	/* int *Num = (int *) malloc( sizeof(int) ); */
+	int *Num = NULL;
+	MemAlloc( sizeof(int), &Num );
+	
 	printf("Inizializzo il numero....\n");
 	*Num = *( (int *)Value );
 	return (void *)Num;
