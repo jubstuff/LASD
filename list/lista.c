@@ -48,7 +48,7 @@ struct list_tag
 NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op ) 
 {
 	NODE *NewNode;
-	*ReturnStatus = 0; 
+	*ReturnStatus = SUCCESS; 
 	
 	/*se la lista è vuota oppure il nodo è maggiore, inserisci un nuovo nodo */
 	if( Current == NULL || ( Op->Compare( Current->Info, Value ) > 0 ) )

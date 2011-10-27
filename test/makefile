@@ -2,6 +2,7 @@ C_COMPILER=gcc
 OPTIONS=-Wall
 
 MEM_BASE=test_mem
+LIST_BASE=test_list
 
 ifeq ($(OS),Windows_NT)
 	TARGET_EXTENSION=.exe
@@ -10,10 +11,12 @@ else
 endif
 
 MEM_TARGET = $(MEM_BASE)$(TARGET_EXTENSION)
+LIST_TARGET = $(LIST_BASE)$(TARGET_EXTENSION)
 
 MEM_SRC_FILES=../unity/src/unity.c ../src/mem.c TestMem.c TestMem_Runner.c
+LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../list/lista.c TestList.c TestList_Runner.c
 
-INC_DIRS=-I../src -I../unity/src
+INC_DIRS=-I../src -I../unity/src -I../list
 SYMBOLS=-DTEST
 
 ifeq ($(OS),Windows_NT)
@@ -30,6 +33,11 @@ mem:
 	ruby ../unity/auto/generate_test_runner.rb TestMem.c TestMem_Runner.c
 	$(C_COMPILER) $(OPTIONS) $(INC_DIRS) $(SYMBOLS) $(MEM_SRC_FILES) -o $(MEM_TARGET)
 	./$(MEM_TARGET)
+list:
+	ruby ../unity/auto/generate_test_runner.rb TestList.c TestList_Runner.c
+	$(C_COMPILER) $(OPTIONS) $(INC_DIRS) $(SYMBOLS) $(LIST_SRC_FILES) -o $(LIST_TARGET)
+	./$(LIST_TARGET)
+
 
 clean:
 	$(CLEANUP)

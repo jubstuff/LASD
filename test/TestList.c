@@ -1,12 +1,9 @@
-/**
- * Test per la libreria lista
- *
- * */
-
+#include "mem.h"
+#include "unity.h"
+#include "errors.h"
+#include <string.h>
 #include "lista.h"
 #include <stdlib.h>
-#include <stdio.h>
-#include "mem.h"
 
 void *InizializzaNodoInt( void *Value );
 void StampaNodoInt( const void *Value );
@@ -14,14 +11,16 @@ void DeallocaInt( void *InputValue, void *NodeInfo );
 int NumCmp( const void *Num1, const void *Num2 );
 void DuplicatoInt( void *Value, NODE *Nodo );
 
-int main(void)
+static JLIST_METHODS Op;
+static NODE *Head;
+static int Value;
+static J_STATUS ReturnStatus;
+J_LIST List;
+
+void setUp(void)
 {
-    JLIST_METHODS Op;
-    NODE *Head;
-    int Value;
-    J_STATUS ReturnStatus;
-	
 	/* inizializza la lista */
+    Head = NULL;
 	/* Inizializza la struct con le operazioni */
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
@@ -29,23 +28,29 @@ int main(void)
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
 
-    Head = NULL;
+    List.Head = NULL;
+    List.Op = &Op;
 
-    Value = 5;
-    Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, &Op);
-
-    Value = 2;
-    Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, &Op);
-
-    Value = 9;
-    Head = List_RecursiveOrderedInsert( (void *)&Value, Head, &ReturnStatus, &Op);
-
-    List_RecursivePrint( Head, &Op );
-    Head = List_RecursiveDestroy( Head, &Op );
-
-	return 0;
 }
 
+void tearDown(void)
+{
+
+}
+
+/**
+ * TEST
+ * */
+
+void test_ListOrderdedInsertWithListStruct(void)
+{
+    Value = 10;
+    ReturnStatus = List_OrderedInsert( (void *)&Value, &List );
+}
+
+/**
+ * DEFINIZIONE TEST HELPERS
+ * */
 void *InizializzaNodoInt( void *Value )
 {
 	/* int *Num = (int *) malloc( sizeof(int) ); */
