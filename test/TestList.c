@@ -28,8 +28,7 @@ void setUp(void)
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
 
-    List.Head = NULL;
-    List.Op = &Op;
+    JList_Init(&List, &Op);
 
 }
 

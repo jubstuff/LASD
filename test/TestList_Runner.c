@@ -42,7 +42,7 @@ int main(void)
 {
   Unity.TestFile = "TestList.c";
   UnityBegin();
-  RUN_TEST(test_ListOrderdedInsertWithListStruct, 45);
+  RUN_TEST(test_ListOrderdedInsertWithListStruct, 44);
 
   return (UnityEnd());
 }

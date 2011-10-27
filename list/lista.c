@@ -29,6 +29,11 @@
 //
 
 /**
+ * DEFINIZIONE METODI PRIVATI
+ *
+ * */
+static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
+/**
  * Inizializza una lista con i relativi metodi.
  *
  * Se viene passato un puntatore NULL la funzione restituisce ERROR

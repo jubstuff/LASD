@@ -131,7 +131,7 @@ J_STATUS List_OrderedInsert( void *Value, J_LIST *L );
  * con campo <Value> all'interno della lista <Current>.
  * 
  */ 
-static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
+//static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
 
 int JList_Insert( void *Value, J_LIST *L );
 /**
