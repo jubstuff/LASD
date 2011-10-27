@@ -14,9 +14,9 @@ MEM_TARGET = $(MEM_BASE)$(TARGET_EXTENSION)
 LIST_TARGET = $(LIST_BASE)$(TARGET_EXTENSION)
 
 MEM_SRC_FILES=../unity/src/unity.c ../src/mem.c TestMem.c TestMem_Runner.c
-LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../list/lista.c TestList.c TestList_Runner.c
+LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c TestList.c TestList_Runner.c
 
-INC_DIRS=-I../src -I../unity/src -I../list
+INC_DIRS=-I../src -I../unity/src 
 SYMBOLS=-DTEST
 
 ifeq ($(OS),Windows_NT)
