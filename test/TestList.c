@@ -12,15 +12,13 @@ int NumCmp( const void *Num1, const void *Num2 );
 void DuplicatoInt( void *Value, NODE *Nodo );
 
 static JLIST_METHODS Op;
-static NODE *Head;
 static int Value;
 static J_STATUS ReturnStatus;
-J_LIST List;
+J_LIST *List;
 
 void setUp(void)
 {
-	/* inizializza la lista */
-    Head = NULL;
+
 	/* Inizializza la struct con le operazioni */
    	Op.Compare = NumCmp;
    	Op.InitNode = InizializzaNodoInt;
@@ -28,12 +26,14 @@ void setUp(void)
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
 
+
     JList_Init(&List, &Op);
 
 }
 
 void tearDown(void)
 {
+    MemFree((void **)&List);
 
 }
 
@@ -44,18 +44,17 @@ void tearDown(void)
 void test_ListOrderdedInsertWithListStruct(void)
 {
     Value = 10;
-    ReturnStatus = JList_OrderedInsert( (void *)&Value, &List );
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
 }
 
 void test_ListDeleteReallyRemovesNode(void)
 {
     Value = 10;
-    ReturnStatus = JList_OrderedInsert( (void *)&Value, &List );
-    ReturnStatus = JList_DeleteNode( (void *)&Value, &List );
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
+    ReturnStatus = JList_DeleteNode( (void *)&Value, List );
 
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
-    TEST_ASSERT_NULL(List.Head);
 
 }
 

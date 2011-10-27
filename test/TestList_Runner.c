@@ -27,7 +27,7 @@
 extern void setUp(void);
 extern void tearDown(void);
 extern void test_ListOrderdedInsertWithListStruct(void);
-extern void test_ListDeleteRemoveNode(void);
+extern void test_ListDeleteReallyRemovesNode(void);
 
 
 //=======Test Reset Option=====
@@ -44,7 +44,7 @@ int main(void)
   Unity.TestFile = "TestList.c";
   UnityBegin();
   RUN_TEST(test_ListOrderdedInsertWithListStruct, 44);
-  RUN_TEST(test_ListDeleteRemoveNode, 51);
+  RUN_TEST(test_ListDeleteReallyRemovesNode, 51);
 
   return (UnityEnd());
 }

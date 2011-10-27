@@ -4,7 +4,6 @@
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
  * @date 05/04/11
- * @package lib
  *
  * Realizza alcune semplici funzioni per una lista, quali:
  *  - inserimento di un nodo
@@ -24,20 +23,11 @@
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-// typedef struct node_tag NODE;
-typedef struct node_tag {
-	struct node_tag *Next; /**< Puntatore al nodo successivo */
-	void *Info;        /**< Campo del nodo */
-} NODE;
+typedef struct node_tag NODE;
 
-typedef struct operations JLIST_METHODS;
+typedef struct list_op_tag JLIST_METHODS;
 
-//typedef struct list_tag J_LIST;
-typedef struct list_tag
-{
-	NODE *Head;
-	JLIST_METHODS *Op;
-}J_LIST;
+typedef struct list_tag J_LIST;
 
 
 /*=============================================================================*
@@ -104,7 +94,7 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
  * nella descrizione di ogni tipo di puntatore a funzione.
  *
  * */
-struct operations {
+struct list_op_tag {
 	COMPARATOR Compare;        /**< Confronta due nodi */
 	INITIALIZER InitNode;      /**< Inizializza un nodo */
 	DELETER Delete;            /**< Elimina un nodo */
@@ -117,26 +107,20 @@ struct operations {
  * Funzioni per la gestione della lista
  *============================================================================*/
 
+int      JList_isEmpty( J_LIST *L );
 
-J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op );
-J_STATUS JList_DeleteNode( void *Value, J_LIST *L );
+J_STATUS JList_Init( J_LIST **L, JLIST_METHODS *Op );
+
 J_STATUS JList_OrderedInsert( void *Value, J_LIST *L );
-/**
- * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,
- * estremi compresi
- * */
-NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op );
 
-/**
- * Dealloca tutti i nodi della lista
- *
- */
-NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op);
+J_STATUS JList_HeadInsert( void *Value, J_LIST *L );
 
+J_STATUS JList_DeleteNode( void *Value, J_LIST *L );
 
-/**
- * Stampa a video tutti i nodi della lista con testa Current
- * */
-void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op );
+void     JList_DeleteRange( void *Inf, void  *Sup, J_LIST *L );
+
+void     JList_Destroy( J_LIST *L );
+
+void     JList_Print( J_LIST *L );
 
 #endif /* _LISTA_H_ */

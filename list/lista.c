@@ -3,8 +3,7 @@
  * 
  * @author Giustino Borzacchiello - matr 566/3291 - giustinob@gmail.com
  *
- * @date 05/04/11
- * @package lib
+ * @date 27/10/11
  *
  * Implementazioni delle funzioni per la gestione di una lista a concatenazione
  * singola
@@ -12,21 +11,22 @@
  * */
 #include <stdlib.h>
 #include "lista.h"
+#include "mem.h"
 
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-// struct node_tag {
-// 	NODE *Next; /**< Puntatore al nodo successivo */
-// 	void *Info;        /**< Campo del nodo */
-// };
+struct node_tag {
+	NODE *Next; /**< Puntatore al nodo successivo */
+	void *Info;        /**< Campo del nodo */
+};
 
-// struct list_tag
-// {
-// 	NODE *Head;
-// 	JLIST_METHODS *Op;
-// };
-//
+struct list_tag
+{
+	NODE *Head;
+	JLIST_METHODS *Op;
+};
+
 
 /**
  * DEFINIZIONE METODI PRIVATI
@@ -34,24 +34,43 @@
 static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
 static NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op);
 static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op);
+static void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op );
+static NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op);
+static NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op );
+
 /**
  * Inizializza una lista con i relativi metodi.
  *
  * */
-J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op )
+J_STATUS JList_Init( J_LIST **L, JLIST_METHODS *Op )
 {
     J_STATUS ReturnStatus;
 
     ReturnStatus = SUCCESS;
-    /* Inizializzo la testa della lista e i relativi metodi */
-    L->Head = NULL;
-    L->Op = Op;
+
+    ReturnStatus = MemAlloc(sizeof(J_LIST), (void **)L);
+
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Inizializzo la testa della lista e i relativi metodi */
+        (*L)->Head = NULL;
+        (*L)->Op = Op;
+    }
 
     return ReturnStatus;
 }
+int JList_isEmpty( J_LIST *L )
+{
+    return L->Head == NULL;
+}
 
 /**
- * Inserisce Value in lista, rispettando l'ordine 
+ * Inserisce Value in lista, rispettando la relazione d'ordine definito nel COMPARATOR
+ *
+ * Necessita dei metodi
+ * COMPARATOR
+ * INITIALIZER
+ * DUPLICATE
  * */
 J_STATUS JList_OrderedInsert( void *Value, J_LIST *L )
 {
@@ -60,8 +79,42 @@ J_STATUS JList_OrderedInsert( void *Value, J_LIST *L )
     L->Head = List_RecursiveOrderedInsert( Value, L->Head, &ReturnStatus, L->Op );
     return ReturnStatus;
 }
+
+/**
+ * Inserisce un nodo in testa alla lista
+ *
+ * Necessita dei metodi:
+ * INITIALIZER
+ * */
+J_STATUS JList_HeadInsert( void *Value, J_LIST *L )
+{
+    J_STATUS ReturnStatus;
+    NODE *NewNode;
+
+    ReturnStatus = SUCCESS;
+
+    /*alloca e inizializza il nuovo nodo*/
+    NewNode = ListCreateNewNode( Value, L->Op );
+    if ( NewNode != NULL )
+    {
+        /* Posiziona il nuovo nodo prima del nodo corrente */
+        NewNode->Next = L->Head;
+        L->Head = NewNode;
+    }
+    else 
+    {   
+        ReturnStatus = E_NO_MEM;
+    }
+
+    return ReturnStatus;
+}
+
 /**
  * Elimina un nodo contenente Value dalla lista
+ *
+ * Necessita dei metodi:
+ * COMPARATOR
+ * DELETER
  * */
 J_STATUS JList_DeleteNode( void *Value, J_LIST *L )
 {
@@ -72,11 +125,49 @@ J_STATUS JList_DeleteNode( void *Value, J_LIST *L )
     return ReturnStatus;
 }
 
-
-/********************************************************************************
- * IMPLEMENTAZIONE METODI PRIVATI
+/**
+ * Elimina i nodi compresi nell'intervallo [Inf, Sup] da una lista ordinata
+ *
+ * Necessita dei metodi:
+ * COMPARATOR
+ * DELETER
+ *
+ * =NOTA=
+ * Il comportamento di questa funzione è indefinito, se applicato a liste non ordinate
  *
  * */
+void JList_DeleteRange( void *Inf, void  *Sup, J_LIST *L )
+{
+    L->Head = List_RecursiveDeleteRange( L->Head, Inf, Sup, L->Op );
+}
+
+/* 
+ * Stampa la lista
+ *
+ * Necessita dei metodi:
+ * PRINTER
+ *
+ * */
+void JList_Print( J_LIST *L )
+{
+    List_RecursivePrint( L->Head, L->Op );
+}
+
+/**
+ * Dealloca l'intera lista
+ *
+ * Necessita dei metodi:
+ * DELETER
+ * */
+void JList_Destroy( J_LIST *L )
+{
+    L->Head = List_RecursiveDestroy(L->Head, L->Op);
+}
+
+/*********************************************************************************
+ * IMPLEMENTAZIONE METODI PRIVATI                                                *
+ *                                                                               *
+ *********************************************************************************/
 
 /**
  * Inserisce un nodo all'interno della lista
@@ -131,7 +222,6 @@ static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS 
 	}
 	return Current;
 }
-
 
 /**
  * Alloca un nuovo nodo, con relativo campo
@@ -227,7 +317,7 @@ static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnSt
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  * */
-NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op )
+static NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METHODS *Op )
 {
 	NODE *Temp;
 
@@ -262,7 +352,7 @@ NODE *List_RecursiveDeleteRange( NODE *Current, void *Inf, void *Sup, JLIST_METH
  *
  * @return Il puntatore alla testa eventualmente modificato.
  */
-NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op)
+static NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op)
 {
     if( Current != NULL )
 	{
@@ -288,7 +378,7 @@ NODE *List_RecursiveDestroy(NODE *Current, JLIST_METHODS *Op)
  *                dei nodi.
  *
  */
-void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op )
+static void List_RecursivePrint( NODE *Current, JLIST_METHODS *Op )
 {
     /* stampa la lista, se non vuota */
 	if( Current != NULL )
