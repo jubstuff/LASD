@@ -9,8 +9,10 @@
 
 typedef enum
 {
-	SUCCESS,
-	ERROR
+	SUCCESS, /* OK */
+	E_NO_MEM, /* Errore in malloc, memoria insufficiente */
+	ERROR, /* Errore generico */
+	W_LIST_DUP /* Trovato un duplicato nella lista */
 } J_STATUS;
 
 #endif
