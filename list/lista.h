@@ -21,10 +21,6 @@
 #define _LISTA_H_
 #include "errors.h"
 
-#define E_MALLOC    1   /* Errore nella chiamata a malloc */
-#define W_DUPLICATE 2   /* Warning nell'inserimento di un nodo duplicato */
-#define I_REMOVED   3   /* Notifica che il nodo è stato rimosso correttamente */
-
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/

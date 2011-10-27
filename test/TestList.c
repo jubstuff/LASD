@@ -48,7 +48,7 @@ void test_ListOrderdedInsertWithListStruct(void)
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
 }
 
-void test_ListDeleteRemoveNode(void)
+void test_ListDeleteReallyRemovesNode(void)
 {
     Value = 10;
     ReturnStatus = JList_OrderedInsert( (void *)&Value, &List );
