@@ -16,10 +16,10 @@
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-struct node_tag {
-	NODE *Next; /**< Puntatore al nodo successivo */
-	void *Info;        /**< Campo del nodo */
-};
+// struct node_tag {
+// 	NODE *Next; /**< Puntatore al nodo successivo */
+// 	void *Info;        /**< Campo del nodo */
+// };
 
 struct list_tag
 {
@@ -45,7 +45,7 @@ struct list_tag
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op ) 
+NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op ) 
 {
 	NODE *NewNode;
 	*ReturnStatus = 0; 
@@ -128,7 +128,7 @@ NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op) 
+NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op) 
 {
     NODE *Temp; /**< Nodo di appoggio per cancellazione */
     

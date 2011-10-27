@@ -16,9 +16,10 @@
  * La lista è di tipo a singola concatenazione.
  * 
  */
+
 #ifndef _LISTA_H_
 #define _LISTA_H_
-
+#include "errors.h"
 
 #define E_MALLOC    1   /* Errore nella chiamata a malloc */
 #define W_DUPLICATE 2   /* Warning nell'inserimento di un nodo duplicato */
@@ -27,7 +28,11 @@
 /*=============================================================================*
  * Definizioni struttura nodo
  =============================================================================*/
-typedef struct node_tag NODE;
+// typedef struct node_tag NODE;
+typedef struct node_tag {
+	struct node_tag *Next; /**< Puntatore al nodo successivo */
+	void *Info;        /**< Campo del nodo */
+} NODE;
 
 typedef struct list_tag J_LIST;
 
@@ -117,7 +122,7 @@ typedef struct operations {
  * con campo <Value> all'interno della lista <Current>.
  * 
  */ 
-NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op );
+NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
 
 int JList_Insert( void *Value, J_LIST *L );
 /**
@@ -131,7 +136,7 @@ NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op);
  * Utilizza un approccio ricorsivo per cancellare il nodo con campo
  * pari a <Value> dalla lista con testa <Current>
  * */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, int *ReturnStatus, JLIST_METHODS *Op) ;
+NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op) ;
 
 /**
  * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,

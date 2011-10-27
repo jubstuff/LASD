@@ -17,6 +17,7 @@ void DuplicatoInt( void *Value, NODE *Nodo );
 int main(void)
 {
     JLIST_METHODS Op;
+    NODE *Head;
 	
 	/* inizializza la lista */
 	/* Inizializza la struct con le operazioni */
@@ -26,6 +27,8 @@ int main(void)
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
 
+    Head = NULL;
+
 	return 0;
 }
 
@@ -33,7 +36,7 @@ void *InizializzaNodoInt( void *Value )
 {
 	/* int *Num = (int *) malloc( sizeof(int) ); */
 	int *Num = NULL;
-	MemAlloc( sizeof(int), &Num );
+	MemAlloc( sizeof(int), (void **)&Num );
 	
 	printf("Inizializzo il numero....\n");
 	*Num = *( (int *)Value );
