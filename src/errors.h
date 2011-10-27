@@ -12,6 +12,7 @@ typedef enum
 	SUCCESS, /* OK */
 	E_NO_MEM, /* Errore in malloc, memoria insufficiente */
 	ERROR, /* Errore generico */
+	W_LIST_NOTFOUND, /* Nodo non trovato nella lista */
 	W_LIST_DUP /* Trovato un duplicato nella lista */
 } J_STATUS;
 
