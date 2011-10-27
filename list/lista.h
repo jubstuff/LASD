@@ -123,30 +123,8 @@ struct operations {
 
 
 J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op );
-J_STATUS List_OrderedInsert( void *Value, J_LIST *L );
-/**
- * Inserisce un nodo all'interno della lista
- *
- * Questa funzione utilizza un approccio ricorsivo per inserire un nodo
- * con campo <Value> all'interno della lista <Current>.
- * 
- */ 
-//static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
-
-int JList_Insert( void *Value, J_LIST *L );
-/**
- * Alloca un nuovo nodo, con relativo campo
- *
- * */ 
-NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op);
-
-
-/**
- * Utilizza un approccio ricorsivo per cancellare il nodo con campo
- * pari a <Value> dalla lista con testa <Current>
- * */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op) ;
-
+J_STATUS JList_DeleteNode( void *Value, J_LIST *L );
+J_STATUS JList_OrderedInsert( void *Value, J_LIST *L );
 /**
  * Permette di cancellare tutti i nodi i cui campi sono compresi tra Inf e Sup,
  * estremi compresi

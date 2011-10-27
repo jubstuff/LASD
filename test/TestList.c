@@ -44,7 +44,7 @@ void tearDown(void)
 void test_ListOrderdedInsertWithListStruct(void)
 {
     Value = 10;
-    ReturnStatus = List_OrderedInsert( (void *)&Value, &List );
+    ReturnStatus = JList_OrderedInsert( (void *)&Value, &List );
 }
 
 /**

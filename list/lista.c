@@ -30,13 +30,13 @@
 
 /**
  * DEFINIZIONE METODI PRIVATI
- *
  * */
 static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op );
+static NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op);
+static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op);
 /**
  * Inizializza una lista con i relativi metodi.
  *
- * Se viene passato un puntatore NULL la funzione restituisce ERROR
  * */
 J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op )
 {
@@ -50,15 +50,33 @@ J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op )
     return ReturnStatus;
 }
 
-J_STATUS List_OrderedInsert( void *Value, J_LIST *L )
+/**
+ * Inserisce Value in lista, rispettando l'ordine 
+ * */
+J_STATUS JList_OrderedInsert( void *Value, J_LIST *L )
 {
     J_STATUS ReturnStatus;
 
     L->Head = List_RecursiveOrderedInsert( Value, L->Head, &ReturnStatus, L->Op );
     return ReturnStatus;
 }
+/**
+ * Elimina un nodo contenente Value dalla lista
+ * */
+J_STATUS JList_DeleteNode( void *Value, J_LIST *L )
+{
+    J_STATUS ReturnStatus;
+
+    L->Head = List_RecursiveDelete( Value, L->Head, &ReturnStatus, L->Op);
+
+    return ReturnStatus;
+}
 
 
+/********************************************************************************
+ * IMPLEMENTAZIONE METODI PRIVATI
+ *
+ * */
 
 /**
  * Inserisce un nodo all'interno della lista
@@ -125,7 +143,7 @@ static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS 
  * @return Il riferimento al nuovo nodo creato, oppure NULL in caso di fallimento
  *         nell'allocazione
  * */ 
-NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
+static NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
 {
 	NODE * NewNode;
 
@@ -160,10 +178,12 @@ NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
  *
  * @return Il puntatore alla testa della lista, eventualmente modificato
  */
-NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op) 
+static NODE *List_RecursiveDelete(void *Value, NODE *Current, J_STATUS *ReturnStatus, JLIST_METHODS *Op) 
 {
     NODE *Temp; /**< Nodo di appoggio per cancellazione */
     
+    *ReturnStatus = W_LIST_NOTFOUND;
+
 	/* cerca il nodo solo se la lista non è vuota */
 	if( Current != NULL )
     {
