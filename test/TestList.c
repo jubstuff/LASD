@@ -55,7 +55,7 @@ void test_ListDeleteRemoveNode(void)
     ReturnStatus = JList_DeleteNode( (void *)&Value, &List );
 
     TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
-
+    TEST_ASSERT_NULL(List.Head);
 
 }
 

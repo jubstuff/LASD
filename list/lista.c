@@ -146,15 +146,17 @@ static NODE *List_RecursiveOrderedInsert ( void *Value, NODE *Current, J_STATUS 
 static NODE *ListCreateNewNode(void *Value, JLIST_METHODS *Op)
 {
 	NODE * NewNode;
+	J_STATUS Status;
 
 	/* Alloca spazio per il nuovo nodo */
-	NewNode = (NODE *) malloc(sizeof(NODE));
-	if ( NewNode != NULL )
-	{
+	Status = MemAlloc(sizeof(NODE), (void **)&NewNode);
+	if( Status == SUCCESS )
+    {
 		/* Associa il valore passato dall'utente al campo del nodo */
 		NewNode->Info = Op->InitNode(Value);
 		NewNode->Next = NULL;
-	}
+    }
+
 	return NewNode;
 }
 
