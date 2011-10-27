@@ -122,6 +122,7 @@ struct operations {
  *============================================================================*/
 
 
+J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op );
 J_STATUS List_OrderedInsert( void *Value, J_LIST *L );
 /**
  * Inserisce un nodo all'interno della lista

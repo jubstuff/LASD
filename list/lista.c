@@ -26,6 +26,24 @@
 // 	NODE *Head;
 // 	JLIST_METHODS *Op;
 // };
+//
+
+/**
+ * Inizializza una lista con i relativi metodi.
+ *
+ * Se viene passato un puntatore NULL la funzione restituisce ERROR
+ * */
+J_STATUS JList_Init( J_LIST *L, JLIST_METHODS *Op )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+    /* Inizializzo la testa della lista e i relativi metodi */
+    L->Head = NULL;
+    L->Op = Op;
+
+    return ReturnStatus;
+}
 
 J_STATUS List_OrderedInsert( void *Value, J_LIST *L )
 {
