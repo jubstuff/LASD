@@ -23,7 +23,8 @@ typedef struct jvertex_tag J_VERTEX;
 J_VERTEX *JVertex_New();
 int JVertex_Delete( J_VERTEX * );
 char *JVertex_GetLabel( J_VERTEX * );
-char *JVertex_SetLabel( J_VERTEX *, size_t , const char *);
+char *JVertex_SetLabel( char *, J_VERTEX *);
+void JVertex_SetData( void *Data, J_VERTEX *V);
 
 
 #endif
