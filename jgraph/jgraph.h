@@ -8,7 +8,7 @@
 #ifndef JGRAPH_H
 #define JGRAPH_H
 
-typedef struct vertex_tag J_VERTEX;
+#include "errors.h"
 
 typedef struct graph_op_tag JGRAPH_METHODS;
 
