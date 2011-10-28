@@ -1,4 +1,6 @@
 #include "jvertex.h"
+#include "errors.h"
+#include "mem.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,22 +11,40 @@ struct jvertex_tag
 	void *Data;  /**< Vertex's Data */
 };
 
-J_VERTEX *JVertex_New()
-{
-}   
-
-int JVertex_Delete( J_VERTEX *V )
+void JVertex_Delete( J_VERTEX *V )
 {
 }
 
-char *JVertex_GetLabel( J_VERTEX *This )
+void JVertex_GetLabel( J_VERTEX *This )
 {
 }
 
-char *JVertex_SetLabel( J_VERTEX *This, size_t Len, const char *NewLabel )
+J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
 {
+    int LabelLen;
+    J_STATUS ReturnStatus;
+
+    LabelLen = strlen(Label);
+
+    ReturnStatus = MemAlloc( LabelLen + 1, (void **)&(V->Label) );
+    if( ReturnStatus == SUCCESS )
+    {
+        strcpy(V->Label, Label);
+    }
+
+    return ReturnStatus;
 }
 
 void JVertex_SetData( void *Data, J_VERTEX *V)
 {
+    V->Data = Data;
+}
+
+J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V)
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    return ReturnStatus;
 }

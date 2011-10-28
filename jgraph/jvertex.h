@@ -14,17 +14,22 @@
  =============================================================================*/
 
 #include <stdlib.h>
+#include "errors.h"
 
 #ifndef JVERTEX_H
 #define JVERTEX_H
 
 typedef struct jvertex_tag J_VERTEX;
 
-J_VERTEX *JVertex_New();
-int JVertex_Delete( J_VERTEX * );
-char *JVertex_GetLabel( J_VERTEX * );
-char *JVertex_SetLabel( char *, J_VERTEX *);
+void JVertex_Delete( J_VERTEX * );
+
+void JVertex_GetLabel( J_VERTEX * );
+
+J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
+
 void JVertex_SetData( void *Data, J_VERTEX *V);
+
+J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
 
 
 #endif
