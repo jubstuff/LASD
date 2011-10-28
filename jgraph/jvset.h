@@ -21,7 +21,7 @@ typedef struct jvset_tag J_VSET;
 /**
  * Inizializza l'insieme
  * */
-J_STATUS JVset_Init( J_VSET **Set );
+J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set );
 
 /**
  * Aggiunge un vertice con etichetta Label e dati associati all'insieme
