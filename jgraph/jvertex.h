@@ -21,6 +21,8 @@
 
 typedef struct jvertex_tag J_VERTEX;
 
+void JVertex_Init( J_VERTEX *V );
+
 void JVertex_Delete( J_VERTEX * );
 
 void JVertex_GetLabel( J_VERTEX * );

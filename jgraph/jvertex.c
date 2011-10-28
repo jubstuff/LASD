@@ -11,11 +11,17 @@ struct jvertex_tag
 	void *Data;  /**< Vertex's Data */
 };
 
+void JVertex_Init( J_VERTEX *V )
+{
+    V->Label = NULL;
+    V->Data  = NULL;
+}
+
 void JVertex_Delete( J_VERTEX *V )
 {
 }
 
-void JVertex_GetLabel( J_VERTEX *This )
+void JVertex_GetLabel( J_VERTEX *V )
 {
 }
 
