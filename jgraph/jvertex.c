@@ -11,6 +11,21 @@ struct jvertex_tag
 	void *Data;  /**< Vertex's Data */
 };
 
+J_STATUS JVertex_New( J_VERTEX **V )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
+    if( ReturnStatus == SUCCESS )
+    {
+        JVertex_Init( *V );
+    }
+
+    return ReturnStatus;
+}
+
 void JVertex_Init( J_VERTEX *V )
 {
     V->Label = NULL;
@@ -21,8 +36,9 @@ void JVertex_Delete( J_VERTEX *V )
 {
 }
 
-void JVertex_GetLabel( J_VERTEX *V )
+void JVertex_GetLabel( char *Dest, J_VERTEX *V )
 {
+    Dest = V->Label;
 }
 
 J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)

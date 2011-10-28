@@ -21,6 +21,8 @@
 
 typedef struct jvertex_tag J_VERTEX;
 
+J_STATUS JVertex_New( J_VERTEX **V );
+
 void JVertex_Init( J_VERTEX *V );
 
 void JVertex_Delete( J_VERTEX * );
