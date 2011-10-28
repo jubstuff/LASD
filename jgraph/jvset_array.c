@@ -9,7 +9,7 @@
  * */
 struct jvset_tag
 {
-    J_VERTEX *Vertices; /**< Array contenente i vertici */
+    J_VERTEX **Vertices; /**< Array contenente i vertici */
 };
 
 /**
@@ -32,20 +32,18 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
        /* Se l'insieme è stato correttamente allocato, alloco l'array
        	* singoli vertici
        	* */
-       ReturnStatus = MemAlloc(HintNumVertices * sizeof(J_VERTEX), (void **)&(S->Vertices));
+       ReturnStatus = JVertex_CreateArray(HintNumVertices, S->Vertices);
        for( i = 0; i < HintNumVertices; i++ )
        {
            JVertex_SetData(NULL, S->Vertices[i]);
            JVertex_SetLabel(NULL, S->Vertices[i]);
        }
-
    }
 
-
    return ReturnStatus;
-    
 }
 
+#ifdef ASD
 /**
  * Aggiunge un vertice con etichetta Label e dati associati all'insieme
  * */
@@ -73,3 +71,4 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
 void JVset_Destroy( J_VSET *Set )
 {
 }
+#endif
