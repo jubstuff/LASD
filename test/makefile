@@ -3,6 +3,7 @@ OPTIONS=-Wall
 
 MEM_BASE=test_mem
 LIST_BASE=test_list
+VERTEX_BASE=test_vertex
 
 ifeq ($(OS),Windows_NT)
 	TARGET_EXTENSION=.exe
@@ -12,11 +13,13 @@ endif
 
 MEM_TARGET = $(MEM_BASE)$(TARGET_EXTENSION)
 LIST_TARGET = $(LIST_BASE)$(TARGET_EXTENSION)
+VERTEX_TARGET = $(VERTEX_BASE)$(TARGET_EXTENSION)
 
 MEM_SRC_FILES=../unity/src/unity.c ../src/mem.c TestMem.c TestMem_Runner.c
 LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c TestList.c TestList_Runner.c
+VERTEX_SRC_FILES=../unity/src/unity.c ../src/mem.c ../jgraph/jvertex.c TestVertex.c TestVertex_Runner.c
 
-INC_DIRS=-I../src -I../unity/src 
+INC_DIRS=-I../src -I../unity/src -I../jgraph
 SYMBOLS=-DTEST
 
 ifeq ($(OS),Windows_NT)
@@ -37,7 +40,10 @@ list:
 	ruby ../unity/auto/generate_test_runner.rb TestList.c TestList_Runner.c
 	$(C_COMPILER) $(OPTIONS) $(INC_DIRS) $(SYMBOLS) $(LIST_SRC_FILES) -o $(LIST_TARGET)
 	./$(LIST_TARGET)
-
+vertex:
+	ruby ../unity/auto/generate_test_runner.rb TestVertex.c TestVertex_Runner.c
+	$(C_COMPILER) $(OPTIONS) $(INC_DIRS) $(SYMBOLS) $(VERTEX_SRC_FILES) -o $(VERTEX_TARGET)
+	./$(VERTEX_TARGET)
 
 clean:
 	$(CLEANUP)
