@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 struct jvertex_tag
 {
 	char *Label; /**< Vertex's Label */
-	void *Data;  /**< Vertex's Data */
 };
 
 J_STATUS JVertex_New( J_VERTEX **V )
@@ -26,10 +26,15 @@ J_STATUS JVertex_New( J_VERTEX **V )
     return ReturnStatus;
 }
 
+/**
+ * Inizializza un vertice
+ *
+ * Inizializza tutti i valori di un vertice in uno stato consistente.
+ *
+ * */
 void JVertex_Init( J_VERTEX *V )
 {
     V->Label = NULL;
-    V->Data  = NULL;
 }
 
 void JVertex_Delete( J_VERTEX *V )
@@ -98,11 +103,6 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
     }
 
     return ReturnStatus;
-}
-
-void JVertex_SetData( void *Data, J_VERTEX *V)
-{
-    V->Data = Data;
 }
 
 J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V)

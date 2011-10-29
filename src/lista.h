@@ -80,7 +80,8 @@ typedef void (*PRINTER)(const void *Value);
  * @param CurrentNode Riferimento al nodo in cui è stato trovato il duplicato
  *
  * TODO Ci puo stare NODE come tipo qui? No, perché in ogni caso l'utente non 
- * saprebbe come gestirlo. Quindi si dovrebbe rimuovere
+ * saprebbe come gestirlo. Quindi si dovrebbe rimuovere. O bisognerebbe creare
+ * dei metodi per gestire il nodo a cui l'utente può avere accesso.
  * */
 typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 

@@ -19,7 +19,16 @@
 #ifndef JVERTEX_H
 #define JVERTEX_H
 
+/**
+ * DEFINIZIONE TIPI DI DATO
+ * */
+
 typedef struct jvertex_tag J_VERTEX;
+
+/**
+ * DEFINIZIONE METODI PUBBLICI
+ *
+ * */
 
 J_STATUS JVertex_New( J_VERTEX **V );
 
@@ -32,8 +41,6 @@ void JVertex_GetLabel( char **Dest, J_VERTEX *V );
 J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 
 J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
-
-void JVertex_SetData( void *Data, J_VERTEX *V);
 
 J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
 
