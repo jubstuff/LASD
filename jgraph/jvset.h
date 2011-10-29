@@ -16,6 +16,12 @@
 
 #include "errors.h"
 
+/**
+ * DEFINIZIONE TIPI DI DATO
+ * */
+
+typedef struct jvertex_tag J_VERTEX;
+
 typedef struct jvset_tag J_VSET;
 
 /**
@@ -42,5 +48,24 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
  * Dealloca l'insieme di vertici
  * */
 void JVset_Destroy( J_VSET *Set );
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ Operazioni sui vertici
+
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
+
+J_STATUS JVertex_New( J_VERTEX **V );
+
+void JVertex_Init( J_VERTEX *V );
+
+void JVertex_Delete( J_VERTEX * );
+
+void JVertex_GetLabel( char **Dest, J_VERTEX *V ); 
+
+J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
+
+J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
+
+J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
 
 #endif

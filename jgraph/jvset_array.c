@@ -7,9 +7,14 @@
  * Implementazione dell'interfaccia J_VSET utilizzando un array
  *
  * */
+struct jvertex_tag
+{
+	char *Label; /**< Vertex's Label */
+};
+
 struct jvset_tag
 {
-    J_VERTEX **Vertices; /**< Array contenente i vertici */
+    J_VERTEX *Vertices; /**< Array contenente i vertici */
 };
 
 /**
@@ -18,8 +23,8 @@ struct jvset_tag
 J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
    J_STATUS ReturnStatus;
-   int i; /**< Contatore */
    J_VSET *S; /**< Variabile temporanea */
+   int i; /**< Contatore per cicli */
 
    ReturnStatus = SUCCESS;
    /* Creo un alias per l'insieme */
@@ -27,16 +32,21 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 
    /* Alloco la struct che rappresenta l'insieme */
    ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)&S);
+
    if( ReturnStatus == SUCCESS )
    {
        /* Se l'insieme è stato correttamente allocato, alloco l'array
        	* singoli vertici
        	* */
-       ReturnStatus = JVertex_CreateArray(HintNumVertices, S->Vertices);
-       for( i = 0; i < HintNumVertices; i++ )
+       ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
+               (void **)&(S->Vertices) );
+       if( ReturnStatus == SUCCESS )
        {
-           JVertex_SetData(NULL, S->Vertices[i]);
-           JVertex_SetLabel(NULL, S->Vertices[i]);
+           /* Inizializza l'insieme dei vertici */
+           for( i = 0; i < HintNumVertices; i++)
+           {
+               JVertex_Init( S->Vertices[i] );
+           }
        }
    }
 
