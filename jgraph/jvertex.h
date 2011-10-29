@@ -27,7 +27,9 @@ void JVertex_Init( J_VERTEX *V );
 
 void JVertex_Delete( J_VERTEX * );
 
-void JVertex_GetLabel( J_VERTEX * );
+void JVertex_GetLabel( char **Dest, J_VERTEX *V ); 
+
+J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 
 J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 

@@ -36,9 +36,52 @@ void JVertex_Delete( J_VERTEX *V )
 {
 }
 
-void JVertex_GetLabel( char *Dest, J_VERTEX *V )
+/* 
+ * Recupera l'etichetta del vertice V.
+ *
+ * Se l'etichetta è impostata, la copia nella stringa Dest (che deve essere
+ * allocata e sufficientemente grande).
+ * Altrimenti imposta Dest a NULL
+ *
+ * */
+void JVertex_GetLabel( char **Dest, J_VERTEX *V )
 {
-    Dest = V->Label;
+    if( V->Label != NULL )
+    {
+        strcpy( *Dest, V->Label );
+    }
+    else
+    {
+        *Dest = NULL;
+    }
+}
+
+/**
+ * Recupera la lunghezza dell'etichetta del vertice V
+ *
+ * Se l'etichetta è impostata, ne copia la lunghezza in Length.
+ * Altrimenti imposta Length a 0 e restituisce ERROR.
+ *
+ * */
+J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
+{
+    J_STATUS ReturnStatus; /**< stato di ritorno */
+
+    ReturnStatus = SUCCESS;
+
+    if( V->Label )
+    { 
+        /* Se l'etichetta è impostata, ne restituisce la lunghezza */
+        *Length = strlen(V->Label);
+    }
+    else
+    {
+        /* Altrimenti la imposta a zero, e restituisce ERROR */
+        *Length = 0;
+        ReturnStatus = ERROR;
+    }
+
+    return ReturnStatus;
 }
 
 J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
