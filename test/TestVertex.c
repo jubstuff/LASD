@@ -1,17 +1,19 @@
 #include "mem.h"
 #include "unity.h"
 #include "errors.h"
-#include "jvertex.h"
+#include "jvset.h"
 
 J_STATUS ReturnStatus;
-J_VERTEX *V;
+J_VSET *Vertices;
 
 void setUp(void)
 {
+    JVset_Init(10, &Vertices);
 }
 
 void tearDown(void)
 {
+    JVset_Destroy( Vertices );
 }
 
 /**
@@ -20,31 +22,5 @@ void tearDown(void)
 
 void test_VertexNewShouldAllocateNewVertexWithNullLabel(void)
 {
-    char *str;
-    int Len;
-
-    ReturnStatus = JVertex_New( &V );
-    TEST_ASSERT_EQUAL( SUCCESS, ReturnStatus );
-
-    /* In questo passaggio voglio recuperare l'etichetta del vertice V.
-     * Per prima cosa recupero la lunghezza dell'etichetta e, nel caso sia
-     * maggiore di zero, alloco una stringa sufficientemente grande da contenere
-     * l'etichetta.
-     * */
-    ReturnStatus = JVertex_GetLengthLabel( &Len, V );
-    TEST_ASSERT_EQUAL( ERROR, ReturnStatus );
-    if( Len > 0 )
-    {
-        ReturnStatus = MemAlloc( Len + 1, (void **)&str );
-        TEST_ASSERT_EQUAL( SUCCESS, ReturnStatus );
-    }
-    JVertex_GetLabel(&str , V);
-
-    TEST_ASSERT_NULL( str );
-
-    MemFree( (void **)&str );
-    MemFree( (void **)&V );
-
-
 
 }

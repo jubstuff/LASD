@@ -42,7 +42,7 @@ int main(void)
 {
   Unity.TestFile = "TestVertex.c";
   UnityBegin();
-  RUN_TEST(test_VertexNewShouldAllocateNewVertexWithNullLabel, 21);
+  RUN_TEST(test_VertexNewShouldAllocateNewVertexWithNullLabel, 23);
 
   return (UnityEnd());
 }

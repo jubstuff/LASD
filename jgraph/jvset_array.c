@@ -1,6 +1,5 @@
 #include "jvset.h"
 #include "mem.h"
-#include "jvertex.h"
 #include <stdlib.h>
 
 /**
@@ -43,14 +42,36 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
        if( ReturnStatus == SUCCESS )
        {
            /* Inizializza l'insieme dei vertici */
-           for( i = 0; i < HintNumVertices; i++)
-           {
-               JVertex_Init( S->Vertices[i] );
-           }
        }
    }
 
    return ReturnStatus;
+}
+
+/**
+ * Dealloca l'insieme di vertici
+ * */
+void JVset_Destroy( J_VSET *Set )
+{
+    J_VERTEX *V = Set->Vertices;
+    MemFree( (void **)V );
+    MemFree( (void **)&Set );
+}
+
+/*
+ * METODI PER VERTICI
+ *
+ * */
+
+/**
+ * Inizializza un vertice
+ *
+ * Inizializza tutti i valori di un vertice in uno stato consistente.
+ *
+ * */
+void JVertex_Init( J_VERTEX *V )
+{
+    V->Label = NULL;
 }
 
 #ifdef ASD
@@ -75,10 +96,4 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
 {
 }
 
-/**
- * Dealloca l'insieme di vertici
- * */
-void JVset_Destroy( J_VSET *Set )
-{
-}
 #endif

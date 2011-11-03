@@ -17,7 +17,7 @@ VERTEX_TARGET = $(VERTEX_BASE)$(TARGET_EXTENSION)
 
 MEM_SRC_FILES=../unity/src/unity.c ../src/mem.c TestMem.c TestMem_Runner.c
 LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c TestList.c TestList_Runner.c
-VERTEX_SRC_FILES=../unity/src/unity.c ../src/mem.c ../jgraph/jvertex.c TestVertex.c TestVertex_Runner.c
+VERTEX_SRC_FILES=../unity/src/unity.c ../src/mem.c ../jgraph/jvset_array.c TestVertex.c TestVertex_Runner.c
 
 INC_DIRS=-I../src -I../unity/src -I../jgraph
 SYMBOLS=-DTEST
