@@ -14,6 +14,8 @@ struct jvertex_tag
 struct jvset_tag
 {
     J_VERTEX *Vertices; /**< Array contenente i vertici */
+    int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
+    int NextFreeVertex; /**< Indice della prossima locazione libera */
 };
 
 /**
@@ -22,26 +24,32 @@ struct jvset_tag
 J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
    J_STATUS ReturnStatus;
-   J_VSET *S; /**< Variabile temporanea */
    int i; /**< Contatore per cicli */
 
    ReturnStatus = SUCCESS;
-   /* Creo un alias per l'insieme */
-   S = *Set;
+
 
    /* Alloco la struct che rappresenta l'insieme */
-   ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)&S);
+   ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
 
    if( ReturnStatus == SUCCESS )
    {
-       /* Se l'insieme è stato correttamente allocato, alloco l'array
-       	* singoli vertici
-       	* */
+       /* Se l'insieme è stato correttamente allocato */
+
+       /* - inizializzo gli indici */
+       *Set->NumActiveVertices = 0;
+       *Set->NextFreeVertex = 0;
+
+       /* - alloco l'array singoli vertici */
        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
-               (void **)&(S->Vertices) );
+               (void **)&( (*Set)->Vertices ) );
+
        if( ReturnStatus == SUCCESS )
        {
-           /* Inizializza l'insieme dei vertici */
+           for( i = 0; i < HintNumVertices; i++ )
+           {
+               JVertex_Init( &(*Set)->Vertices[i] );
+           }
        }
    }
 
@@ -53,34 +61,18 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
  * */
 void JVset_Destroy( J_VSET *Set )
 {
-    J_VERTEX *V = Set->Vertices;
-    MemFree( (void **)V );
+    MemFree( (void **)&( Set->Vertices ) );
     MemFree( (void **)&Set );
 }
 
-/*
- * METODI PER VERTICI
- *
- * */
-
-/**
- * Inizializza un vertice
- *
- * Inizializza tutti i valori di un vertice in uno stato consistente.
- *
- * */
-void JVertex_Init( J_VERTEX *V )
-{
-    V->Label = NULL;
-}
-
-#ifdef ASD
 /**
  * Aggiunge un vertice con etichetta Label e dati associati all'insieme
  * */
 J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 {
+
 }
+#ifdef ASD
 
 /**
  * Rimuove un vertice dall'insieme
@@ -97,3 +89,91 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
 }
 
 #endif
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * METODI PER VERTICI
+ *
+ * */
+
+/**
+ * Inizializza un vertice
+ *
+ * Inizializza tutti i valori di un vertice in uno stato consistente.
+ *
+ * */
+void JVertex_Init( J_VERTEX *V )
+{
+    V->Label = NULL;
+}
+
+/* 
+ * Recupera l'etichetta del vertice V.
+ *
+ * Se l'etichetta è impostata, la copia nella stringa Dest (che deve essere
+ * allocata e sufficientemente grande).
+ * Altrimenti imposta Dest a NULL
+ *
+ * */
+void JVertex_GetLabel( char **Dest, J_VERTEX *V )
+{
+    if( V->Label != NULL )
+    {
+        strcpy( *Dest, V->Label );
+    }
+    else
+    {
+        *Dest = NULL;
+    }
+}
+
+/**
+ * Recupera la lunghezza dell'etichetta del vertice V
+ *
+ * Se l'etichetta è impostata, ne copia la lunghezza in Length.
+ * Altrimenti imposta Length a 0 e restituisce ERROR.
+ *
+ * */
+J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
+{
+    J_STATUS ReturnStatus; /**< stato di ritorno */
+
+    ReturnStatus = SUCCESS;
+
+    if( V->Label )
+    { 
+        /* Se l'etichetta è impostata, ne restituisce la lunghezza */
+        *Length = strlen(V->Label);
+    }
+    else
+    {
+        /* Altrimenti la imposta a zero, e restituisce ERROR */
+        *Length = 0;
+        ReturnStatus = ERROR;
+    }
+
+    return ReturnStatus;
+}
+
+/**
+ * Imposta l'etichetta ad un vertice
+ *
+ * Alloca un vettore di caratteri dinamicamente e lo utilizza per memorizzare l'etichetta del vertice 
+ * */
+J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
+{
+    int LabelLen;
+    J_STATUS ReturnStatus;
+
+    /* Recupero la lunghezza dell'etichetta passata in input */
+    LabelLen = strlen(Label);
+
+    /* Alloco un vettore di caratteri atto a contenere la stringa */
+    ReturnStatus = MemAlloc( LabelLen + 1, (void **)&(V->Label) );
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Se è stato allocato correttamente, vi copio la stringa in input */
+        strcpy(V->Label, Label);
+    }
+
+    return ReturnStatus;
+}

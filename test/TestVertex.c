@@ -4,16 +4,16 @@
 #include "jvset.h"
 
 J_STATUS ReturnStatus;
-J_VSET *Vertices;
+J_VSET *Set;
 
 void setUp(void)
 {
-    JVset_Init(10, &Vertices);
+    JVset_Init(10, &Set);
 }
 
 void tearDown(void)
 {
-    JVset_Destroy( Vertices );
+    JVset_Destroy( Set );
 }
 
 /**
@@ -22,5 +22,6 @@ void tearDown(void)
 
 void test_VertexNewShouldAllocateNewVertexWithNullLabel(void)
 {
+
 
 }
