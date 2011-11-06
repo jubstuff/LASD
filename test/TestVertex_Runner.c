@@ -26,7 +26,7 @@
 //=======External Functions This Runner Calls=====
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_VertexNewShouldAllocateNewVertexWithNullLabel(void);
+extern void test_AddVertexWithLabel(void);
 
 
 //=======Test Reset Option=====
@@ -42,7 +42,7 @@ int main(void)
 {
   Unity.TestFile = "TestVertex.c";
   UnityBegin();
-  RUN_TEST(test_VertexNewShouldAllocateNewVertexWithNullLabel, 23);
+  RUN_TEST(test_AddVertexWithLabel, 24);
 
   return (UnityEnd());
 }

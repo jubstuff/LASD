@@ -49,6 +49,7 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
  * */
 void JVset_Destroy( J_VSET *Set );
 
+J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set );
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  Operazioni sui vertici
 

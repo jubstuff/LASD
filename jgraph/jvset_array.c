@@ -88,6 +88,15 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     return ReturnStatus;
 }
 
+/*=====================================================================
+ * METODI TEMPORANEI
+ * ====================================================================
+ * */
+
+J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
+{
+    return &(Set->Vertices[Index]);
+}
 #ifdef ASD
 
 /**
