@@ -1,5 +1,6 @@
 #include "jvset.h"
 #include "mem.h"
+#include <string.h>
 #include <stdlib.h>
 
 /**
@@ -37,8 +38,8 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
        /* Se l'insieme è stato correttamente allocato */
 
        /* - inizializzo gli indici */
-       *Set->NumActiveVertices = 0;
-       *Set->NextFreeVertex = 0;
+       (*Set)->NumActiveVertices = 0;
+       (*Set)->NextFreeVertex = 0;
 
        /* - alloco l'array singoli vertici */
        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
@@ -70,8 +71,23 @@ void JVset_Destroy( J_VSET *Set )
  * */
 J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 {
+    int FreeLoc; /**< Locazione libera in cui inserire */
+    J_STATUS ReturnStatus; /**< Valore di ritorno */
 
+    FreeLoc = Set->NextFreeVertex;
+    /* Impostare l'etichetta del nuovo vertice */
+    ReturnStatus = JVertex_SetLabel(Label, &(Set->Vertices[FreeLoc]) );
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Aggiornare il numero di vertici inseriti */
+        Set->NumActiveVertices += 1;
+        /* Aggiornare il prossimo vertice libero */
+        Set->NextFreeVertex += 1;
+    }
+
+    return ReturnStatus;
 }
+
 #ifdef ASD
 
 /**
