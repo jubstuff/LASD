@@ -85,6 +85,12 @@ typedef void (*PRINTER)(const void *Value);
  * */
 typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
 
+/**
+ * Una funzione che copia il valore della chiave del nodo passato in input
+ *
+ * */
+typdef void (*GETTER)( const void *NodeValue, void **OutputValue );
+
 /*=============================================================================*
  * Definizioni struttura operazioni di gestione dei nodi
  =============================================================================*/
@@ -103,6 +109,7 @@ struct list_op_tag {
 	DELETER Delete;            /**< Elimina un nodo */
 	PRINTER Print;             /**< Stampa un nodo */
 	DUPLICATE ManageDuplicate; /**< Gestisce nodi duplicati */
+	GETTER GetNodeValue;       /**< Recupera la chiave del nodo */
 };
 
 

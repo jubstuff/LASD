@@ -110,6 +110,25 @@ J_STATUS JList_HeadInsert( void *Value, J_LIST *L )
     return ReturnStatus;
 }
 
+J_STATUS JList_HeadDelete( J_LIST *L )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    if( L->Head != NULL )
+    {
+        /* Se la lista non è vuota, elimina il nodo in testa */
+    }
+    else
+    {
+        /* Lista vuota */
+        ReturnStatus = ERROR;
+    }
+
+    return ReturnStatus;
+}
+
 /**
  * Elimina un nodo contenente Value dalla lista
  *
