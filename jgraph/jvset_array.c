@@ -40,6 +40,24 @@ struct jvset_tag
  * */
 
 /**
+ * Alloca un nuovo vertice 
+ * */
+J_STATUS JVertex_New( J_VERTEX **V )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
+    if( ReturnStatus == SUCCESS )
+    {
+        JVertex_Init( *V );
+    }
+
+    return ReturnStatus;
+}
+
+/**
  * Inizializza un vertice
  *
  * Inizializza tutti i valori di un vertice in uno stato consistente.
@@ -55,6 +73,7 @@ void JVertex_Destroy( J_VERTEX *V )
     if( V != NULL )
     {
         MemFree( (void **)&V->Label );
+        MemFree( (void **)&V );
     }
 }
 
