@@ -55,7 +55,18 @@ J_STATUS JList_Init( J_LIST **L, JLIST_METHODS *Op )
     {
         /* Inizializzo la testa della lista e i relativi metodi */
         (*L)->Head = NULL;
-        (*L)->Op = Op;
+        /* TODO allocare dinamicamente le operazioni */
+        ReturnStatus = MemAlloc(sizeof(JLIST_METHODS), (void **)&((*L)->Op) );
+        if( ReturnStatus == SUCCESS )
+        {
+            /* Copia i membri della struct Op passata in input
+             * nella struct Op appena allocata */
+            *((*L)->Op) = *Op;
+        }
+        else
+        {
+            /* TODO deallocare lista */
+        }
     }
 
     return ReturnStatus;
@@ -194,6 +205,7 @@ void JList_Print( J_LIST *L )
 void JList_Destroy( J_LIST *L )
 {
     L->Head = List_RecursiveDestroy(L->Head, L->Op);
+    MemFree( (void **)&(L->Op) );
     MemFree( (void **)&L );
 }
 

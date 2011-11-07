@@ -1,4 +1,5 @@
 #include "jvset.h"
+#include "lista.h"
 #include "mem.h"
 #include <string.h>
 #include <stdlib.h>
@@ -14,9 +15,10 @@ struct jvertex_tag
 
 struct jvset_tag
 {
-    J_VERTEX *Vertices; /**< Array contenente i vertici */
+    J_VERTEX *Vertices;    /**< Array contenente i vertici */
     int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
-    int NextFreeVertex; /**< Indice della prossima locazione libera */
+    int NextFreeIndex;    /**< Indice della prossima locazione libera */
+    J_LIST FreeList;       /**< Lista delle locazioni libere */
 };
 
 /**
@@ -39,7 +41,7 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 
        /* - inizializzo gli indici */
        (*Set)->NumActiveVertices = 0;
-       (*Set)->NextFreeVertex = 0;
+       (*Set)->NextFreeIndex = 0;
 
        /* - alloco l'array singoli vertici */
        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
@@ -74,7 +76,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     int FreeLoc; /**< Locazione libera in cui inserire */
     J_STATUS ReturnStatus; /**< Valore di ritorno */
 
-    FreeLoc = Set->NextFreeVertex;
+    FreeLoc = Set->NextFreeIndex;
     /* Impostare l'etichetta del nuovo vertice */
     ReturnStatus = JVertex_SetLabel(Label, &(Set->Vertices[FreeLoc]) );
     if( ReturnStatus == SUCCESS )
@@ -82,7 +84,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         /* Aggiornare il numero di vertici inseriti */
         Set->NumActiveVertices += 1;
         /* Aggiornare il prossimo vertice libero */
-        Set->NextFreeVertex += 1;
+        Set->NextFreeIndex += 1;
     }
 
     return ReturnStatus;
