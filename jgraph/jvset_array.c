@@ -222,6 +222,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     J_STATUS ReturnStatus; /**< Valore di ritorno */
 
     FreeLoc = Set->NextFreeIndex;
+    ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
     /* Impostare l'etichetta del nuovo vertice */
     ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
     if( ReturnStatus == SUCCESS )
