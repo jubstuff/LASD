@@ -110,7 +110,17 @@ J_STATUS JList_HeadInsert( void *Value, J_LIST *L )
     return ReturnStatus;
 }
 
-J_STATUS JList_HeadDelete( J_LIST *L )
+/**
+ * Rimuove un nodo dalla testa della lista.
+ *
+ * Necessita dei metodi:
+ *
+ * GETTER
+ * COMPARATOR
+ * DELETER
+ *
+ * */
+J_STATUS JList_HeadDelete( void *Value, J_LIST *L )
 {
     J_STATUS ReturnStatus;
 
@@ -119,6 +129,8 @@ J_STATUS JList_HeadDelete( J_LIST *L )
     if( L->Head != NULL )
     {
         /* Se la lista non è vuota, elimina il nodo in testa */
+        L->Op->GetNodeValue( Value, L->Head->Info );
+        ReturnStatus = JList_DeleteNode( L->Head->Info, L );
     }
     else
     {

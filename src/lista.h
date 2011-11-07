@@ -125,6 +125,8 @@ J_STATUS JList_OrderedInsert( void *Value, J_LIST *L );
 
 J_STATUS JList_HeadInsert( void *Value, J_LIST *L );
 
+J_STATUS JList_HeadDelete( void *Value, J_LIST *L );
+
 J_STATUS JList_DeleteNode( void *Value, J_LIST *L );
 
 J_STATUS JList_Search( void *Value, J_LIST *L, NODE **NodeFound );
