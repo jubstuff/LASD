@@ -89,7 +89,7 @@ typedef void (*DUPLICATE)( void *Value, NODE *CurrentNode );
  * Una funzione che copia il valore della chiave del nodo passato in input
  *
  * */
-typdef void (*GETTER)( const void *NodeValue, void **OutputValue );
+typedef void (*GETTER)( const void *NodeValue, void *OutputValue );
 
 /*=============================================================================*
  * Definizioni struttura operazioni di gestione dei nodi

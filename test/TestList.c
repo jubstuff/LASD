@@ -10,6 +10,7 @@ void StampaNodoInt( const void *Value );
 void DeallocaInt( void *InputValue, void *NodeInfo );
 int NumCmp( const void *Num1, const void *Num2 );
 void DuplicatoInt( void *Value, NODE *Nodo );
+void RecuperaInt( const void *NodeValue, void *OutValue );
 
 static JLIST_METHODS Op;
 static int Value;
@@ -25,6 +26,7 @@ void setUp(void)
 	Op.Delete = DeallocaInt;
    	Op.Print = StampaNodoInt;
     Op.ManageDuplicate = DuplicatoInt; 
+    Op.GetNodeValue = RecuperaInt;
 
 
     JList_Init(&List, &Op);
@@ -67,11 +69,34 @@ void test_ListDeleteReallyRemovesNode(void)
 void test_HeadInsertInsertInHead(void)
 {
     Value = 4;
+    printf("Insert 4 in Head\n");
     ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    printf("Insert 1 in Head\n");
     Value = 1;
     ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    printf("Insert 9 in Head\n");
     Value = 9;
     ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    JList_Print(List);
+}
+
+void test_HeadDeleteDeleteInHead(void)
+{
+    int Output;
+
+    Value = 4;
+    printf("Insert 4 in Head\n");
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    printf("Insert 1 in Head\n");
+    Value = 1;
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    printf("Insert 9 in Head\n");
+    Value = 9;
+    ReturnStatus = JList_HeadInsert( (void *)&Value, List );
+    JList_Print(List);
+
+    ReturnStatus = JList_HeadDelete( (void *)&Output, List );
+    printf("Il nodo rimosso dalla testa è %d\n", Output);
     JList_Print(List);
 }
 
@@ -84,8 +109,10 @@ void test_DeleteRange(void)
     for( i = 0; i < 10; i++ )
     {
         Value = i+1;
+        printf("Insert %d in List\n", Value);
         ReturnStatus = JList_OrderedInsert( (void *)&Value, List );
     }
+    printf("Delete from %d to %d\n", Inf, Sup);
     JList_DeleteRange( (void *)&Inf, (void *)&Sup, List );
     JList_Print(List);
 }
@@ -121,6 +148,7 @@ void test_SeachNotExistingNodeFails(void)
     ReturnStatus = JList_Search( (void *)&Value, List, &ResultNode);
     TEST_ASSERT_EQUAL(W_LIST_NOTFOUND, ReturnStatus);
 }
+
 /**
  * DEFINIZIONE TEST HELPERS
  * */
@@ -168,4 +196,12 @@ void DuplicatoInt( void *Value, NODE *Nodo )
 	int Num = *( (int *)Value );
 	printf("Stai cercando di inserire un nodo duplicato\n");
 	printf("Il valore che stavi cercando di inserire è %d\n", Num);
+}
+
+void RecuperaInt( const void *NodeValue, void *OutValue )
+{
+    int *NumPtr = (int *)OutValue;
+    *NumPtr = *( (int *)NodeValue );
+    OutValue = (void *)NumPtr;
+
 }

@@ -129,7 +129,7 @@ J_STATUS JList_HeadDelete( void *Value, J_LIST *L )
     if( L->Head != NULL )
     {
         /* Se la lista non è vuota, elimina il nodo in testa */
-        L->Op->GetNodeValue( Value, L->Head->Info );
+        L->Op->GetNodeValue( L->Head->Info, Value );
         ReturnStatus = JList_DeleteNode( L->Head->Info, L );
     }
     else
