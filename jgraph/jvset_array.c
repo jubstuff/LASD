@@ -3,6 +3,7 @@
 #include "mem.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * Metodi per FreeList
@@ -20,122 +21,18 @@ static void RecuperaInt( const void *NodeValue, void *OutValue );
 struct jvertex_tag
 {
 	char *Label; /**< Vertex's Label */
+	void *Data;
 };
 
 struct jvset_tag
 {
-    J_VERTEX *Vertices;    /**< Array contenente i vertici */
+    J_VERTEX **Vertices;    /**< Array contenente i vertici */
     int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
     int NextFreeIndex;     /**< Indice della prossima locazione libera */
-    int NumTotVertices;    /**< Numero totale di vertici */
+    int Size;    /**< Numero totale di vertici */
     J_LIST *FreeList;       /**< Lista delle locazioni libere */
 };
 
-/**
- * Inizializza l'insieme
- * */
-J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
-{
-   J_STATUS ReturnStatus;
-   JLIST_METHODS Op; /**< Metodi necessari per FreeList */
-   int i; /**< Contatore per cicli */
-
-   ReturnStatus = SUCCESS;
-
-   /* Alloco la struct che rappresenta l'insieme */
-   ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
-
-   if( ReturnStatus == SUCCESS )
-   {
-       /* Se l'insieme è stato correttamente allocato */
-
-       /* Inizializza la struct con le operazioni per la FreeList */
-       Op.Compare = NumCmp;
-       Op.InitNode = InizializzaNodoInt;
-       Op.Delete = DeallocaInt;
-       Op.GetNodeValue = RecuperaInt;
-       /* Inizializza la FreeList */
-       ReturnStatus = JList_Init(&(*Set)->FreeList, &Op);
-       /* TODO Check Error */
-
-       /* - inizializzo gli indici */
-       (*Set)->NumActiveVertices = 0;
-       (*Set)->NextFreeIndex = 0;
-       (*Set)->NumTotVertices = 0;
-
-       /* - alloco l'array singoli vertici */
-       ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
-               (void **)&( (*Set)->Vertices ) );
-
-       if( ReturnStatus == SUCCESS )
-       {
-           for( i = 0; i < HintNumVertices; i++ )
-           {
-               JVertex_Init( &(*Set)->Vertices[i] );
-           }
-       }
-   }
-
-   return ReturnStatus;
-}
-
-/**
- * Dealloca l'insieme di vertici
- * */
-void JVset_Destroy( J_VSET *Set )
-{
-    MemFree( (void **)&( Set->Vertices ) );
-    MemFree( (void **)&Set );
-}
-
-/**
- * Aggiunge un vertice con etichetta Label e dati associati all'insieme
- * */
-J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
-{
-    int FreeLoc; /**< Locazione libera in cui inserire */
-    J_STATUS ReturnStatus; /**< Valore di ritorno */
-
-    FreeLoc = Set->NextFreeIndex;
-    /* Impostare l'etichetta del nuovo vertice */
-    ReturnStatus = JVertex_SetLabel(Label, &(Set->Vertices[FreeLoc]) );
-    if( ReturnStatus == SUCCESS )
-    {
-        /* Aggiornare il numero di vertici inseriti */
-        Set->NumActiveVertices += 1;
-        /* Aggiornare il prossimo vertice libero */
-        Set->NextFreeIndex += 1;
-    }
-
-    return ReturnStatus;
-}
-
-/*=====================================================================
- * METODI TEMPORANEI
- * ====================================================================
- * */
-
-J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
-{
-    return &(Set->Vertices[Index]);
-}
-#ifdef ASD
-
-/**
- * Rimuove un vertice dall'insieme
- * */
-J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
-{
-}
-
-/**
- * Recupera l'informazione associata al vertice
- * */
-J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
-{
-}
-
-#endif
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * METODI PER VERTICI
@@ -151,6 +48,14 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
 void JVertex_Init( J_VERTEX *V )
 {
     V->Label = NULL;
+}
+
+void JVertex_Destroy( J_VERTEX *V )
+{
+    if( V != NULL )
+    {
+        MemFree( (void **)&V->Label );
+    }
 }
 
 /* 
@@ -226,6 +131,120 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
 }
 
 /**
+ * Inizializza l'insieme
+ * */
+J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
+{
+   J_STATUS ReturnStatus;
+   JLIST_METHODS Op; /**< Metodi necessari per FreeList */
+   int i; /**< Contatore per cicli */
+
+   ReturnStatus = SUCCESS;
+
+   /* Alloco la struct che rappresenta l'insieme */
+   ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
+
+   if( ReturnStatus == SUCCESS )
+   {
+       /* Se l'insieme è stato correttamente allocato */
+
+       /* Inizializza la struct con le operazioni per la FreeList */
+       Op.Compare = NumCmp;
+       Op.InitNode = InizializzaNodoInt;
+       Op.Delete = DeallocaInt;
+       Op.GetNodeValue = RecuperaInt;
+       /* Inizializza la FreeList */
+       ReturnStatus = JList_Init(&(*Set)->FreeList, &Op);
+       /* TODO Check Error */
+
+       /* - inizializzo gli indici */
+       (*Set)->NumActiveVertices = 0;
+       (*Set)->NextFreeIndex = 0;
+       (*Set)->Size = HintNumVertices;
+
+       /* - alloco l'array singoli vertici */
+       ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX *), 
+               (void **)&( (*Set)->Vertices ) );
+       if( ReturnStatus == SUCCESS )
+       {
+           for( i = 0; i < (*Set)->Size; i++)
+           {
+               printf("i %d\n", i);
+               (*Set)->Vertices[i] = NULL;
+           }
+       }
+   }
+
+   return ReturnStatus;
+}
+
+/**
+ * Dealloca l'insieme di vertici
+ * */
+void JVset_Destroy( J_VSET *Set )
+{
+    int i;
+
+    for( i = 0; i < Set->Size; i++ )
+    {
+        JVertex_Destroy( Set->Vertices[i] );
+    }
+    JList_Destroy( Set->FreeList );
+    MemFree( (void **)&( Set->Vertices ) );
+    MemFree( (void **)&Set );
+}
+
+/**
+ * Aggiunge un vertice con etichetta Label e dati associati all'insieme
+ * */
+J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
+{
+    int FreeLoc; /**< Locazione libera in cui inserire */
+    J_STATUS ReturnStatus; /**< Valore di ritorno */
+
+    FreeLoc = Set->NextFreeIndex;
+    /* Impostare l'etichetta del nuovo vertice */
+    ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Aggiornare il numero di vertici inseriti */
+        Set->NumActiveVertices += 1;
+        /* Aggiornare il prossimo vertice libero */
+        Set->NextFreeIndex += 1;
+    }
+
+    return ReturnStatus;
+}
+
+/*=====================================================================
+ * METODI TEMPORANEI
+ * ====================================================================
+ * */
+
+J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
+{
+    return Set->Vertices[Index];
+}
+#ifdef ASD
+
+/**
+ * Rimuove un vertice dall'insieme
+ * */
+J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
+{
+}
+
+/**
+ * Recupera l'informazione associata al vertice
+ * */
+J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
+{
+}
+
+#endif
+
+
+/** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * GESTIONE FREE LIST
  * */
 
