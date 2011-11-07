@@ -5,6 +5,15 @@
 #include <stdlib.h>
 
 /**
+ * Metodi per FreeList
+ *
+ * */
+static void *InizializzaNodoInt( void *Value );
+static void DeallocaInt( void *InputValue, void *NodeInfo );
+static int NumCmp( const void *Num1, const void *Num2 );
+static void RecuperaInt( const void *NodeValue, void *OutValue );
+
+/**
  * Implementazione dell'interfaccia J_VSET utilizzando un array
  *
  * */
@@ -17,8 +26,9 @@ struct jvset_tag
 {
     J_VERTEX *Vertices;    /**< Array contenente i vertici */
     int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
-    int NextFreeIndex;    /**< Indice della prossima locazione libera */
-    J_LIST FreeList;       /**< Lista delle locazioni libere */
+    int NextFreeIndex;     /**< Indice della prossima locazione libera */
+    int NumTotVertices;    /**< Numero totale di vertici */
+    J_LIST *FreeList;       /**< Lista delle locazioni libere */
 };
 
 /**
@@ -27,10 +37,10 @@ struct jvset_tag
 J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
    J_STATUS ReturnStatus;
+   JLIST_METHODS Op; /**< Metodi necessari per FreeList */
    int i; /**< Contatore per cicli */
 
    ReturnStatus = SUCCESS;
-
 
    /* Alloco la struct che rappresenta l'insieme */
    ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
@@ -39,9 +49,19 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
    {
        /* Se l'insieme è stato correttamente allocato */
 
+       /* Inizializza la struct con le operazioni per la FreeList */
+       Op.Compare = NumCmp;
+       Op.InitNode = InizializzaNodoInt;
+       Op.Delete = DeallocaInt;
+       Op.GetNodeValue = RecuperaInt;
+       /* Inizializza la FreeList */
+       ReturnStatus = JList_Init(&(*Set)->FreeList, &Op);
+       /* TODO Check Error */
+
        /* - inizializzo gli indici */
        (*Set)->NumActiveVertices = 0;
        (*Set)->NextFreeIndex = 0;
+       (*Set)->NumTotVertices = 0;
 
        /* - alloco l'array singoli vertici */
        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX), 
@@ -203,4 +223,51 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
     }
 
     return ReturnStatus;
+}
+
+/**
+ * GESTIONE FREE LIST
+ * */
+
+static void RecuperaInt( const void *NodeValue, void *OutValue )
+{
+    int *NumPtr = (int *)OutValue;
+    *NumPtr = *( (int *)NodeValue );
+    OutValue = (void *)NumPtr;
+
+}
+static int NumCmp( const void *Num1, const void *Num2 )
+{
+	int ReturnValue;
+	int First = *( (int *)Num1 );
+	int Second = *( (int *)Num2 );
+
+	if ( First < Second )
+	{
+		ReturnValue = -1;
+	}
+	else if ( First == Second )
+	{
+		ReturnValue = 0;
+	}
+	else
+	{
+		ReturnValue = 1;
+	}
+
+	return ReturnValue;
+
+}
+static void DeallocaInt( void *InputValue, void *NodeInfo )
+{
+	free( NodeInfo );
+}
+static void *InizializzaNodoInt( void *Value )
+{
+	/* int *Num = (int *) malloc( sizeof(int) ); */
+	int *Num = NULL;
+	MemAlloc( sizeof(int), (void **)&Num );
+	
+	*Num = *( (int *)Value );
+	return (void *)Num;
 }
