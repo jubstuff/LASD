@@ -26,11 +26,11 @@ struct jvertex_tag
 
 struct jvset_tag
 {
-    J_VERTEX **Vertices;    /**< Array contenente i vertici */
+    J_VERTEX **Vertices;   /**< Array contenente i vertici */
     int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
     int NextFreeIndex;     /**< Indice della prossima locazione libera */
-    int Size;    /**< Numero totale di vertici */
-    J_LIST *FreeList;       /**< Lista delle locazioni libere */
+    int Size;              /**< Numero totale di vertici */
+    J_LIST *FreeList;      /**< Lista delle locazioni libere */
 };
 
 
@@ -48,9 +48,11 @@ J_STATUS JVertex_New( J_VERTEX **V )
 
     ReturnStatus = SUCCESS;
 
+    /* Alloco un nuovo vertice */
     ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
     if( ReturnStatus == SUCCESS )
     {
+        /* Se il vertice è stato correttamente allocato, inizializzalo */
         JVertex_Init( *V );
     }
 
@@ -72,6 +74,7 @@ void JVertex_Destroy( J_VERTEX *V )
 {
     if( V != NULL )
     {
+        /* Se il vertice esiste, dealloca tutte le info ad esso associate */
         MemFree( (void **)&V->Label );
         MemFree( (void **)&V );
     }
@@ -87,8 +90,11 @@ void JVertex_Destroy( J_VERTEX *V )
  * */
 void JVertex_GetLabel( char **Dest, J_VERTEX *V )
 {
-    if( V->Label != NULL )
+    if( V && V->Label )
     {
+        /* Se il vertice esiste e l'etichetta è definita,
+         * copiala nel vettore passato in input
+         * */
         strcpy( *Dest, V->Label );
     }
     else
@@ -110,14 +116,14 @@ J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
 
     ReturnStatus = SUCCESS;
 
-    if( V->Label )
+    if( V && V->Label )
     { 
         /* Se l'etichetta è impostata, ne restituisce la lunghezza */
         *Length = strlen(V->Label);
     }
     else
     {
-        /* Altrimenti la imposta a zero, e restituisce ERROR */
+        /* Altrimenti imposta la lunghezza a zero, e restituisce ERROR */
         *Length = 0;
         ReturnStatus = ERROR;
     }
@@ -150,7 +156,7 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
 }
 
 /**
- * Inizializza l'insieme
+ * Inizializza l'insieme dei vertici
  * */
 J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
@@ -188,7 +194,6 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
        {
            for( i = 0; i < (*Set)->Size; i++)
            {
-               printf("i %d\n", i);
                (*Set)->Vertices[i] = NULL;
            }
        }
