@@ -195,6 +195,7 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
            for( i = 0; i < (*Set)->Size; i++)
            {
                (*Set)->Vertices[i] = NULL;
+               JList_HeadInsert( (void *)&i, (*Set)->FreeList );
            }
        }
    }
