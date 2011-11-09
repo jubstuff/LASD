@@ -163,6 +163,7 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
    J_STATUS ReturnStatus;
    JLIST_METHODS Op; /**< Metodi necessari per FreeList */
    int i; /**< Contatore per cicli */
+   int TempIndex; /**< Indice di appoggio */
 
    ReturnStatus = SUCCESS;
 
@@ -195,7 +196,16 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
            for( i = 0; i < (*Set)->Size; i++)
            {
                (*Set)->Vertices[i] = NULL;
-               JList_HeadInsert( (void *)&i, (*Set)->FreeList );
+               /* Dato che inserisce in testa, per avere i vertici in ordine
+               	* devo inserire a partire dall'ultimo indice, invece che dal 
+               	* primo
+               	* */
+               TempIndex = HintNumVertices - i - 1;
+#ifdef DEBUG
+               fprintf(stderr, "[Inserimento %d in FreeList]\n", TempIndex);
+#endif
+               JList_HeadInsert( (void *)&TempIndex, (*Set)->FreeList );
+
            }
        }
    }
@@ -227,22 +237,30 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     int FreeLoc; /**< Locazione libera in cui inserire */
     J_STATUS ReturnStatus; /**< Valore di ritorno */
 
-    FreeLoc = Set->NextFreeIndex;
-
-    /* Creare un nuovo vertice nella locazione libera */
-    ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
-    if( ReturnStatus == SUCCESS )
+    if( !JList_isEmpty( Set->FreeList ) )
     {
-        /* Impostare l'etichetta del nuovo vertice */
-        ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
+        /* Se la Freelist non è vuota, recupera il primo elemento
+         * ed inserisci il vertice in quella posizione */
+        JList_HeadDelete( (void *)&FreeLoc, Set->FreeList );
+
+        /* Creare un nuovo vertice nella locazione libera */
+        ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
         if( ReturnStatus == SUCCESS )
         {
-            /* Aggiornare il numero di vertici inseriti */
-            Set->NumActiveVertices += 1;
-            /* Aggiornare il prossimo vertice libero */
-            Set->NextFreeIndex += 1;
+            /* Impostare l'etichetta del nuovo vertice */
+            ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
+            if( ReturnStatus == SUCCESS )
+            {
+                /* Aggiornare il numero di vertici inseriti */
+                Set->NumActiveVertices += 1;
+            }
         }
     }
+    else
+    {
+        /* allocare altro spazio per l'insieme e richiamare l'inserimento */
+    }
+
     return ReturnStatus;
 }
 
