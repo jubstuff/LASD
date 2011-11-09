@@ -242,6 +242,9 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         /* Se la Freelist non è vuota, recupera il primo elemento
          * ed inserisci il vertice in quella posizione */
         JList_HeadDelete( (void *)&FreeLoc, Set->FreeList );
+#ifdef DEBUG
+        fprintf(stderr, "[Inserisco il vertice nella locazione %d]\n", FreeLoc);
+#endif
 
         /* Creare un nuovo vertice nella locazione libera */
         ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
