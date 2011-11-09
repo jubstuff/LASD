@@ -20,7 +20,7 @@ LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c TestList.c TestL
 VERTEX_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c ../jgraph/jvset_array.c TestVertex.c TestVertex_Runner.c
 
 INC_DIRS=-I../src -I../unity/src -I../jgraph
-SYMBOLS=-DTEST
+SYMBOLS=-DTEST -DDEBUG
 
 ifeq ($(OS),Windows_NT)
 	CLEANUP = del /F /Q build\* &&  del /F /Q $(TARGET3) 
