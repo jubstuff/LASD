@@ -160,57 +160,78 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
  * */
 J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
-   J_STATUS ReturnStatus;
-   JLIST_METHODS Op; /**< Metodi necessari per FreeList */
-   int i; /**< Contatore per cicli */
-   int TempIndex; /**< Indice di appoggio */
+    J_STATUS ReturnStatus;
+    JLIST_METHODS Op; /**< Metodi necessari per FreeList */
+    int i;            /**< Contatore per cicli */
+    int TempIndex;    /**< Indice di appoggio */
 
-   ReturnStatus = SUCCESS;
+    ReturnStatus = SUCCESS;
 
-   /* Alloco la struct che rappresenta l'insieme */
-   ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
+    /* Alloco la struct che rappresenta l'insieme */
+    ReturnStatus = MemAlloc(sizeof(J_VSET), (void **)Set);
 
-   if( ReturnStatus == SUCCESS )
-   {
-       /* Se l'insieme è stato correttamente allocato */
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Se l'insieme è stato correttamente allocato */
 
-       /* Inizializza la struct con le operazioni per la FreeList */
-       Op.Compare = NumCmp;
-       Op.InitNode = InizializzaNodoInt;
-       Op.Delete = DeallocaInt;
-       Op.GetNodeValue = RecuperaInt;
-       /* Inizializza la FreeList */
-       ReturnStatus = JList_Init(&(*Set)->FreeList, &Op);
-       /* TODO Check Error */
+        /* Inizializza la struct con le operazioni per la FreeList */
+        Op.Compare = NumCmp;
+        Op.InitNode = InizializzaNodoInt;
+        Op.Delete = DeallocaInt;
+        Op.GetNodeValue = RecuperaInt;
 
-       /* - inizializzo gli indici */
-       (*Set)->NumActiveVertices = 0;
-       (*Set)->NextFreeIndex = 0;
-       (*Set)->Size = HintNumVertices;
+        /* Inizializza la FreeList */
+        ReturnStatus = JList_Init(&(*Set)->FreeList, &Op);
+        if( ReturnStatus == SUCCESS )
+        {
+            /* se la Freelist è stata allocata correttamente */
 
-       /* - alloco l'array singoli vertici */
-       ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX *), 
-               (void **)&( (*Set)->Vertices ) );
-       if( ReturnStatus == SUCCESS )
-       {
-           for( i = 0; i < (*Set)->Size; i++)
-           {
-               (*Set)->Vertices[i] = NULL;
-               /* Dato che inserisce in testa, per avere i vertici in ordine
-               	* devo inserire a partire dall'ultimo indice, invece che dal 
-               	* primo
-               	* */
-               TempIndex = HintNumVertices - i - 1;
+            /* inizializzo gli indici */
+            (*Set)->NumActiveVertices = 0;
+            (*Set)->NextFreeIndex = 0;
+            (*Set)->Size = HintNumVertices;
+
+            /* alloco l'array di puntatori ai vertici */
+            ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX *), 
+                    (void **)&( (*Set)->Vertices ) );
+            if( ReturnStatus == SUCCESS )
+            {
+                /* se l'array di puntatori a vertici è stato correttamente allocato */
+                for( i = 0; i < (*Set)->Size; i++)
+                {
+                    (*Set)->Vertices[i] = NULL;
+                    /* Dato che inserisce in testa, per avere i vertici in ordine
+                     * devo inserire a partire dall'ultimo indice, invece che dal 
+                     * primo
+                     * */
+                    TempIndex = HintNumVertices - i - 1;
 #ifdef DEBUG
-               fprintf(stderr, "[Inserimento %d in FreeList]\n", TempIndex);
+                    fprintf(stderr, "[Inserimento %d in FreeList]\n", TempIndex);
 #endif
-               JList_HeadInsert( (void *)&TempIndex, (*Set)->FreeList );
+                    JList_HeadInsert( (void *)&TempIndex, (*Set)->FreeList );
 
-           }
-       }
-   }
+                }
+            }
+            else
+            {
+                /* se l'array di puntatori a vertici non è stato allocato */
 
-   return ReturnStatus;
+                /* dealloca Freelist */
+                JList_Destroy( Set->FreeList );
+                /* dealloca insieme dei vertici */
+                MemFree( (void **)&Set );
+            }
+        }
+        else
+        {
+            /* se la Freelist non è stata allocata */
+
+            /* deallocare l'insieme dei vertici */
+            MemFree( (void **)&Set );
+        }
+    }
+
+    return ReturnStatus;
 }
 
 /**
