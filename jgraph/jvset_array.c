@@ -153,7 +153,10 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
 
     return ReturnStatus;
 }
-
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * METODI PER INSIEME DEI VERTICI
+ *
+ */
 /**
  * Inizializza l'insieme dei vertici
  * */
@@ -345,6 +348,34 @@ J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
 {
     return Set->Vertices[Index];
 }
+
+J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
+{
+   int i;
+   int Trovato;
+
+   Trovato = 0;
+   i = -1;
+
+   while( i < Set->Size && !Trovato )
+   {
+       i += 1;
+       if( Set->Vertices[i] && (strcmp(Set->Vertices[i]->Label, Label) == 0) )
+       {
+           Trovato = 1;
+       }
+   }
+
+   if( Trovato )
+   {
+       return Set->Vertices[i];
+   }
+   else
+   {
+       return NULL;
+   }
+}
+
 #ifdef ASD
 
 /**
@@ -352,6 +383,8 @@ J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
  * */
 J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
 {
+    J_VERTEX *VertexToDelete;
+
 }
 
 /**

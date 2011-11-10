@@ -28,6 +28,7 @@ extern void setUp(void);
 extern void tearDown(void);
 extern void test_AddVertexWithLabel(void);
 extern void test_ReallocFreeList(void);
+extern void test_FindByLabel(void);
 
 
 //=======Test Reset Option=====
@@ -45,6 +46,7 @@ int main(void)
   UnityBegin();
   RUN_TEST(test_AddVertexWithLabel, 24);
   RUN_TEST(test_ReallocFreeList, 37);
+  RUN_TEST(test_FindByLabel, 47);
 
   return (UnityEnd());
 }

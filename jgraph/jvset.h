@@ -69,4 +69,10 @@ J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
 J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
 
+/**
+ * METODI TEMPORANEI
+ * */
+
+J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
+
 #endif

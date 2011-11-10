@@ -43,3 +43,11 @@ void test_ReallocFreeList(void)
     JVset_AddVertex("Amore5", NULL, Set);
 
 }
+
+void test_FindByLabel(void)
+{
+    J_VERTEX *V;
+    JVset_AddVertex("Amore", NULL, Set);
+    V = JVset_FindVertexByLabel("Amore", Set );
+    TEST_ASSERT_NOT_NULL(V);
+}
