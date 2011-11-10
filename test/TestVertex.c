@@ -9,7 +9,7 @@ J_VSET *Set;
 
 void setUp(void)
 {
-    JVset_Init(10, &Set);
+    JVset_Init(4, &Set);
 }
 
 void tearDown(void)
@@ -32,7 +32,14 @@ void test_AddVertexWithLabel(void)
     printf("Etichetta: %s\n", str);
 
     free(str);
+}
 
-
+void test_ReallocFreeList(void)
+{
+    JVset_AddVertex("Amore1", NULL, Set);
+    JVset_AddVertex("Amore2", NULL, Set);
+    JVset_AddVertex("Amore3", NULL, Set);
+    JVset_AddVertex("Amore4", NULL, Set);
+    JVset_AddVertex("Amore5", NULL, Set);
 
 }

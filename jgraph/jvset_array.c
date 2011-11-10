@@ -215,7 +215,7 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
                 /* se l'array di puntatori a vertici non è stato allocato */
 
                 /* dealloca Freelist */
-                JList_Destroy( Set->FreeList );
+                JList_Destroy( (*Set)->FreeList );
                 /* dealloca insieme dei vertici */
                 MemFree( (void **)&Set );
             }
@@ -256,8 +256,11 @@ void JVset_Destroy( J_VSET *Set )
  * */
 J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 {
-    int FreeLoc; /**< Locazione libera in cui inserire */
+    int FreeLoc;           /**< Locazione libera in cui inserire */
     J_STATUS ReturnStatus; /**< Valore di ritorno */
+    int TempIndex; 
+    int OldSize;
+    int i;
 
     if( !JList_isEmpty( Set->FreeList ) )
     {
@@ -283,11 +286,52 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     }
     else
     {
-        /* allocare altro spazio per l'insieme e richiamare l'inserimento */
+#ifdef DEBUG
+        fprintf(stderr, "[JVSET: Esaurite locazioni disponibili. Realloco l'insieme dei vertici]\n");
+#endif
+        /* allocare il doppio dello spazio per l'insieme e richiamare l'inserimento */
+        OldSize = Set->Size;
+        Set->Size = 2 * Set->Size;
+        ReturnStatus = MemRealloc( Set->Size * sizeof(J_VERTEX *), 
+                (void **)&( Set->Vertices ));
+
+        if( ReturnStatus == SUCCESS )
+        {
+            /* Se l'insieme è stato reallocato correttamente */
+
+            for( i = OldSize; i < Set->Size; i++)
+            {
+                Set->Vertices[i] = NULL;
+                /* Inserisce nella freelist dall'ultima locazione disponibile scendendo
+                 * fino alla precedente dimensione.
+                 * Es.
+                 * OldSize = 4
+                 * NewSize = 8
+                 *
+                 * Inserisce in testa alla lista:
+                 * 8 + 4 - 4 - 1 = 7
+                 * 8 + 4 - 5 - 1 = 6
+                 * 8 + 4 - 6 - 1 = 5
+                 * 8 + 4 - 7 - 1 = 4
+                 * Risultando nella lista:
+                 * [4]->[5]->[6]->[7]
+                 * */
+                TempIndex = Set->Size + OldSize - i - 1;
+#ifdef DEBUG
+                fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
+#endif
+                JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
+
+            }
+        }
+        /* Richiama la procedura di inserimento dopo l'ingrandimento dell'insieme */
+        ReturnStatus = JVset_AddVertex( Label, Data, Set );
+
     }
 
     return ReturnStatus;
 }
+
 
 /*=====================================================================
  * METODI TEMPORANEI
