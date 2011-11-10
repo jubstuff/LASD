@@ -290,8 +290,12 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         fprintf(stderr, "[JVSET: Esaurite locazioni disponibili. Realloco l'insieme dei vertici]\n");
 #endif
         /* allocare il doppio dello spazio per l'insieme e richiamare l'inserimento */
+
+        /* salvo la vecchia dimensione */
         OldSize = Set->Size;
+        /* raddoppio la dimensione dell'insieme */
         Set->Size = 2 * Set->Size;
+        /* realloco l'insieme dei vertici */
         ReturnStatus = MemRealloc( Set->Size * sizeof(J_VERTEX *), 
                 (void **)&( Set->Vertices ));
 
@@ -320,15 +324,14 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 #ifdef DEBUG
                 fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
 #endif
+                /* inserisce l'indice nella freelist */
                 JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
 
             }
         }
         /* Richiama la procedura di inserimento dopo l'ingrandimento dell'insieme */
         ReturnStatus = JVset_AddVertex( Label, Data, Set );
-
     }
-
     return ReturnStatus;
 }
 
