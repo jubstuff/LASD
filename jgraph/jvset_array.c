@@ -28,7 +28,6 @@ struct jvset_tag
 {
     J_VERTEX **Vertices;   /**< Array contenente i vertici */
     int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
-    int NextFreeIndex;     /**< Indice della prossima locazione libera */
     int Size;              /**< Numero totale di vertici */
     J_LIST *FreeList;      /**< Lista delle locazioni libere */
 };
@@ -188,7 +187,6 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 
             /* inizializzo gli indici */
             (*Set)->NumActiveVertices = 0;
-            (*Set)->NextFreeIndex = 0;
             (*Set)->Size = HintNumVertices;
 
             /* alloco l'array di puntatori ai vertici */
@@ -243,9 +241,12 @@ void JVset_Destroy( J_VSET *Set )
 
     for( i = 0; i < Set->Size; i++ )
     {
+        /* Elimina tutti i vertici dall'insieme */
         JVertex_Destroy( Set->Vertices[i] );
     }
+    /* Dealloca la freelist */
     JList_Destroy( Set->FreeList );
+    /* Dealloca l'insieme */
     MemFree( (void **)&( Set->Vertices ) );
     MemFree( (void **)&Set );
 }
