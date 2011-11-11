@@ -47,10 +47,10 @@ int main(void)
   Unity.TestFile = "TestVertex.c";
   UnityBegin();
   RUN_TEST(test_AddVertexWithLabel, 24);
-  RUN_TEST(test_AddVertexWithSameLabelShouldFail, 37);
-  RUN_TEST(test_ReallocFreeList, 45);
-  RUN_TEST(test_FindByLabel, 55);
-  RUN_TEST(test_DeleteVertex, 69);
+  RUN_TEST(test_AddVertexWithSameLabelShouldFail, 38);
+  RUN_TEST(test_ReallocFreeList, 46);
+  RUN_TEST(test_FindByLabel, 56);
+  RUN_TEST(test_DeleteVertex, 70);
 
   return (UnityEnd());
 }

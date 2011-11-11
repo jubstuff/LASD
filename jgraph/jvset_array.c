@@ -32,6 +32,7 @@ struct jvset_tag
 
 /* Metodi privati dell'insieme dei vertici */
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set );
+static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set );
 /* Metodi per la gestione della FreeList */
 static void *InizializzaNodoInt( void *Value );
 static void DeallocaInt( void *InputValue, void *NodeInfo );
@@ -66,8 +67,6 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
 {
     J_STATUS ReturnStatus;
     JLIST_METHODS Op; /**< Metodi necessari per FreeList */
-    int i;            /**< Contatore per cicli */
-    int TempIndex;    /**< Indice di appoggio */
 
     ReturnStatus = SUCCESS;
 
@@ -95,25 +94,15 @@ J_STATUS JVset_Init( int HintNumVertices, J_VSET **Set )
             (*Set)->Size = HintNumVertices;
 
             /* alloco l'array di puntatori ai vertici */
-            ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_VERTEX *), 
+            ReturnStatus = MemAlloc( (*Set)->Size * sizeof(J_VERTEX *), 
                     (void **)&( (*Set)->Vertices ) );
             if( ReturnStatus == SUCCESS )
             {
-                /* se l'array di puntatori a vertici è stato correttamente allocato */
-                for( i = 0; i < (*Set)->Size; i++)
-                {
-                    (*Set)->Vertices[i] = NULL;
-                    /* Dato che inserisce in testa, per avere i vertici in ordine
-                     * devo inserire a partire dall'ultimo indice, invece che dal 
-                     * primo
-                     * */
-                    TempIndex = HintNumVertices - i - 1;
-#ifdef DEBUG
-                    fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
-#endif
-                    JList_HeadInsert( (void *)&TempIndex, (*Set)->FreeList );
-
-                }
+                /* Se l'array di puntatori a vertici è stato correttamente
+                 * allocato, inizializza la freelist con tutte le locazioni
+                 * disponibili
+                 * */
+                JVset_InitializeVerticesAndFreeList( 0, (*Set) );
             }
             else
             {
@@ -187,9 +176,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 {
     int FreeLoc;           /**< Locazione libera in cui inserire */
     J_STATUS ReturnStatus; /**< Valore di ritorno */
-    int TempIndex;         /**< Indice temporaneo per inserimento */
     int OldSize;           /**< Dim precedente dell'insieme */
-    int i;                 /**< Contatore per cicli */
     int Trovato;
 
     /* Controllo se esiste già un vertice con l'etichetta passata in input */
@@ -197,75 +184,40 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
 
     if( ReturnStatus == W_SET_NOTFOUND )
     {
-        if( !JList_isEmpty( Set->FreeList ) )
-        {
-            /* Se la Freelist non è vuota, recupera il primo elemento
-             * ed inserisci il vertice in quella posizione */
-            JList_HeadDelete( (void *)&FreeLoc, Set->FreeList );
-#ifdef DEBUG
-            fprintf(stderr, "[Inserisco il vertice nella locazione %d]\n", FreeLoc);
-#endif
-
-            /* Creare un nuovo vertice nella locazione libera */
-            ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
-            if( ReturnStatus == SUCCESS )
-            {
-                /* Impostare l'etichetta del nuovo vertice */
-                ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
-                if( ReturnStatus == SUCCESS )
-                {
-                    /* Aggiornare il numero di vertici inseriti */
-                    Set->NumActiveVertices += 1;
-                }
-            }
-        }
-        else
+        if( JList_isEmpty( Set->FreeList ) )
         {
 #ifdef DEBUG
             fprintf(stderr, "[JVSET: Esaurite locazioni disponibili. Realloco l'insieme dei vertici]\n");
 #endif
-            /* allocare il doppio dello spazio per l'insieme e richiamare l'inserimento */
-
-            /* salvo la vecchia dimensione */
             OldSize = Set->Size;
             /* raddoppio la dimensione dell'insieme */
             Set->Size = 2 * Set->Size;
             /* realloco l'insieme dei vertici */
             ReturnStatus = MemRealloc( Set->Size * sizeof(J_VERTEX *), 
-                    (void **)&( Set->Vertices ));
-
+                (void **)&( Set->Vertices ));
             if( ReturnStatus == SUCCESS )
             {
-                /* Se l'insieme è stato reallocato correttamente */
-
-                for( i = OldSize; i < Set->Size; i++)
-                {
-                    Set->Vertices[i] = NULL;
-                    /* Inserisce nella freelist dall'ultima locazione disponibile scendendo
-                     * fino alla precedente dimensione.
-                     * Es.
-                     * OldSize = 4
-                     * NewSize = 8
-                     *
-                     * Inserisce in testa alla lista:
-                     * 8 + 4 - 4 - 1 = 7
-                     * 8 + 4 - 5 - 1 = 6
-                     * 8 + 4 - 6 - 1 = 5
-                     * 8 + 4 - 7 - 1 = 4
-                     * Risultando nella lista:
-                     * [4]->[5]->[6]->[7]
-                     * */
-                    TempIndex = Set->Size + OldSize - i - 1;
-#ifdef DEBUG
-                    fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
-#endif
-                    /* inserisce l'indice nella freelist */
-                    JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
-
-                }
+                JVset_InitializeVerticesAndFreeList( OldSize, Set );
             }
-            /* Richiama la procedura di inserimento dopo l'ingrandimento dell'insieme */
-            ReturnStatus = JVset_AddVertex( Label, Data, Set );
+        }
+        /* Se la Freelist non è vuota, recupera il primo elemento
+         * ed inserisci il vertice in quella posizione */
+        JList_HeadDelete( (void *)&FreeLoc, Set->FreeList );
+#ifdef DEBUG
+        fprintf(stderr, "[JVSET: Inserisco il vertice nella locazione %d]\n", FreeLoc);
+#endif
+
+        /* Creare un nuovo vertice nella locazione libera */
+        ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
+        if( ReturnStatus == SUCCESS )
+        {
+            /* Impostare l'etichetta del nuovo vertice */
+            ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
+            if( ReturnStatus == SUCCESS )
+            {
+                /* Aggiornare il numero di vertici inseriti */
+                Set->NumActiveVertices += 1;
+            }
         }
     }
     else
@@ -275,6 +227,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     }
     return ReturnStatus;
 }
+
 
 /**
  * Rimuove un vertice dall'insieme
@@ -311,6 +264,69 @@ J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
     return ReturnStatus;
 
 }
+
+/*============================METODI PRIVATI=====================================*/
+
+static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set )
+{
+   int i;
+   J_STATUS Trovato;
+
+   Trovato = W_SET_NOTFOUND;
+   i = 0;
+   *Index = -1;
+
+   while( (i < Set->Size) && (Trovato != SUCCESS) )
+   {
+       if( Set->Vertices[i] && (strcmp(Set->Vertices[i]->Label, Label) == 0) )
+       {
+           Trovato = SUCCESS;
+           *Index = i;
+       }
+       i += 1;
+   }
+
+   return Trovato;
+}
+static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set )
+{
+    int i;
+    int TempIndex;
+
+    /* allocare il doppio dello spazio per l'insieme e richiamare l'inserimento */
+
+
+    /* Se l'insieme è stato reallocato correttamente */
+
+    for( i = OldSize; i < Set->Size; i++)
+    {
+        Set->Vertices[i] = NULL;
+        /* Inserisce nella freelist dall'ultima locazione disponibile scendendo
+         * fino alla precedente dimensione.
+         * Es.
+         * OldSize = 4
+         * NewSize = 8
+         *
+         * Inserisce in testa alla lista:
+         * 8 + 4 - 4 - 1 = 7
+         * 8 + 4 - 5 - 1 = 6
+         * 8 + 4 - 6 - 1 = 5
+         * 8 + 4 - 7 - 1 = 4
+         * Risultando nella lista:
+         * [4]->[5]->[6]->[7]
+         * */
+        TempIndex = Set->Size + OldSize - i - 1;
+#ifdef DEBUG
+        fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
+#endif
+        /* inserisce l'indice nella freelist */
+        JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
+
+    }
+}
+
+/*============================FINE METODI PRIVATI================================*/
+
 
 /*
  * METODI PER VERTICI
@@ -432,30 +448,6 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
     return ReturnStatus;
 }
 
-/*
- * METODI PRIVATI
- */
-static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set )
-{
-   int i;
-   J_STATUS Trovato;
-
-   Trovato = W_SET_NOTFOUND;
-   i = 0;
-   *Index = -1;
-
-   while( (i < Set->Size) && (Trovato != SUCCESS) )
-   {
-       if( Set->Vertices[i] && (strcmp(Set->Vertices[i]->Label, Label) == 0) )
-       {
-           Trovato = SUCCESS;
-           *Index = i;
-       }
-       i += 1;
-   }
-
-   return Trovato;
-}
 
 
 
@@ -524,10 +516,6 @@ static void *InizializzaNodoInt( void *Value )
  * ====================================================================
  * */
 
-J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
-{
-    return Set->Vertices[Index];
-}
 
 J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 {

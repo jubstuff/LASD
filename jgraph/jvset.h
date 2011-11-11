@@ -48,6 +48,10 @@ void JVset_Destroy( J_VSET *Set );
  * Recupera l'informazione associata al vertice
  * */
 J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
+/**
+ * Recupera un vertice dall'insieme, data l'etichetta
+ * */
+J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -69,11 +73,5 @@ J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
 J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
 
-/**
- * METODI TEMPORANEI
- * */
-
-J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
-J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set );
 
 #endif

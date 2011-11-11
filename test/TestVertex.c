@@ -25,10 +25,11 @@ void test_AddVertexWithLabel(void)
 {
     char *str;
     str = malloc(100 * sizeof(char));
+    J_VERTEX *V;
 
     JVset_AddVertex("Vertice A", NULL, Set);
-    J_VERTEX *ptr = JVset_GetVertex(0, Set);
-    JVertex_GetLabel(&str, ptr);
+    V = JVset_FindVertexByLabel("Vertice A", Set );
+    JVertex_GetLabel(&str, V);
     printf("Etichetta: %s\n", str);
 
     free(str);
@@ -68,7 +69,6 @@ void test_FindByLabel(void)
 
 void test_DeleteVertex(void)
 {
-    J_VERTEX *V;
     JVset_AddVertex("Vertice A", NULL, Set);
     JVset_AddVertex("Vertice B", NULL, Set);
     JVset_AddVertex("Vertice C", NULL, Set);
