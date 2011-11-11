@@ -274,6 +274,7 @@ J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
 
 /**
  * Recupera il puntatore ad un vertice, data l'etichetta.
+ * TODO far restituire un J_STATUS
  * */
 J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 {
@@ -292,6 +293,10 @@ J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 
 /*============================METODI PRIVATI=====================================*/
 
+/**
+ * Recupera l'indice della locazione in cui è memorizzato un vertice
+ *
+ * */
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set )
 {
    int i;
@@ -315,6 +320,11 @@ static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *S
 
    return Trovato;
 }
+/**
+ * Inserisce tutte le locazioni libere nella FreeList e inizializza i puntatori
+ * ai vertici
+ *
+ * */
 static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set )
 {
     int i;
