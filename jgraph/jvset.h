@@ -61,8 +61,6 @@ J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
 
 J_STATUS JVertex_New( J_VERTEX **V );
 
-void JVertex_Init( J_VERTEX *V );
-
 void JVertex_Destroy( J_VERTEX *V );
 
 void JVertex_GetLabel( char **Dest, J_VERTEX *V ); 

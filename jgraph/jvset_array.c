@@ -14,7 +14,7 @@
  * */
 struct jvertex_tag
 {
-    int Id;
+    int Id;      /**< ID univoco */
 	char *Label; /**< Vertex's Label */
 	void *Data;
 };
@@ -29,7 +29,7 @@ struct jvset_tag
 
 /*=======================FINE DEFINIZIONE STRUTTURE==============================*/
 
-/*============================METODI PRIVATI=====================================*/
+/*=======================DEFINIZIONE METODI PRIVATI==============================*/
 
 /* Metodi privati dell'insieme dei vertici */
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set );
@@ -213,7 +213,7 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         {
             /* Impostare l'etichetta del nuovo vertice */
             ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
-            /* TODO calcolare ID del vertice */
+            /* calcolare ID del vertice */
             Set->Vertices[FreeLoc]->Id = CalculateVertexID(Label);
             /* TODO inserire dati del vertice */
             if( ReturnStatus == SUCCESS )
@@ -272,20 +272,40 @@ J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
 
 }
 
+/**
+ * Recupera il puntatore ad un vertice, data l'etichetta.
+ * */
+J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
+{
+   int Trovato;
+   JVset_FindVertexIndexByLabel(Label, &Trovato, Set);
+
+   if( Trovato != -1 )
+   {
+       return Set->Vertices[Trovato];
+   }
+   else
+   {
+       return NULL;
+   }
+}
+
 /*============================METODI PRIVATI=====================================*/
 
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set )
 {
    int i;
    J_STATUS Trovato;
+   int VertexDesiredId;
 
    Trovato = W_SET_NOTFOUND;
    i = 0;
    *Index = -1;
+   VertexDesiredId = CalculateVertexID( Label );
 
    while( (i < Set->Size) && (Trovato != SUCCESS) )
    {
-       if( Set->Vertices[i] && (strcmp(Set->Vertices[i]->Label, Label) == 0) )
+       if( Set->Vertices[i] && (Set->Vertices[i]->Id == VertexDesiredId) )
        {
            Trovato = SUCCESS;
            *Index = i;
@@ -353,31 +373,25 @@ J_STATUS JVertex_New( J_VERTEX **V )
     if( ReturnStatus == SUCCESS )
     {
         /* Se il vertice è stato correttamente allocato, inizializzalo */
-        JVertex_Init( *V );
+        (*V)->Label = NULL;
+        (*V)->Data = NULL;
+        (*V)->Id = 0;
     }
 
     return ReturnStatus;
 }
 
 /**
- * Inizializza un vertice
- *
- * Inizializza tutti i valori di un vertice in uno stato consistente.
+ * Dealloca un vertice e i dati associati
  *
  * */
-void JVertex_Init( J_VERTEX *V )
-{
-    V->Label = NULL;
-    V->Data = NULL;
-    V->Id = 0;
-}
-
 void JVertex_Destroy( J_VERTEX *V )
 {
     if( V != NULL )
     {
         /* Se il vertice esiste, dealloca tutte le info ad esso associate */
         MemFree( (void **)&V->Label );
+        /* TODO deallocare dati associati al vertice */
         MemFree( (void **)&V );
     }
 }
@@ -457,21 +471,22 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
     return ReturnStatus;
 }
 
-
-
-
-#ifdef ASD
-
-
 /**
- * Recupera l'informazione associata al vertice
+ * Calcola un identificativo univoco per vertice
+ *
+ * Questa funzione calcola un identificativo numerico univoco per un vertice. È
+ * ricavata dalla funzione di hashing del K&R.
  * */
-J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set )
+static int CalculateVertexID(char *Label)
 {
+    int Id;
+
+    for(Id = 0; *Label != '\0'; Label++)
+    {
+        Id = *Label + 31 * Id;
+    }
+    return Id;
 }
-
-#endif
-
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * GESTIONE FREE LIST
@@ -520,40 +535,3 @@ static void *InizializzaNodoInt( void *Value )
 	return (void *)Num;
 }
 
-/*=====================================================================
- * METODI TEMPORANEI
- * ====================================================================
- * */
-
-/**
- * Calcola un identificativo univoco per vertice
- *
- * Questa funzione calcola un identificativo numerico univoco per un vertice. È
- * ricavata dalla funzione di hashing del K&R.
- * */
-static int CalculateVertexID(char *Label)
-{
-    int Id;
-
-    for(Id = 0; *Label != '\0'; Label++)
-    {
-        Id = *Label + 31 * Id;
-    }
-    return Id;
-}
-
-
-J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
-{
-   int Trovato;
-   JVset_FindVertexIndexByLabel(Label, &Trovato, Set);
-
-   if( Trovato != -1 )
-   {
-       return Set->Vertices[Trovato];
-   }
-   else
-   {
-       return NULL;
-   }
-}
