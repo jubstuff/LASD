@@ -32,6 +32,7 @@ struct jvset_tag
 /*=======================DEFINIZIONE METODI PRIVATI==============================*/
 
 /* Metodi privati dell'insieme dei vertici */
+static int JVset_IsMember(char *Label, J_VSET *Set);
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set );
 static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set );
 /* Metodi per la gestione della FreeList */
@@ -183,9 +184,9 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     int Trovato;
 
     /* Controllo se esiste già un vertice con l'etichetta passata in input */
-    ReturnStatus = JVset_FindVertexIndexByLabel(Label, &Trovato, Set);
+    Trovato = JVset_IsMember(Label, Set);
 
-    if( ReturnStatus == W_SET_NOTFOUND )
+    if( Trovato == 0 )
     {
         if( JList_isEmpty( Set->FreeList ) )
         {
@@ -293,6 +294,29 @@ J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 
 /*============================METODI PRIVATI=====================================*/
 
+static int JVset_IsMember(char *Label, J_VSET *Set)
+{
+   int i;
+   int Found;
+   int VertexId;
+
+   VertexId = CalculateVertexID(Label);
+
+   Found = 0;
+   i = 0;
+   VertexId = CalculateVertexID( Label );
+
+   while( (i < Set->Size) && (Found == 0) )
+   {
+       if( Set->Vertices[i] && (Set->Vertices[i]->Id == VertexId) )
+       {
+           Found = 1;
+       }
+       i += 1;
+   }
+
+   return Found;
+}
 /**
  * Recupera l'indice della locazione in cui è memorizzato un vertice
  *
