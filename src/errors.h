@@ -13,7 +13,9 @@ typedef enum
 	E_NO_MEM, /* Errore in malloc, memoria insufficiente */
 	ERROR, /* Errore generico */
 	W_LIST_NOTFOUND, /* Nodo non trovato nella lista */
-	W_LIST_DUP /* Trovato un duplicato nella lista */
+	W_LIST_DUP, /* Trovato un duplicato nella lista */
+	W_SET_NOTFOUND /* Vertice non trovato nell'insieme JVset */
+
 } J_STATUS;
 
 #endif
