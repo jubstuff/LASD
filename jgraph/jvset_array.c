@@ -14,6 +14,7 @@
  * */
 struct jvertex_tag
 {
+    int Id;
 	char *Label; /**< Vertex's Label */
 	void *Data;
 };
@@ -38,6 +39,8 @@ static void *InizializzaNodoInt( void *Value );
 static void DeallocaInt( void *InputValue, void *NodeInfo );
 static int NumCmp( const void *Num1, const void *Num2 );
 static void RecuperaInt( const void *NodeValue, void *OutValue );
+/* Metodi per vertici */
+static int CalculateVertexID(char *Label);
 
 /*============================FINE METODI PRIVATI================================*/
 
@@ -203,9 +206,6 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         /* Se la Freelist non è vuota, recupera il primo elemento
          * ed inserisci il vertice in quella posizione */
         JList_HeadDelete( (void *)&FreeLoc, Set->FreeList );
-#ifdef DEBUG
-        fprintf(stderr, "[JVSET: Inserisco il vertice nella locazione %d]\n", FreeLoc);
-#endif
 
         /* Creare un nuovo vertice nella locazione libera */
         ReturnStatus = JVertex_New( &Set->Vertices[FreeLoc] );
@@ -213,11 +213,18 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
         {
             /* Impostare l'etichetta del nuovo vertice */
             ReturnStatus = JVertex_SetLabel(Label, Set->Vertices[FreeLoc] );
+            /* TODO calcolare ID del vertice */
+            Set->Vertices[FreeLoc]->Id = CalculateVertexID(Label);
+            /* TODO inserire dati del vertice */
             if( ReturnStatus == SUCCESS )
             {
                 /* Aggiornare il numero di vertici inseriti */
                 Set->NumActiveVertices += 1;
             }
+#ifdef DEBUG
+            fprintf(stderr, "[JVSET: Inserisco il vertice nella locazione %d]\n", FreeLoc);
+            fprintf(stderr, "[JVSET: Vertex->Id = %d]\n", Set->Vertices[FreeLoc]->Id);
+#endif
         }
     }
     else
@@ -361,6 +368,8 @@ J_STATUS JVertex_New( J_VERTEX **V )
 void JVertex_Init( J_VERTEX *V )
 {
     V->Label = NULL;
+    V->Data = NULL;
+    V->Id = 0;
 }
 
 void JVertex_Destroy( J_VERTEX *V )
@@ -515,6 +524,23 @@ static void *InizializzaNodoInt( void *Value )
  * METODI TEMPORANEI
  * ====================================================================
  * */
+
+/**
+ * Calcola un identificativo univoco per vertice
+ *
+ * Questa funzione calcola un identificativo numerico univoco per un vertice. È
+ * ricavata dalla funzione di hashing del K&R.
+ * */
+static int CalculateVertexID(char *Label)
+{
+    int Id;
+
+    for(Id = 0; *Label != '\0'; Label++)
+    {
+        Id = *Label + 31 * Id;
+    }
+    return Id;
+}
 
 
 J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
