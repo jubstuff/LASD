@@ -47,7 +47,25 @@ void test_ReallocFreeList(void)
 void test_FindByLabel(void)
 {
     J_VERTEX *V;
-    JVset_AddVertex("Amore", NULL, Set);
-    V = JVset_FindVertexByLabel("Amore", Set );
+    char *str;
+    str = malloc(100 * sizeof(char));
+
+    JVset_AddVertex("Vertice A", NULL, Set);
+    V = JVset_FindVertexByLabel("Vertice A", Set );
     TEST_ASSERT_NOT_NULL(V);
+    JVertex_GetLabel(&str, V);
+    printf("Etichetta: %s\n", str);
+    free(str);
+}
+
+void test_DeleteVertex(void)
+{
+    J_VERTEX *V;
+    JVset_AddVertex("Vertice A", NULL, Set);
+    JVset_AddVertex("Vertice B", NULL, Set);
+    JVset_AddVertex("Vertice C", NULL, Set);
+    JVset_AddVertex("Vertice D", NULL, Set);
+    JVset_RemoveVertex("Vertice D", Set);
+    JVset_RemoveVertex("Vertice B", Set);
+    JVset_AddVertex("Vertice E", NULL, Set);
 }

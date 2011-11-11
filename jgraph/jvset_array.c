@@ -34,126 +34,6 @@ struct jvset_tag
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * METODI PER VERTICI
- *
- * */
-
-/**
- * Alloca un nuovo vertice 
- * */
-J_STATUS JVertex_New( J_VERTEX **V )
-{
-    J_STATUS ReturnStatus;
-
-    ReturnStatus = SUCCESS;
-
-    /* Alloco un nuovo vertice */
-    ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
-    if( ReturnStatus == SUCCESS )
-    {
-        /* Se il vertice è stato correttamente allocato, inizializzalo */
-        JVertex_Init( *V );
-    }
-
-    return ReturnStatus;
-}
-
-/**
- * Inizializza un vertice
- *
- * Inizializza tutti i valori di un vertice in uno stato consistente.
- *
- * */
-void JVertex_Init( J_VERTEX *V )
-{
-    V->Label = NULL;
-}
-
-void JVertex_Destroy( J_VERTEX *V )
-{
-    if( V != NULL )
-    {
-        /* Se il vertice esiste, dealloca tutte le info ad esso associate */
-        MemFree( (void **)&V->Label );
-        MemFree( (void **)&V );
-    }
-}
-
-/* 
- * Recupera l'etichetta del vertice V.
- *
- * Se l'etichetta è impostata, la copia nella stringa Dest (che deve essere
- * allocata e sufficientemente grande).
- * Altrimenti imposta Dest a NULL
- *
- * */
-void JVertex_GetLabel( char **Dest, J_VERTEX *V )
-{
-    if( V && V->Label )
-    {
-        /* Se il vertice esiste e l'etichetta è definita,
-         * copiala nel vettore passato in input
-         * */
-        strcpy( *Dest, V->Label );
-    }
-    else
-    {
-        *Dest = NULL;
-    }
-}
-
-/**
- * Recupera la lunghezza dell'etichetta del vertice V
- *
- * Se l'etichetta è impostata, ne copia la lunghezza in Length.
- * Altrimenti imposta Length a 0 e restituisce ERROR.
- *
- * */
-J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
-{
-    J_STATUS ReturnStatus; /**< stato di ritorno */
-
-    ReturnStatus = SUCCESS;
-
-    if( V && V->Label )
-    { 
-        /* Se l'etichetta è impostata, ne restituisce la lunghezza */
-        *Length = strlen(V->Label);
-    }
-    else
-    {
-        /* Altrimenti imposta la lunghezza a zero, e restituisce ERROR */
-        *Length = 0;
-        ReturnStatus = ERROR;
-    }
-
-    return ReturnStatus;
-}
-
-/**
- * Imposta l'etichetta ad un vertice
- *
- * Alloca un vettore di caratteri dinamicamente e lo utilizza per memorizzare l'etichetta del vertice 
- * */
-J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
-{
-    int LabelLen;
-    J_STATUS ReturnStatus;
-
-    /* Recupero la lunghezza dell'etichetta passata in input */
-    LabelLen = strlen(Label);
-
-    /* Alloco un vettore di caratteri atto a contenere la stringa */
-    ReturnStatus = MemAlloc( LabelLen + 1, (void **)&(V->Label) );
-    if( ReturnStatus == SUCCESS )
-    {
-        /* Se è stato allocato correttamente, vi copio la stringa in input */
-        strcpy(V->Label, Label);
-    }
-
-    return ReturnStatus;
-}
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * METODI PER INSIEME DEI VERTICI
  *
  */
@@ -338,6 +218,154 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set )
     return ReturnStatus;
 }
 
+/**
+ * Rimuove un vertice dall'insieme
+ * */
+J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
+{
+    int VertexToDelete;
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+    VertexToDelete = JVset_FindVertexIndexByLabel(Label, Set);
+    if( VertexToDelete != -1 )
+    {
+        /* TODO Aggiungere cancellazione dati vertice */
+#ifdef DEBUG
+        fprintf(stderr, "[JVSET: Cancellazione del vertice in posizione %d]\n", VertexToDelete);
+#endif
+        
+        MemFree( (void **)&(Set->Vertices[VertexToDelete]->Label) );
+        MemFree( (void **)&(Set->Vertices[VertexToDelete]) );
+        Set->Vertices[VertexToDelete] = NULL;
+        JList_HeadInsert( (void *)&VertexToDelete, Set->FreeList );
+
+    }
+
+    return ReturnStatus;
+
+}
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * METODI PER VERTICI
+ *
+ * */
+
+/**
+ * Alloca un nuovo vertice 
+ * */
+J_STATUS JVertex_New( J_VERTEX **V )
+{
+    J_STATUS ReturnStatus;
+
+    ReturnStatus = SUCCESS;
+
+    /* Alloco un nuovo vertice */
+    ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Se il vertice è stato correttamente allocato, inizializzalo */
+        JVertex_Init( *V );
+    }
+
+    return ReturnStatus;
+}
+
+/**
+ * Inizializza un vertice
+ *
+ * Inizializza tutti i valori di un vertice in uno stato consistente.
+ *
+ * */
+void JVertex_Init( J_VERTEX *V )
+{
+    V->Label = NULL;
+}
+
+void JVertex_Destroy( J_VERTEX *V )
+{
+    if( V != NULL )
+    {
+        /* Se il vertice esiste, dealloca tutte le info ad esso associate */
+        MemFree( (void **)&V->Label );
+        MemFree( (void **)&V );
+    }
+}
+
+/* 
+ * Recupera l'etichetta del vertice V.
+ *
+ * Se l'etichetta è impostata, la copia nella stringa Dest (che deve essere
+ * allocata e sufficientemente grande).
+ * Altrimenti imposta Dest a NULL
+ *
+ * */
+void JVertex_GetLabel( char **Dest, J_VERTEX *V )
+{
+    if( V && V->Label )
+    {
+        /* Se il vertice esiste e l'etichetta è definita,
+         * copiala nel vettore passato in input
+         * */
+        strcpy( *Dest, V->Label );
+    }
+    else
+    {
+        *Dest = NULL;
+    }
+}
+
+/**
+ * Recupera la lunghezza dell'etichetta del vertice V
+ *
+ * Se l'etichetta è impostata, ne copia la lunghezza in Length.
+ * Altrimenti imposta Length a 0 e restituisce ERROR.
+ *
+ * */
+J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
+{
+    J_STATUS ReturnStatus; /**< stato di ritorno */
+
+    ReturnStatus = SUCCESS;
+
+    if( V && V->Label )
+    { 
+        /* Se l'etichetta è impostata, ne restituisce la lunghezza */
+        *Length = strlen(V->Label);
+    }
+    else
+    {
+        /* Altrimenti imposta la lunghezza a zero, e restituisce ERROR */
+        *Length = 0;
+        ReturnStatus = ERROR;
+    }
+
+    return ReturnStatus;
+}
+
+/**
+ * Imposta l'etichetta ad un vertice
+ *
+ * Alloca un vettore di caratteri dinamicamente e lo utilizza per memorizzare l'etichetta del vertice 
+ * */
+J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
+{
+    int LabelLen;
+    J_STATUS ReturnStatus;
+
+    /* Recupero la lunghezza dell'etichetta passata in input */
+    LabelLen = strlen(Label);
+
+    /* Alloco un vettore di caratteri atto a contenere la stringa */
+    ReturnStatus = MemAlloc( LabelLen + 1, (void **)&(V->Label) );
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Se è stato allocato correttamente, vi copio la stringa in input */
+        strcpy(V->Label, Label);
+    }
+
+    return ReturnStatus;
+}
+
 
 /*=====================================================================
  * METODI TEMPORANEI
@@ -349,7 +377,7 @@ J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set )
     return Set->Vertices[Index];
 }
 
-J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
+int JVset_FindVertexIndexByLabel( char *Label, J_VSET *Set )
 {
    int i;
    int Trovato;
@@ -368,7 +396,21 @@ J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 
    if( Trovato )
    {
-       return Set->Vertices[i];
+       return i;
+   }
+   else
+   {
+       return -1;
+   }
+}
+J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
+{
+   int Trovato;
+   Trovato = JVset_FindVertexIndexByLabel(Label, Set);
+
+   if( Trovato != -1 )
+   {
+       return Set->Vertices[Trovato];
    }
    else
    {
@@ -378,14 +420,6 @@ J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
 
 #ifdef ASD
 
-/**
- * Rimuove un vertice dall'insieme
- * */
-J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
-{
-    J_VERTEX *VertexToDelete;
-
-}
 
 /**
  * Recupera l'informazione associata al vertice

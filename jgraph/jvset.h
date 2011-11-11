@@ -40,16 +40,16 @@ J_STATUS JVset_AddVertex( char *Label, void *Data, J_VSET *Set );
 J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set );
 
 /**
- * Recupera l'informazione associata al vertice
- * */
-J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
-
-/**
  * Dealloca l'insieme di vertici
  * */
 void JVset_Destroy( J_VSET *Set );
 
-J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set );
+/**
+ * Recupera l'informazione associata al vertice
+ * */
+J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
+
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  Operazioni sui vertici
 
@@ -74,5 +74,7 @@ J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
  * */
 
 J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
+int JVset_FindVertexIndexByLabel( char *Label, J_VSET *Set );
+J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set );
 
 #endif
