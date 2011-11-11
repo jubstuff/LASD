@@ -69,7 +69,4 @@ J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 
 J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
-J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
-
-
 #endif
