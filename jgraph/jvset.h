@@ -74,7 +74,6 @@ J_STATUS JVertex_CreateArray(int HintNumVertices, J_VERTEX **V);
  * */
 
 J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
-int JVset_FindVertexIndexByLabel( char *Label, J_VSET *Set );
 J_VERTEX *JVset_GetVertex( int Index, J_VSET *Set );
 
 #endif
