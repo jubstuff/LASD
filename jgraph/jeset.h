@@ -29,7 +29,12 @@ J_STATUS JEset_New( J_ESET **Set );
 /**
  * Aggiunge un arco all'insieme
  * */
-J_STATUS JEset_AddEdge( char *LabelSource, char *LabelDest, double Weigth, J_ESET *Set );
+J_STATUS JEset_AddEdge( char *LabelSource, char *LabelDest, double Weight, J_ESET *Set );
+
+/**
+ * Recupera il peso di un dato arco
+ * */
+J_STATUS JEset_GetEdgeWeight( char *LabelSource, char *LabelDest, double *Weight, J_ESET *Set);
 
 /**
  * Rimuove un arco dall'insieme
