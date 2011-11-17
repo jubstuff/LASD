@@ -505,6 +505,28 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
     return ReturnStatus;
 }
 
+int VertexCmp( const void *Vertex1, const void *Vertex2 )
+{
+	int ReturnValue;
+	J_VERTEX *First = (J_VERTEX *)Vertex1;
+	J_VERTEX *Second = (J_VERTEX *)Vertex2;
+
+	if ( First->Id < Second->Id )
+	{
+		ReturnValue = -1;
+	}
+	else if ( First->Id == Second->Id )
+	{
+		ReturnValue = 0;
+	}
+	else
+	{
+		ReturnValue = 1;
+	}
+
+	return ReturnValue;
+}
+
 /**
  * Calcola un identificativo univoco per vertice
  *
