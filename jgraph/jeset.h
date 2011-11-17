@@ -20,6 +20,7 @@
  * */
 
 typedef struct jeset_tag J_ESET;
+typedef struct jedge_tag J_EDGE;
 
 /**
  * Inizializza l'insieme degli archi
