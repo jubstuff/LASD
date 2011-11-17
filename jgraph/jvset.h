@@ -69,4 +69,6 @@ J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 
 J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
+int VertexCmp( const void *Vertex1, const void *Vertex2 );
+
 #endif
