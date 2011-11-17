@@ -1,4 +1,9 @@
 #include "jeset.h"
+#include "jvset.h"
+#include "mem.h"
+#include "errors.h"
+#include "lista.h"
+#include <stdlib.h>
 
 
 /*============================DEFINIZIONE STRUTTURE==============================*/
@@ -32,27 +37,6 @@ static void *InizializzaNodoAdjList( void *Value )
 	return (void *)Edge;
 }
 
-static int EdgeCmp( const void *Edge1, const void *Edge2 )
-{
-	int ReturnValue;
-	J_VERTEX *First = (J_VERTEX *)Edge1;
-	J_VERTEX *Second = (J_VERTEX *)Edge2;
-
-	if ( First->Id < Second->Id )
-	{
-		ReturnValue = -1;
-	}
-	else if ( First->Id == Second->Id )
-	{
-		ReturnValue = 0;
-	}
-	else
-	{
-		ReturnValue = 1;
-	}
-
-	return ReturnValue;
-}
 
 static void DeallocaEdge( void *InputValue, void *NodeInfo )
 {
