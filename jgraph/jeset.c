@@ -27,6 +27,31 @@ static void *InizializzaNodoAdjList( void *Value );
 static int EdgeCmp( const void *Edge1, const void *Edge2 );
 static void DeallocaEdge( void *InputValue, void *NodeInfo );
 
+
+J_STATUS JEset_New( int HintNumVertices, J_ESET **Set )
+{
+    J_STATUS ReturnStatus;
+    JLIST_METHODS Op;
+
+    ReturnStatus = SUCCESS;
+
+    /* Alloco l'insieme degli archi */
+    ReturnStatus = MemAlloc(sizeof(J_ESET), (void **)Set);
+
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Se l'insieme è stato correttamente allocato */
+
+        /* alloco i puntatori alle liste di adiacenza */
+        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_EDGE *),
+                (void **)&( (*Set)->AdjLists ) );
+    }
+
+
+
+
+}
+
 /*=========================GESTIONE LISTE DI ADIACENZA===========================*/
 
 static void *InizializzaNodoAdjList( void *Value )
