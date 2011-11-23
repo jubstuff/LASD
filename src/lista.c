@@ -55,7 +55,6 @@ J_STATUS JList_Init( J_LIST **L, JLIST_METHODS *Op )
     {
         /* Inizializzo la testa della lista e i relativi metodi */
         (*L)->Head = NULL;
-        /* TODO allocare dinamicamente le operazioni */
         ReturnStatus = MemAlloc(sizeof(JLIST_METHODS), (void **)&((*L)->Op) );
         if( ReturnStatus == SUCCESS )
         {
@@ -127,13 +126,13 @@ J_STATUS JList_HeadInsert( void *Value, J_LIST *L )
  * Necessita dei metodi:
  *
  * GETTER
- * COMPARATOR
  * DELETER
  *
  * */
 J_STATUS JList_HeadDelete( void *Value, J_LIST *L )
 {
     J_STATUS ReturnStatus;
+    NODE *Temp;
 
     ReturnStatus = SUCCESS;
 
@@ -141,7 +140,15 @@ J_STATUS JList_HeadDelete( void *Value, J_LIST *L )
     {
         /* Se la lista non è vuota, elimina il nodo in testa */
         L->Op->GetNodeValue( L->Head->Info, Value );
-        ReturnStatus = JList_DeleteNode( L->Head->Info, L );
+        /* Aggiorno la testa della lista al secondo elemento */
+        Temp = L->Head;
+        L->Head = L->Head->Next;
+        /* Dealloca il campo chiave del nodo */
+        L->Op->Delete( Value, Temp->Info );
+
+        /* Libera memoria per il nodo */
+        free( Temp );
+        ReturnStatus = SUCCESS; /* Nodo trovato e rimosso */
     }
     else
     {
