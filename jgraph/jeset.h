@@ -25,7 +25,7 @@ typedef struct jedge_tag J_EDGE;
 /**
  * Inizializza l'insieme degli archi
  * */
-J_STATUS JEset_New( J_ESET **Set );
+J_STATUS JEset_New( int HintNumVertices, J_ESET **Set );
 
 /**
  * Aggiunge un arco all'insieme

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "jeset.h"
 #include "jvset.h"
 #include "mem.h"
@@ -17,6 +18,8 @@ struct jedge_tag
 struct jeset_tag
 {
     J_LIST **AdjLists; /**< Vettore delle liste di adiacenza */
+    J_LIST *FreeList;      /**< Lista delle locazioni libere */
+    int Size;              /**< Numero totale di vertici */
 };
 
 
@@ -27,11 +30,22 @@ static void *InizializzaNodoAdjList( void *Value );
 static int EdgeCmp( const void *Edge1, const void *Edge2 );
 static void DeallocaEdge( void *InputValue, void *NodeInfo );
 
+/* Metodi per la gestione della FreeList */
+static void JEset_InitializeFreeList( int OldSize, J_ESET *Set );
+static void *InizializzaNodoInt( void *Value );
+static void DeallocaInt( void *InputValue, void *NodeInfo );
+static int NumCmp( const void *Num1, const void *Num2 );
+static void RecuperaInt( const void *NodeValue, void *OutValue );
 
+
+/**
+ * Alloca un nuovo insieme degli archi
+ *
+ * */
 J_STATUS JEset_New( int HintNumVertices, J_ESET **Set )
 {
     J_STATUS ReturnStatus;
-    JLIST_METHODS Op;
+    JLIST_METHODS Op; /**< Metodi necessari per FreeList */
 
     ReturnStatus = SUCCESS;
 
@@ -42,14 +56,106 @@ J_STATUS JEset_New( int HintNumVertices, J_ESET **Set )
     {
         /* Se l'insieme è stato correttamente allocato */
 
+        (*Set)->Size = HintNumVertices;
+
+        /* Inizializza la struct con le operazioni per la FreeList */
+        Op.Compare = NumCmp;
+        Op.InitNode = InizializzaNodoInt;
+        Op.Delete = DeallocaInt;
+        Op.GetNodeValue = RecuperaInt;
+
+        /* Inizializza la FreeList */
+        ReturnStatus = JList_Init(&(*Set)->FreeList, &Op); /* TODO Check error */
+        
+        JEset_InitializeFreeList(0, (*Set));
+
         /* alloco i puntatori alle liste di adiacenza */
-        ReturnStatus = MemAlloc( HintNumVertices * sizeof(J_EDGE *),
+        ReturnStatus = MemAlloc( (*Set)->Size * sizeof(J_EDGE *),
                 (void **)&( (*Set)->AdjLists ) );
+        /* TODO check error */
     }
 
+    return ReturnStatus;
+}
+
+J_STATUS JEset_LinkAdjListAndVertex(char *Label, J_VSET *VertSet, J_ESET *EdgeSet)
+{
+    J_STATUS ReturnStatus;
+    J_VERTEX *Vertex;
+
+    ReturnStatus = SUCCESS;
+    Vertex = NULL;
+
+    /* Cerca il vertice nell'insieme dei vertici */
+    Vertex = JVset_FindVertexByLabel(Label, VertSet);
+
+    if( Vertex )
+    {
+        /* Se è stato trovato, associa la prossima lista di adiacenza disponibile */
+        JVset_SetAdjList(Vertex, VertSet); /**TODO Continua da qui!!!! */
+    }
+    else
+    {
+        /* Se non è stato trovato, restituisci un errore */
+        ReturnStatus = ERROR;
+    }
+
+    
+}
 
 
 
+/**
+ * Dealloca l'insieme degli archi
+ *
+ * */
+void JEset_Destroy( J_ESET *Set )
+{
+    /* Dealloca la freelist */
+    JList_Destroy( Set->FreeList );
+
+    MemFree( (void **)&(Set->AdjLists) );
+    MemFree( (void **)&Set );
+}
+
+/**
+ * Inserisce tutte le locazioni libere nella FreeList
+ *
+ * */
+static void JEset_InitializeFreeList( int OldSize, J_ESET *Set )
+{
+    int i;
+    int TempIndex;
+
+    /* allocare il doppio dello spazio per l'insieme e richiamare l'inserimento */
+
+
+    /* Se l'insieme è stato reallocato correttamente */
+
+    for( i = OldSize; i < Set->Size; i++)
+    {
+        /* Inserisce nella freelist dall'ultima locazione disponibile scendendo
+         * fino alla precedente dimensione.
+         * Es.
+         * OldSize = 4
+         * NewSize = 8
+         *
+         * Inserisce in testa alla lista:
+         * 8 + 4 - 4 - 1 = 7
+         * 8 + 4 - 5 - 1 = 6
+         * 8 + 4 - 6 - 1 = 5
+         * 8 + 4 - 7 - 1 = 4
+         * Risultando nella lista:
+         * [4]->[5]->[6]->[7]
+         * */
+        TempIndex = Set->Size + OldSize - i - 1;
+#ifdef DEBUG
+        fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
+#endif
+        /* inserisce l'indice nella freelist */
+        JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
+
+    }
 }
 
 /*=========================GESTIONE LISTE DI ADIACENZA===========================*/
@@ -68,3 +174,46 @@ static void DeallocaEdge( void *InputValue, void *NodeInfo )
 	free( NodeInfo );
 }
 
+/*=========================GESTIONE FREE LIST===================================*/
+static void RecuperaInt( const void *NodeValue, void *OutValue )
+{
+    int *NumPtr = (int *)OutValue;
+    *NumPtr = *( (int *)NodeValue );
+    OutValue = (void *)NumPtr;
+
+}
+static int NumCmp( const void *Num1, const void *Num2 )
+{
+	int ReturnValue;
+	int First = *( (int *)Num1 );
+	int Second = *( (int *)Num2 );
+
+	if ( First < Second )
+	{
+		ReturnValue = -1;
+	}
+	else if ( First == Second )
+	{
+		ReturnValue = 0;
+	}
+	else
+	{
+		ReturnValue = 1;
+	}
+
+	return ReturnValue;
+
+}
+static void DeallocaInt( void *InputValue, void *NodeInfo )
+{
+	free( NodeInfo );
+}
+static void *InizializzaNodoInt( void *Value )
+{
+	/* int *Num = (int *) malloc( sizeof(int) ); */
+	int *Num = NULL;
+	MemAlloc( sizeof(int), (void **)&Num );
+	
+	*Num = *( (int *)Value );
+	return (void *)Num;
+}
