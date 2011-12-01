@@ -86,17 +86,22 @@ J_STATUS JEset_LinkAdjListAndVertex(char *Label, J_VSET *VertSet, J_ESET *EdgeSe
 {
     J_STATUS ReturnStatus;
     J_VERTEX *Vertex;
+    int FreeLoc;           /**< Locazione libera da associare al vertice */
 
     ReturnStatus = SUCCESS;
     Vertex = NULL;
 
     /* Cerca il vertice nell'insieme dei vertici */
-    Vertex = JVset_FindVertexByLabel(Label, VertSet);
+    ReturnStatus = JVset_FindVertexByLabel(Label, &Vertex, VertSet );
 
-    if( Vertex )
+    if( ReturnStatus == SUCCESS )
     {
-        /* Se è stato trovato, associa la prossima lista di adiacenza disponibile */
-        JVset_SetAdjList(Vertex, VertSet); /**TODO Continua da qui!!!! */
+        /* Se il vertice è stato trovato, associa la prossima lista di adiacenza disponibile */
+
+        /* Se la Freelist non è vuota, recupera il primo elemento
+         * ed inserisci il vertice in quella posizione */
+        JList_HeadDelete( (void *)&FreeLoc, EdgeSet->FreeList );
+        JVertex_SetAdjIndex( FreeLoc, Vertex);
     }
     else
     {
@@ -156,7 +161,7 @@ static void JEset_InitializeFreeList( int OldSize, J_ESET *Set )
          * */
         TempIndex = Set->Size + OldSize - i - 1;
 #ifdef DEBUG
-        fprintf(stderr, "[JVSET: Inserimento %d in FreeList]\n", TempIndex);
+        fprintf(stderr, "[JESET: Inserimento %d in FreeList]\n", TempIndex);
 #endif
         /* inserisce l'indice nella freelist */
         JList_HeadInsert( (void *)&TempIndex, Set->FreeList );
