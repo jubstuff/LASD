@@ -71,4 +71,5 @@ J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
 int VertexCmp( const void *Vertex1, const void *Vertex2 );
 
+
 #endif

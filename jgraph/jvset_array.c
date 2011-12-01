@@ -17,6 +17,7 @@ struct jvertex_tag
     int Id;      /**< ID univoco */
 	char *Label; /**< Vertex's Label */
 	void *Data;
+	int  AdjIndex; /**< Puntatore alle informazioni di adiacenza */
 };
 
 struct jvset_tag
@@ -410,6 +411,7 @@ J_STATUS JVertex_New( J_VERTEX **V )
         (*V)->Label = NULL;
         (*V)->Data = NULL;
         (*V)->Id = 0;
+        (*V)->AdjIndex = -1;
     }
 
     return ReturnStatus;

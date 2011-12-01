@@ -18,8 +18,8 @@ struct jedge_tag
 struct jeset_tag
 {
     J_LIST **AdjLists; /**< Vettore delle liste di adiacenza */
-    J_LIST *FreeList;      /**< Lista delle locazioni libere */
-    int Size;              /**< Numero totale di vertici */
+    J_LIST *FreeList;  /**< Lista delle locazioni libere */
+    int Size;          /**< Numero totale di vertici */
 };
 
 
@@ -78,6 +78,10 @@ J_STATUS JEset_New( int HintNumVertices, J_ESET **Set )
     return ReturnStatus;
 }
 
+/**
+ * Associa un vertice ad una lista di adiacenza
+ *
+ * */
 J_STATUS JEset_LinkAdjListAndVertex(char *Label, J_VSET *VertSet, J_ESET *EdgeSet)
 {
     J_STATUS ReturnStatus;
@@ -99,6 +103,8 @@ J_STATUS JEset_LinkAdjListAndVertex(char *Label, J_VSET *VertSet, J_ESET *EdgeSe
         /* Se non è stato trovato, restituisci un errore */
         ReturnStatus = ERROR;
     }
+
+    return ReturnStatus;
 
     
 }
