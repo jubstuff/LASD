@@ -276,21 +276,29 @@ J_STATUS JVset_RemoveVertex( char *Label, J_VSET *Set )
 
 /**
  * Recupera il puntatore ad un vertice, data l'etichetta.
- * TODO far restituire un J_STATUS
+ *
  * */
-J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set )
+J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set )
 {
    int Trovato;
+   J_STATUS ReturnStatus;
+
+   ReturnStatus = SUCCESS;
+   *OutVertex = NULL;
+
+   /* Cerco l'indice del vertice data l'etichetta */
    JVset_FindVertexIndexByLabel(Label, &Trovato, Set);
 
    if( Trovato != -1 )
    {
-       return Set->Vertices[Trovato];
+       *OutVertex = Set->Vertices[Trovato];
    }
    else
    {
-       return NULL;
+       ReturnStatus = W_SET_NOTFOUND;
    }
+
+   return ReturnStatus;
 }
 
 /*============================METODI PRIVATI=====================================*/
@@ -320,7 +328,7 @@ static int JVset_IsMember(char *Label, J_VSET *Set)
 }
 /**
  * Recupera l'indice della locazione in cui è memorizzato un vertice
- *
+ * data l'etichetta
  * */
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set )
 {
@@ -390,9 +398,9 @@ static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set )
 /*============================FINE METODI PRIVATI================================*/
 
 
-/*
- * METODI PER VERTICI
- * */
+/*################################################################################
+ # METODI PER VERTICI                                                            #
+ # */                                                                            #
 
 /**
  * Alloca un nuovo vertice 
@@ -515,6 +523,10 @@ void JVertex_SetAdjIndex( int AdjIndex, J_VERTEX *V)
     V->AdjIndex = AdjIndex;
 }
 
+/**
+ * Confronta due vertici per ID
+ *
+ * */
 int VertexCmp( const void *Vertex1, const void *Vertex2 )
 {
 	int ReturnValue;

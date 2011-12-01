@@ -51,7 +51,7 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
 /**
  * Recupera un vertice dall'insieme, data l'etichetta
  * */
-J_VERTEX *JVset_FindVertexByLabel( char *Label, J_VSET *Set );
+J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set );
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
