@@ -71,5 +71,5 @@ J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
 
 int VertexCmp( const void *Vertex1, const void *Vertex2 );
 
-
+void JVertex_SetAdjIndex( int AdjIndex, J_VERTEX *V);
 #endif

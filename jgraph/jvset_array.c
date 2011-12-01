@@ -506,6 +506,14 @@ J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
 
     return ReturnStatus;
 }
+/**
+ * Imposta l'indice di adiacenza di un vettore
+ *
+ * */
+void JVertex_SetAdjIndex( int AdjIndex, J_VERTEX *V)
+{
+    V->AdjIndex = AdjIndex;
+}
 
 int VertexCmp( const void *Vertex1, const void *Vertex2 )
 {
