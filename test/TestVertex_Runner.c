@@ -49,8 +49,8 @@ int main(void)
   RUN_TEST(test_AddVertexWithLabel, 24);
   RUN_TEST(test_AddVertexWithSameLabelShouldFail, 38);
   RUN_TEST(test_ReallocFreeList, 46);
-  RUN_TEST(test_FindByLabel, 56);
-  RUN_TEST(test_DeleteVertex, 70);
+  RUN_TEST(test_FindByLabel, 57);
+  RUN_TEST(test_DeleteVertex, 71);
 
   return (UnityEnd());
 }

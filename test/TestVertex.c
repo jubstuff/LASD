@@ -25,12 +25,12 @@ void test_AddVertexWithLabel(void)
 {
     char *str;
     str = malloc(100 * sizeof(char));
-    J_VERTEX *V;
+    J_VERTEX *V = NULL;
 
     JVset_AddVertex("Vertice A", NULL, Set);
-    V = JVset_FindVertexByLabel("Vertice A", Set );
+    JVset_FindVertexByLabel("Vertice A", &V, Set );
     JVertex_GetLabel(&str, V);
-    printf("Etichetta: %s\n", str);
+    TEST_ASSERT_EQUAL_STRING("Vertice A", str);
 
     free(str);
 }
@@ -50,20 +50,21 @@ void test_ReallocFreeList(void)
     JVset_AddVertex("Vertice 3", NULL, Set);
     JVset_AddVertex("Vertice 4", NULL, Set);
     JVset_AddVertex("Vertice 5", NULL, Set);
+    /* quali conseguenze porta questo test? */
 
 }
 
 void test_FindByLabel(void)
 {
-    J_VERTEX *V;
+    J_VERTEX *V = NULL;
     char *str;
     str = malloc(100 * sizeof(char));
 
     JVset_AddVertex("Vertice A", NULL, Set);
-    V = JVset_FindVertexByLabel("Vertice A", Set );
+    JVset_FindVertexByLabel("Vertice A", &V, Set );
     //TEST_ASSERT_NOT_NULL(V);
     JVertex_GetLabel(&str, V);
-    printf("Etichetta: %s\n", str);
+    TEST_ASSERT_EQUAL_STRING("Vertice A", str);
     free(str);
 }
 

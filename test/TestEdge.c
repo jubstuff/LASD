@@ -8,17 +8,21 @@
 #include "jeset.h"
 
 J_STATUS ReturnStatus;
-J_ESET *Set;
+J_ESET *ESet;
+J_VSET *VSet;
+int HintNumVertices = 4;
 
 void setUp(void)
 {
 
-    JEset_New( 4, &Set );
+    JVset_Init(HintNumVertices, &VSet);
+    JEset_New( HintNumVertices, &ESet );
 }
 
 void tearDown(void)
 {
-    JEset_Destroy(Set);
+    JEset_Destroy(ESet);
+    JVset_Destroy( VSet );
 }
 
 
