@@ -128,7 +128,9 @@ void JEset_Destroy( J_ESET *Set )
     MemFree( (void **)&(Set->AdjLists) );
     MemFree( (void **)&Set );
 }
-
+/************************************************************************************/
+/*    METODI PRIVATI */
+/************************************************************************************/
 /**
  * Inserisce tutte le locazioni libere nella FreeList
  *

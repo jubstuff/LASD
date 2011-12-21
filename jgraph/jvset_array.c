@@ -552,8 +552,9 @@ int VertexCmp( const void *Vertex1, const void *Vertex2 )
 /**
  * Calcola un identificativo univoco per vertice
  *
- * Questa funzione calcola un identificativo numerico univoco per un vertice. È
- * ricavata dalla funzione di hashing del K&R.
+ * Questa funzione calcola un identificativo numerico univoco per un vertice. 
+ * NOTA
+ * È ricavata dalla funzione di hashing del K&R.
  * */
 static int CalculateVertexID(char *Label)
 {

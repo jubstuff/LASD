@@ -42,7 +42,7 @@ int main(void)
 {
   Unity.TestFile = "TestEdge.c";
   UnityBegin();
-  RUN_TEST(test_Test, 29);
+  RUN_TEST(test_Test, 38);
 
   return (UnityEnd());
 }

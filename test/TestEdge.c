@@ -10,13 +10,22 @@
 J_STATUS ReturnStatus;
 J_ESET *ESet;
 J_VSET *VSet;
-int HintNumVertices = 4;
+int HintNumVertices = 10;
 
 void setUp(void)
 {
 
     JVset_Init(HintNumVertices, &VSet);
     JEset_New( HintNumVertices, &ESet );
+
+    /* Aggiungo i vertici all'insieme */
+    JVset_AddVertex("Vertice A", NULL, VSet);
+    JVset_AddVertex("Vertice B", NULL, VSet);
+    JVset_AddVertex("Vertice C", NULL, VSet);
+    JVset_AddVertex("Vertice D", NULL, VSet);
+    JVset_AddVertex("Vertice E", NULL, VSet);
+    JVset_AddVertex("Vertice F", NULL, VSet);
+    JVset_AddVertex("Vertice G", NULL, VSet);
 }
 
 void tearDown(void)
@@ -26,6 +35,7 @@ void tearDown(void)
 }
 
 
-void test_Test(void)
+void test_AddEdge(void)
 {
+    JEset_AddEdge("Vertice A", "Vertice B", 0, VSet, ESet);
 }
