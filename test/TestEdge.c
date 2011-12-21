@@ -26,6 +26,8 @@ void setUp(void)
     JVset_AddVertex("Vertice E", NULL, VSet);
     JVset_AddVertex("Vertice F", NULL, VSet);
     JVset_AddVertex("Vertice G", NULL, VSet);
+
+
 }
 
 void tearDown(void)

@@ -52,6 +52,10 @@ J_STATUS JVset_GetVertexData( char *Label, void *Data, J_VSET *Set );
  * Recupera un vertice dall'insieme, data l'etichetta
  * */
 J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set );
+/**
+ * Stampa le etichette dell'insieme dei vertici
+ * */
+void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set );
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -63,7 +67,7 @@ J_STATUS JVertex_New( J_VERTEX **V );
 
 void JVertex_Destroy( J_VERTEX *V );
 
-void JVertex_GetLabel( char **Dest, J_VERTEX *V ); 
+void JVertex_CopyLabel( char **Dest, J_VERTEX *V ); 
 
 J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 

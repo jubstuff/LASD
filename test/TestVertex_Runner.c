@@ -31,6 +31,7 @@ extern void test_AddVertexWithSameLabelShouldFail(void);
 extern void test_ReallocFreeList(void);
 extern void test_FindByLabel(void);
 extern void test_DeleteVertex(void);
+extern void test_StampaEtichette(void);
 
 
 //=======Test Reset Option=====
@@ -46,11 +47,12 @@ int main(void)
 {
   Unity.TestFile = "TestVertex.c";
   UnityBegin();
-  RUN_TEST(test_AddVertexWithLabel, 24);
-  RUN_TEST(test_AddVertexWithSameLabelShouldFail, 38);
-  RUN_TEST(test_ReallocFreeList, 46);
-  RUN_TEST(test_FindByLabel, 57);
-  RUN_TEST(test_DeleteVertex, 71);
+  RUN_TEST(test_AddVertexWithLabel, 30);
+  RUN_TEST(test_AddVertexWithSameLabelShouldFail, 44);
+  RUN_TEST(test_ReallocFreeList, 52);
+  RUN_TEST(test_FindByLabel, 63);
+  RUN_TEST(test_DeleteVertex, 77);
+  RUN_TEST(test_StampaEtichette, 88);
 
   return (UnityEnd());
 }

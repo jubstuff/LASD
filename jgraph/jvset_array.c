@@ -301,6 +301,18 @@ J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set
    return ReturnStatus;
 }
 
+void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set );
+{
+    int i;
+
+    for( i = 0; i < Set->Size; i++ )
+    {
+        print(Set->Vertices[i]);
+
+    }
+
+}
+
 /*============================METODI PRIVATI=====================================*/
 
 static int JVset_IsMember(char *Label, J_VSET *Set)
@@ -448,7 +460,7 @@ void JVertex_Destroy( J_VERTEX *V )
  * Altrimenti imposta Dest a NULL
  *
  * */
-void JVertex_GetLabel( char **Dest, J_VERTEX *V )
+void JVertex_CopyLabel( char **Dest, J_VERTEX *V )
 {
     if( V && V->Label )
     {
