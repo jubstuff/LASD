@@ -92,5 +92,5 @@ void test_StampaEtichette(void)
     JVset_AddVertex("Vertice A", NULL, Set);
     JVset_AddVertex("Vertice C", NULL, Set);
 
-    JVset_PrintSet(printVertex, Set );
+    JVset_IterateOnSet(printVertex, Set );
 }

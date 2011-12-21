@@ -20,7 +20,13 @@
  * DEFINIZIONE TIPI DI DATO
  * */
 
-typedef struct jvertex_tag J_VERTEX;
+typedef struct jvertex_tag
+{
+    int Id;      /**< ID univoco */
+	char *Label; /**< Vertex's Label */
+	void *Data;
+	int  AdjIndex; /**< Puntatore alle informazioni di adiacenza */
+} J_VERTEX;
 
 typedef struct jvset_tag J_VSET;
 
@@ -68,6 +74,8 @@ J_STATUS JVertex_New( J_VERTEX **V );
 void JVertex_Destroy( J_VERTEX *V );
 
 void JVertex_CopyLabel( char **Dest, J_VERTEX *V ); 
+
+char *JVertex_GetLabel( J_VERTEX *V );
 
 J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
 

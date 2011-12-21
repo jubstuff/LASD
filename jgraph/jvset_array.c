@@ -12,13 +12,6 @@
  * Implementazione dell'interfaccia J_VSET utilizzando un array
  *
  * */
-struct jvertex_tag
-{
-    int Id;      /**< ID univoco */
-	char *Label; /**< Vertex's Label */
-	void *Data;
-	int  AdjIndex; /**< Puntatore alle informazioni di adiacenza */
-};
 
 struct jvset_tag
 {
@@ -301,13 +294,13 @@ J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set
    return ReturnStatus;
 }
 
-void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set );
+void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set )
 {
     int i;
 
     for( i = 0; i < Set->Size; i++ )
     {
-        print(Set->Vertices[i]);
+        action(Set->Vertices[i]);
 
     }
 
@@ -473,6 +466,11 @@ void JVertex_CopyLabel( char **Dest, J_VERTEX *V )
     {
         *Dest = NULL;
     }
+}
+
+char *JVertex_GetLabel( J_VERTEX *V )
+{
+    return V->Label;
 }
 
 /**
