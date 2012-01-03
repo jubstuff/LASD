@@ -15,20 +15,16 @@
 #define JVSET_H
 
 #include "errors.h"
+#include "lista.h"
+#include "jvertex.h"
 
-/**
- * DEFINIZIONE TIPI DI DATO
- * */
-
-typedef struct jvertex_tag
+typedef struct jvset_tag
 {
-    int Id;      /**< ID univoco */
-	char *Label; /**< Vertex's Label */
-	void *Data;
-	int  AdjIndex; /**< Puntatore alle informazioni di adiacenza */
-} J_VERTEX;
-
-typedef struct jvset_tag J_VSET;
+    J_VERTEX **Vertices;   /**< Array contenente i vertici */
+    int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
+    int Size;              /**< Numero totale di vertici */
+    J_LIST *FreeList;      /**< Lista delle locazioni libere */
+} J_VSET;
 
 /**
  * Inizializza l'insieme
@@ -64,24 +60,4 @@ J_STATUS JVset_FindVertexByLabel( char *Label, J_VERTEX **OutVertex, J_VSET *Set
 void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set );
 
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- Operazioni sui vertici
-
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */ 
-
-J_STATUS JVertex_New( J_VERTEX **V );
-
-void JVertex_Destroy( J_VERTEX *V );
-
-void JVertex_CopyLabel( char **Dest, J_VERTEX *V ); 
-
-char *JVertex_GetLabel( J_VERTEX *V );
-
-J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V );
-
-J_STATUS JVertex_SetLabel( char *, J_VERTEX *);
-
-int VertexCmp( const void *Vertex1, const void *Vertex2 );
-
-void JVertex_SetAdjIndex( int AdjIndex, J_VERTEX *V);
 #endif

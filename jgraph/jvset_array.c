@@ -13,13 +13,6 @@
  *
  * */
 
-struct jvset_tag
-{
-    J_VERTEX **Vertices;   /**< Array contenente i vertici */
-    int NumActiveVertices; /**< Numero di vertici inseriti nell'insieme */
-    int Size;              /**< Numero totale di vertici */
-    J_LIST *FreeList;      /**< Lista delle locazioni libere */
-};
 
 /*=======================FINE DEFINIZIONE STRUTTURE==============================*/
 
@@ -29,13 +22,12 @@ struct jvset_tag
 static int JVset_IsMember(char *Label, J_VSET *Set);
 static J_STATUS JVset_FindVertexIndexByLabel( char *Label, int *Index, J_VSET *Set );
 static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set );
+static int CalculateVertexID(char *Label);
 /* Metodi per la gestione della FreeList */
 static void *InizializzaNodoInt( void *Value );
 static void DeallocaInt( void *InputValue, void *NodeInfo );
 static int NumCmp( const void *Num1, const void *Num2 );
 static void RecuperaInt( const void *NodeValue, void *OutValue );
-/* Metodi per vertici */
-static int CalculateVertexID(char *Label);
 
 /*============================FINE METODI PRIVATI================================*/
 
@@ -301,7 +293,6 @@ void JVset_IterateOnSet( void (*action)(J_VERTEX *), J_VSET *Set )
     for( i = 0; i < Set->Size; i++ )
     {
         action(Set->Vertices[i]);
-
     }
 
 }
@@ -399,166 +390,6 @@ static void JVset_InitializeVerticesAndFreeList( int OldSize, J_VSET *Set )
 
     }
 }
-
-/*============================FINE METODI PRIVATI================================*/
-
-
-/*################################################################################
- # METODI PER VERTICI                                                            #
- # */                                                                            #
-
-/**
- * Alloca un nuovo vertice 
- * */
-J_STATUS JVertex_New( J_VERTEX **V )
-{
-    J_STATUS ReturnStatus;
-
-    ReturnStatus = SUCCESS;
-
-    /* Alloco un nuovo vertice */
-    ReturnStatus = MemAlloc( sizeof(J_VERTEX), (void **)V );
-    if( ReturnStatus == SUCCESS )
-    {
-        /* Se il vertice è stato correttamente allocato, inizializzalo */
-        (*V)->Label = NULL;
-        (*V)->Data = NULL;
-        (*V)->Id = 0;
-        (*V)->AdjIndex = -1;
-    }
-
-    return ReturnStatus;
-}
-
-/**
- * Dealloca un vertice e i dati associati
- *
- * */
-void JVertex_Destroy( J_VERTEX *V )
-{
-    if( V != NULL )
-    {
-        /* Se il vertice esiste, dealloca tutte le info ad esso associate */
-        MemFree( (void **)&V->Label );
-        /* TODO deallocare dati associati al vertice */
-        MemFree( (void **)&V );
-    }
-}
-
-/* 
- * Recupera l'etichetta del vertice V.
- *
- * Se l'etichetta è impostata, la copia nella stringa Dest (che deve essere
- * allocata e sufficientemente grande).
- * Altrimenti imposta Dest a NULL
- *
- * */
-void JVertex_CopyLabel( char **Dest, J_VERTEX *V )
-{
-    if( V && V->Label )
-    {
-        /* Se il vertice esiste e l'etichetta è definita,
-         * copiala nel vettore passato in input
-         * */
-        strcpy( *Dest, V->Label );
-    }
-    else
-    {
-        *Dest = NULL;
-    }
-}
-
-char *JVertex_GetLabel( J_VERTEX *V )
-{
-    return V->Label;
-}
-
-/**
- * Recupera la lunghezza dell'etichetta del vertice V
- *
- * Se l'etichetta è impostata, ne copia la lunghezza in Length.
- * Altrimenti imposta Length a 0 e restituisce ERROR.
- *
- * */
-J_STATUS JVertex_GetLengthLabel( int *Length, J_VERTEX *V )
-{
-    J_STATUS ReturnStatus; /**< stato di ritorno */
-
-    ReturnStatus = SUCCESS;
-
-    if( V && V->Label )
-    { 
-        /* Se l'etichetta è impostata, ne restituisce la lunghezza */
-        *Length = strlen(V->Label);
-    }
-    else
-    {
-        /* Altrimenti imposta la lunghezza a zero, e restituisce ERROR */
-        *Length = 0;
-        ReturnStatus = ERROR;
-    }
-
-    return ReturnStatus;
-}
-
-/**
- * Imposta l'etichetta ad un vertice
- *
- * Alloca un vettore di caratteri dinamicamente e lo utilizza per memorizzare l'etichetta del vertice 
- * */
-J_STATUS JVertex_SetLabel( char *Label, J_VERTEX *V)
-{
-    int LabelLen;
-    J_STATUS ReturnStatus;
-
-    /* Recupero la lunghezza dell'etichetta passata in input */
-    LabelLen = strlen(Label);
-
-    /* Alloco un vettore di caratteri atto a contenere la stringa */
-    ReturnStatus = MemAlloc( LabelLen + 1, (void **)&(V->Label) );
-    if( ReturnStatus == SUCCESS )
-    {
-        /* Se è stato allocato correttamente, vi copio la stringa in input */
-        strcpy(V->Label, Label);
-    }
-
-    return ReturnStatus;
-}
-/**
- * Imposta l'indice di adiacenza di un vettore
- *
- * */
-void JVertex_SetAdjIndex( int AdjIndex, J_VERTEX *V)
-{
-    V->AdjIndex = AdjIndex;
-}
-
-/**
- * Confronta due vertici per ID
- *
- * */
-int VertexCmp( const void *Vertex1, const void *Vertex2 )
-{
-	int ReturnValue;
-	J_VERTEX *First = (J_VERTEX *)Vertex1;
-	J_VERTEX *Second = (J_VERTEX *)Vertex2;
-
-	if ( First->Id < Second->Id )
-	{
-		ReturnValue = -1;
-	}
-	else if ( First->Id == Second->Id )
-	{
-		ReturnValue = 0;
-	}
-	else
-	{
-		ReturnValue = 1;
-	}
-
-	return ReturnValue;
-}
-
 /**
  * Calcola un identificativo univoco per vertice
  *
@@ -576,6 +407,10 @@ static int CalculateVertexID(char *Label)
     }
     return Id;
 }
+
+/*============================FINE METODI PRIVATI================================*/
+
+
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * GESTIONE FREE LIST

@@ -20,7 +20,7 @@ EDGE_TARGET = $(EDGE_BASE)$(TARGET_EXTENSION)
 MEM_SRC_FILES=../unity/src/unity.c ../src/mem.c TestMem.c TestMem_Runner.c
 LIST_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c TestList.c TestList_Runner.c
 VERTEX_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c ../jgraph/jvset_array.c TestVertex.c TestVertex_Runner.c
-EDGE_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c ../jgraph/jeset.c ../jgraph/jvset_array.c TestEdge.c TestEdge_Runner.c
+EDGE_SRC_FILES=../unity/src/unity.c ../src/mem.c ../src/lista.c ../jgraph/jedge.c ../jgraph/jvertex.c TestEdge.c TestEdge_Runner.c
 
 INC_DIRS=-I../src -I../unity/src -I../jgraph
 SYMBOLS=-DTEST -DDEBUG

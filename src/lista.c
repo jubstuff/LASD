@@ -55,6 +55,7 @@ J_STATUS JList_Init( J_LIST **L, JLIST_METHODS *Op )
     {
         /* Inizializzo la testa della lista e i relativi metodi */
         (*L)->Head = NULL;
+        /* Alloca la struct per i metodi della lista */
         ReturnStatus = MemAlloc(sizeof(JLIST_METHODS), (void **)&((*L)->Op) );
         if( ReturnStatus == SUCCESS )
         {

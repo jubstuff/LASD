@@ -26,7 +26,9 @@
 //=======External Functions This Runner Calls=====
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_Test(void);
+extern void test_NewEdge(void);
+extern void test_SetEdgeWeight(void);
+extern void test_SetEdgeDestination(void);
 
 
 //=======Test Reset Option=====
@@ -42,7 +44,9 @@ int main(void)
 {
   Unity.TestFile = "TestEdge.c";
   UnityBegin();
-  RUN_TEST(test_Test, 38);
+  RUN_TEST(test_NewEdge, 25);
+  RUN_TEST(test_SetEdgeWeight, 32);
+  RUN_TEST(test_SetEdgeDestination, 38);
 
   return (UnityEnd());
 }

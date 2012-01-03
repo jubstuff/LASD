@@ -9,11 +9,6 @@
 
 /*============================DEFINIZIONE STRUTTURE==============================*/
 
-struct jedge_tag 
-{
-    J_VERTEX *DestVertex; /**< Destinazione dell'arco */
-    double   Weight;      /**< Peso dell'arco */
-};
 
 struct jeset_tag
 {
@@ -82,35 +77,32 @@ J_STATUS JEset_New( int HintNumVertices, J_ESET **Set )
  * Associa un vertice ad una lista di adiacenza
  *
  * */
-J_STATUS JEset_LinkAdjListAndVertex(char *Label, J_VSET *VertSet, J_ESET *EdgeSet)
+J_STATUS JEset_LinkAdjListAndVertex(J_VERTEX *Vertex, J_ESET *EdgeSet)
 {
     J_STATUS ReturnStatus;
-    J_VERTEX *Vertex;
     int FreeLoc;           /**< Locazione libera da associare al vertice */
 
     ReturnStatus = SUCCESS;
-    Vertex = NULL;
-
-    /* Cerca il vertice nell'insieme dei vertici */
-    ReturnStatus = JVset_FindVertexByLabel(Label, &Vertex, VertSet );
-
-    if( ReturnStatus == SUCCESS )
+    if( Vertex )
     {
-        /* Se il vertice è stato trovato, associa la prossima lista di adiacenza disponibile */
 
         /* Se la Freelist non è vuota, recupera il primo elemento
          * ed inserisci il vertice in quella posizione */
         JList_HeadDelete( (void *)&FreeLoc, EdgeSet->FreeList );
+        /* Inizializzo la lista di adiacenza */
+        EdgeSet->AdjLists[FreeLoc] = NULL;
+#ifdef DEBUG
+        fprintf(stderr, "[JESET: Estratto %d da FreeList]\n", FreeLoc);
+#endif
         JVertex_SetAdjIndex( FreeLoc, Vertex);
+
     }
     else
     {
-        /* Se non è stato trovato, restituisci un errore */
-        ReturnStatus = ERROR;
+        ReturnStatus = ERROR; /* TODO cosa restituire? */
     }
 
     return ReturnStatus;
-
     
 }
 
@@ -127,6 +119,33 @@ void JEset_Destroy( J_ESET *Set )
 
     MemFree( (void **)&(Set->AdjLists) );
     MemFree( (void **)&Set );
+}
+
+/**
+ * Aggiunge un arco nella lista di adiacenza del vertice sorgente
+ *
+ * Presuppone che il vertice abbia già una lista di adiacenza associata
+ *
+ * */
+J_STATUS JEset_AddEdge( char *LabelSource, char *LabelDest, double Weight, J_VSET *VSet, J_ESET *ESet )
+{
+    J_VERTEX *Source;
+    J_STATUS ReturnStatus;
+    JLIST_METHODS Op;
+
+
+    ReturnStatus = JVset_FindVertexByLabel(LabelSource, &Source, VSet);
+    if( ReturnStatus == SUCCESS )
+    {
+        /* Sorgente trovata, inserisci l'elemento nella sua lista di adiacenza */
+
+        /* Se la sua lista di adiacenza non è stata inizializzata, fallo adesso */
+        if( ESet->AdjLists[Source->AdjIndex] == NULL )
+        {
+
+        }
+    }
+
 }
 /************************************************************************************/
 /*    METODI PRIVATI */

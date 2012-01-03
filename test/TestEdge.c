@@ -4,40 +4,45 @@
 #include <string.h>
 #include "lista.h"
 #include <stdlib.h>
-#include "jvset.h"
-#include "jeset.h"
+#include "jvertex.h"
+#include "jedge.h"
 
 J_STATUS ReturnStatus;
-J_ESET *ESet;
-J_VSET *VSet;
-int HintNumVertices = 10;
+J_EDGE *E;
+
 
 void setUp(void)
 {
-
-    JVset_Init(HintNumVertices, &VSet);
-    JEset_New( HintNumVertices, &ESet );
-
-    /* Aggiungo i vertici all'insieme */
-    JVset_AddVertex("Vertice A", NULL, VSet);
-    JVset_AddVertex("Vertice B", NULL, VSet);
-    JVset_AddVertex("Vertice C", NULL, VSet);
-    JVset_AddVertex("Vertice D", NULL, VSet);
-    JVset_AddVertex("Vertice E", NULL, VSet);
-    JVset_AddVertex("Vertice F", NULL, VSet);
-    JVset_AddVertex("Vertice G", NULL, VSet);
-
-
+    ReturnStatus = JEdge_New( &E );
 }
 
 void tearDown(void)
 {
-    JEset_Destroy(ESet);
-    JVset_Destroy( VSet );
+    JEdge_Destroy( E );
 }
 
 
-void test_AddEdge(void)
+void test_NewEdge(void)
 {
-    JEset_AddEdge("Vertice A", "Vertice B", 0, VSet, ESet);
+    TEST_ASSERT_EQUAL(SUCCESS, ReturnStatus);
+    TEST_ASSERT_NULL( E->DestVertex );
+    TEST_ASSERT_EQUAL( 0, E->Weight );
+}
+
+void test_SetEdgeWeight(void)
+{
+    JEdge_SetWeight( 5, E );
+    TEST_ASSERT_EQUAL( 5, E->Weight );
+}
+
+void test_SetEdgeDestination(void)
+{
+    J_VERTEX *V;
+    JVertex_New( &V );
+    JVertex_SetLabel( "Vertice", V );
+
+    JEdge_SetDestVertex( V, E );
+    TEST_ASSERT_EQUAL_HEX( V, E->DestVertex );
+
+    JVertex_Destroy( V );
 }
